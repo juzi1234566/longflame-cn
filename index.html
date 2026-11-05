@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>太守寻非遗</title>
+<meta name="description" content="一卷山河，一位太守，寻访非遗与匠人。第一站，河南汝窑：皇帝要的那抹青色，后来为什么失传了？也可以在这里查国家级非遗名录。">
+<meta name="theme-color" content="#D5DFDA">
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/song-core.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/map.css">
+</head>
+<body class="map-page is-intro">
+
+<header class="bar bar--light">
+  <!-- 首页只留文字品牌名，不放红色品牌图：整页只剩朱砂小印一种红 -->
+  <a class="bar-brand" href="index.html"><span>太守寻非遗</span></a>
+  <nav aria-label="主导航">
+    <a href="minglu.html">寻非遗</a>
+    <button type="button" id="open-wendie">文牒</button>
+    <a href="about.html">关于</a>
+  </nav>
+</header>
+
+<main id="shanhe">
+  <div class="camera" id="camera">
+    <div class="plane plane-back" id="plane-back" aria-hidden="true"></div>
+    <div class="scroller" id="scroller" tabindex="0" role="region" aria-label="山河长卷，可左右拖动或滑动，用方向键也能移动">
+      <div class="world" id="world">
+        <svg class="route" id="route" aria-hidden="true"></svg>
+        <canvas class="water water-gl" id="water-gl" aria-hidden="true"></canvas>
+        <canvas class="water" id="water" aria-hidden="true"></canvas>
+        <div class="lamps" id="lamps" aria-hidden="true"></div>
+        <div id="sites"></div>
+      </div>
+    </div>
+    <div class="plane plane-front" id="plane-front" aria-hidden="true"></div>
+  </div>
+  <div class="grain" id="grain" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <!-- 题跋：留白天空里的一组竖排宋体字，落款是一方“太守”小印 -->
+  <section class="colophon" aria-labelledby="site-title">
+    <h1 class="colophon-title" id="site-title">太守寻非遗</h1>
+    <p class="colophon-motto" id="motto"></p>
+  </section>
+  <a class="seek" href="minglu.html">
+    <span class="seek-name">寻非遗</span>
+    <span class="seek-note">查 1557 项国家级名录</span>
+    <span class="seek-arrow" aria-hidden="true"></span>
+  </a>
+  <p class="hint" id="hint" aria-hidden="true"><span class="hint-mouse">按住拖动，看山河</span><span class="hint-touch">左右滑动，看山河</span></p>
+  <p class="toast" id="toast" role="status" aria-live="polite"></p>
+  <noscript><p class="noscript">山河图需要 JavaScript 才能显示。<a href="about.html">先看看我们在做什么</a></p></noscript>
+</main>
+
+<footer class="foot foot--map" id="site-footer"></footer>
+
+<div class="curtain" id="curtain" aria-hidden="true"></div>
+
+<div class="intro" id="intro">
+  <canvas class="intro-veil" id="intro-veil" aria-hidden="true"></canvas>
+  <button type="button" class="intro-skip" id="intro-skip">跳过</button>
+</div>
+
+<dialog class="wendie" id="wendie" aria-labelledby="wendie-title">
+  <div class="wendie-inner">
+    <div class="wendie-head">
+      <h2 id="wendie-title">文牒</h2>
+      <button type="button" class="wendie-close" id="close-wendie">合上</button>
+    </div>
+    <div id="wendie-body"></div>
+  </div>
+</dialog>
+
+<script src="assets/stations.js"></script>
+<script src="assets/map-config.js"></script>
+<script src="assets/common.js"></script>
+<script src="assets/map.js"></script>
+</body>
+</html>
