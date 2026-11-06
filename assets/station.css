@@ -87,6 +87,7 @@ html:has(body.station-page) { background: var(--st-paper); scroll-behavior: smoo
 }
 .figure-mount img { width: 100%; height: auto; background: #E0C59C; outline: 1px solid rgba(90, 70, 40, .22); outline-offset: 0; }
 .figure figcaption { margin-top: .9em; font-size: 12.5px; line-height: 1.8; letter-spacing: .3em; color: var(--st-soft); text-align: center; }
+.figure figcaption > span { display: inline-block; }
 
 /* 传说：上下两道细线框出来，底下极淡的开片纹，小签写明“传说” */
 .legend { position: relative; isolation: isolate; margin: 2.4em 0; padding: 1.5em 1.4em 1.3em; border-top: 1px solid var(--st-line); border-bottom: 1px solid var(--st-line); }
@@ -141,11 +142,110 @@ html:has(body.station-page) { background: var(--st-paper); scroll-behavior: smoo
 .st-missing { display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 18vh 20px; font-size: 18px; letter-spacing: .2em; }
 .noscript { padding: 10vh 16px; text-align: center; color: var(--st-soft); }
 
+/* ---------- 按住看开片 ----------
+   和插图同一种册页裱法；釉面本身是 canvas，宽高比固定。上方一行小字提示怎么玩，下方一行说明写明“示意，非实物”。
+   touch-action: pan-y：手指按住不动时裂纹生长，上下一滑仍然是滚动页面（浏览器会取消按压，裂纹停住） */
+.kaipian { margin: 2.2em -1.2em 2.8em; }
+.kaipian-hint { margin: 0 0 .9em; font-size: 13.5px; line-height: 1.8; letter-spacing: .3em; color: var(--st-soft); text-align: center; transition: opacity 1.6s; }
+.kaipian-key { letter-spacing: .1em; }
+.kaipian.is-touched .kaipian-hint { opacity: .45; }
+.kaipian.is-static .kaipian-hint { display: none; }
+.kaipian-mount {
+  padding: clamp(10px, 1.8vw, 18px); background: #E4EAE7;
+  border: 1px solid rgba(38, 48, 46, .26); box-shadow: 0 1px 0 rgba(255, 255, 255, .4) inset, 0 10px 30px -18px rgba(38, 48, 46, .35);
+}
+.kaipian-canvas {
+  display: block; width: 100%; aspect-ratio: 3 / 2; height: auto; background: #A9C4BC;
+  border-radius: 2px; cursor: crosshair; touch-action: pan-y;
+  -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;
+}
+.kaipian.is-static .kaipian-canvas { cursor: default; }
+.kaipian-canvas:focus-visible { outline: 1px solid var(--st-soft); outline-offset: 4px; }
+.kaipian figcaption {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 1.4em; margin-top: .8em;
+  font-size: 12.5px; line-height: 1.8; letter-spacing: .2em; color: var(--st-soft); text-align: center;
+}
+.kaipian-again {
+  min-height: 44px; padding: 0 4px; font: inherit; letter-spacing: .3em; color: var(--st-soft);
+  background: none; border: 0; cursor: pointer; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 5px;
+  opacity: 0; pointer-events: none; transition: opacity 1.2s;
+}
+.kaipian.is-touched .kaipian-again { opacity: 1; pointer-events: auto; }
+.kaipian.is-static .kaipian-again { display: none; }
+.kaipian-cap > span { display: inline-block; } /* 两句说明只在句子之间换行 */
+@media (hover: none) and (pointer: coarse) { .kaipian-key { display: none !important; } } /* 手机上不提键盘 */
+
+/* ---------- 按住看窑变（钧窑） ----------
+   版式和开片完全共用（.kaipian 那一套），只换画布还没画出来时的底色：天青偏蓝，和钧釉一致 */
+.yaobian .kaipian-canvas { background: #98B3BA; cursor: pointer; }
+
+/* ---------- 匠人（stations.js 填了 craftsman 才出现） ----------
+   大幅照片在左，竖排姓名和称号贴在照片右边的留白里；一段口述引语居中；作品一件件排开，写明编号和这一件的烧制痕迹 */
+.st-craft { max-width: 1120px; margin: 0 auto; padding: clamp(40px, 9vh, 100px) clamp(20px, 6vw, 80px) clamp(30px, 6vh, 70px); }
+.craft-chapter { margin: 0 0 clamp(28px, 5vh, 54px); font-weight: 400; font-size: 13.5px; line-height: 2; letter-spacing: .5em; color: var(--st-soft); text-align: center; }
+.craft-chapter::before, .craft-chapter::after { content: ""; display: inline-block; width: 2.4em; height: 1px; margin: 0 1.2em; vertical-align: middle; background: currentColor; opacity: .5; }
+.craft-hero { display: flex; justify-content: center; align-items: flex-start; gap: clamp(26px, 5vw, 72px); }
+.craft-photo { flex: 0 1 620px; min-width: 0; margin: 0; }
+.craft-img { width: 100%; height: auto; background: #C9D3CF; }
+.craft-photo figcaption { margin-top: .8em; font-size: 12px; letter-spacing: .2em; color: var(--st-soft); }
+.craft-name { flex: none; display: flex; flex-direction: column; align-items: flex-start; writing-mode: vertical-rl; padding-top: clamp(10px, 4vh, 40px); }
+.craft-who { margin: 0; font-size: clamp(34px, 3.6vw, 48px); line-height: 1; letter-spacing: .5em; }
+.craft-title { margin: 0; margin-block-start: 1.4em; font-size: 14px; line-height: 2; letter-spacing: .36em; color: var(--st-soft); }
+.craft-quote { max-width: 30em; margin: clamp(40px, 8vh, 84px) auto 0; padding: 1.4em 0; border-top: 1px solid var(--st-line); border-bottom: 1px solid var(--st-line); text-align: center; }
+.craft-quote p { margin: 0; font-size: clamp(19px, 1.6vw, 23px); line-height: 2.1; letter-spacing: .16em; }
+.craft-quote p > span { display: block; }
+.craft-quote footer { margin-top: 1em; font-size: 12.5px; letter-spacing: .3em; color: var(--st-soft); }
+.craft-works { margin-top: clamp(46px, 9vh, 96px); }
+.craft-works h3 { margin: 0 0 1.6em; font-weight: 400; font-size: 13.5px; letter-spacing: .5em; color: var(--st-soft); text-align: center; }
+.craft-works ol { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: clamp(28px, 4vw, 52px); max-width: 960px; margin: 0 auto; padding: 0; list-style: none; }
+.craft-work { min-width: 0; }
+.craft-work-img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; background: #C9D3CF; }
+.craft-no { margin: 1em 0 0; font-size: 12px; letter-spacing: .3em; color: var(--st-soft); font-variant-numeric: tabular-nums; }
+.craft-work-name { margin: .3em 0 0; font-size: 18px; line-height: 1.7; letter-spacing: .16em; }
+.craft-marks { margin: .5em 0 0; font-size: 14px; line-height: 1.95; letter-spacing: .04em; color: #36423F; }
+.craft-marks span { display: block; font-size: 12px; letter-spacing: .3em; color: var(--st-soft); }
+/* 演示页用的灰色示例色块（正式数据用真照片，不会出现这个） */
+.craft-ph { display: grid; place-items: center; width: 100%; aspect-ratio: 4 / 5; background: #B9C0BD; color: #F2F4F3; font-size: 15px; letter-spacing: .5em; }
+.craft-work .craft-ph { aspect-ratio: 4 / 5; }
+
+/* ---------- 答三题 ----------
+   和故事同一套版式：竖排小标题在右，题目在左；选项是细墨框，答对的那一项框线加深，错了的淡下去，下面一行温和的提示 */
+.st-quiz {
+  display: flex; flex-direction: row-reverse; justify-content: center; gap: clamp(44px, 7vw, 110px);
+  max-width: 1120px; margin: 0 auto; padding: clamp(30px, 7vh, 80px) clamp(20px, 6vw, 80px) 0;
+}
+.quiz-title { flex: none; align-self: flex-start; margin: 0; writing-mode: vertical-rl; font-weight: 400; font-size: clamp(24px, 2.4vw, 30px); line-height: 1; letter-spacing: .42em; }
+.quiz-body { flex: 0 1 33em; min-width: 0; }
+.quiz-lead { margin: 0 0 2em; font-size: 16px; line-height: 2; letter-spacing: .06em; color: var(--st-soft); }
+.quiz-list { margin: 0; padding: 0; list-style: none; }
+.quiz-q { margin: 0 0 2.4em; }
+.quiz-ask { margin: 0 0 1em; font-size: 17.5px; line-height: 1.9; letter-spacing: .06em; }
+.quiz-num { display: inline-block; margin-right: 1em; font-size: 13px; letter-spacing: .3em; color: var(--st-soft); }
+.quiz-opts { display: flex; flex-direction: column; align-items: stretch; gap: 10px; }
+.quiz-opt {
+  min-height: 48px; padding: 10px 18px; font: inherit; font-family: var(--song); font-size: 16px; line-height: 1.6; letter-spacing: .1em; text-align: left;
+  color: var(--st-ink); background: rgba(222, 230, 226, .45); border: 1px solid rgba(38, 48, 46, .24); border-radius: 0; cursor: pointer;
+  transition: background .6s, border-color .6s, color .6s, opacity .6s;
+}
+.quiz-opt:hover { background: rgba(232, 237, 234, .85); border-color: rgba(38, 48, 46, .5); }
+.quiz-opt.is-wrong { color: var(--st-soft); border-style: dashed; opacity: .7; }
+.quiz-opt.is-answer { border-color: var(--st-ink); background: rgba(232, 237, 234, .9); }
+.quiz-opt.is-answer::after { content: "　是"; font-size: 13px; letter-spacing: .3em; color: var(--st-soft); }
+.quiz-opt:disabled { cursor: default; opacity: .38; }
+.quiz-opt:disabled:hover { background: rgba(222, 230, 226, .45); border-color: rgba(38, 48, 46, .24); }
+.quiz-say { margin: .8em 0 0; min-height: 1.8em; font-size: 14px; line-height: 1.9; letter-spacing: .06em; color: var(--st-soft); }
+.quiz-q.just-right .quiz-say { animation: quiz-in 1.4s ease both; }
+@keyframes quiz-in { from { opacity: 0; } to { opacity: 1; } }
+.stamp-go { margin-left: .6em; color: var(--st-ink); text-decoration-thickness: 1px; text-underline-offset: 5px; }
+
 /* ---------- 窄屏 ---------- */
 @media (max-width: 760px) {
   .st-story { flex-direction: column; gap: 26px; padding-top: 28px; }
   .story-title { position: static; writing-mode: horizontal-tb; font-size: 28px; letter-spacing: .36em; }
   .story-body { flex: none; }
+  .st-quiz { flex-direction: column; gap: 22px; }
+  .quiz-title { writing-mode: horizontal-tb; font-size: 24px; letter-spacing: .36em; }
+  .quiz-body { flex: none; }
 }
 @media (max-width: 600px) {
   .st-head { height: 80svh; min-height: 500px; }
@@ -161,6 +261,19 @@ html:has(body.station-page) { background: var(--st-paper); scroll-behavior: smoo
   .story-body { font-size: 17px; line-height: 2.05; letter-spacing: .03em; }
   .legend { padding-left: 1em; padding-right: 1em; }
   .figure { margin-left: -6px; margin-right: -6px; }
+  .kaipian { margin-left: -6px; margin-right: -6px; }
+  .kaipian-hint { letter-spacing: .16em; }
+  .kaipian-key { display: block; }
+  .st-quiz { padding-left: 22px; padding-right: 22px; }
+  .quiz-opt { font-size: 15.5px; letter-spacing: .06em; padding: 10px 14px; }
+  .st-craft { padding-left: 22px; padding-right: 22px; }
+  .craft-hero { gap: 18px; }
+  .craft-who { font-size: 30px; letter-spacing: .4em; }
+  .craft-title { font-size: 13px; letter-spacing: .26em; }
+  .craft-quote p { font-size: 18px; letter-spacing: .1em; }
+  .craft-works ol { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 16px; }
+  .craft-work-name { font-size: 16px; letter-spacing: .1em; }
+  .craft-marks { font-size: 13px; }
   .end-row { flex-direction: column; gap: 36px; }
   .end-next { padding: 30px 0 0; border-left: 0; border-top: 1px solid var(--st-line); }
   .end-exits { flex-direction: column; align-items: stretch; padding: 0 2px; }
@@ -177,4 +290,5 @@ html:has(body.station-page) { background: var(--st-paper); scroll-behavior: smoo
   html:has(body.station-page) { scroll-behavior: auto; }
   .st-head-img { transform: none; }
   .st-down::after { animation: none; }
+  .quiz-q.just-right .quiz-say { animation: none; }
 }

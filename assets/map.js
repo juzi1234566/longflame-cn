@@ -748,7 +748,9 @@
     });
   }
 
-  function focusLeft(s) { return s.map.x / 100 * W - VW * (VW < 700 ? 0.3 : 0.42); }
+  // 首屏把站放在屏幕的这个位置。题跋写在印左边的站（tagSide: 'left'），窄屏上要往右放，字才不会被屏幕左沿切掉，
+  // 上一站的印也正好留在屏幕左边
+  function focusLeft(s) { return s.map.x / 100 * W - VW * (VW < 700 ? (s.tagSide === 'left' ? 0.74 : 0.3) : 0.42); }
 
   /* ---------- 视差 ---------- */
   var ticking = false;

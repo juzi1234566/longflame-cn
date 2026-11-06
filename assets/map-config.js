@@ -37,7 +37,7 @@ window.TAISHOU_MAP = {
   water: { image: 'assets/map/water.webp', small: 'assets/map/water-small.webp' },
   glint: 0.42,         // 碎光很淡，只在河道里若有若无
   lamps: [],           // 留白的画，不点远灯
-  route: { hidden: true, size: 1.6, gap: 2.2, opacity: 0.45 }, // 只开了一站，先不画路线；第二站开放时去掉 hidden
+  route: { size: 1.6, gap: 2.2, opacity: 0.45 }, // 汝窑、钧窑两站都开了，画出两站之间的路线（钧窑的 via 沿河）。只开一站时加 hidden: true
   flow: [[[72.27, 53.71], [65.1, 54.1], [60.55, 54.49], [56.64, 55.27], [54.04, 57.23], [51.43, 59.18], [49.48, 61.52], [47.2, 64.45], [44.92, 67.38], [42.97, 70.8], [41.67, 75.2]], [[100.0, 68.36], [91.15, 67.97], [81.38, 67.77], [71.61, 67.58], [62.5, 68.16], [54.69, 68.95], [46.88, 69.92]]],
   layers: [
     { id: 'far',    name: '远山', image: 'assets/map/far.webp',    small: 'assets/map/far-small.webp',    aspect: 1.4625, plane: 'back' },

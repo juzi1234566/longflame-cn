@@ -226,7 +226,7 @@ html:has(body.map-page), .map-page { height: 100%; overflow: hidden; background:
   .seek-note { font-size: 12px; letter-spacing: .1em; }
   .tag-hook { font-size: 13px; letter-spacing: .14em; line-height: 1.9; }
   .tag-name { font-size: 15px; }
-  .site--next .tag-hook { display: none; } /* 手机上只留第二站的印和站名，不和第一站的题跋挤在一起 */
+  .site:not(.is-current) .tag-hook { display: none; } /* 手机上只有“太守此刻”那一站写悬念，别的站只留印和站名，两组竖排字不挤在一起 */
   .site--next .tag-name { font-size: 14px; }
   .hint { bottom: 168px; left: 0; right: 0; text-align: center; font-size: 12px; }
   .foot--map { gap: 0 12px; font-size: 11px; justify-content: center; }
