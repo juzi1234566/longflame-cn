@@ -179,3 +179,42 @@ mark { color: inherit; background: linear-gradient(180deg, transparent 58%, rgba
   .ml-region { grid-column: 1; grid-row: 3; font-size: 13px; }
   .ml-link { grid-column: 2; grid-row: 1 / span 3; align-self: center; margin: 0; }
 }
+
+/* 名录配图（开放许可，工具/fetch_minglu_images.py 生成）：列表里一枚小图，点开是大图、图说和署名 */
+.ml-item { grid-template-columns: 6.5em minmax(0, 1.25fr) minmax(0, 1fr) 64px auto; }
+.ml-thumb { grid-column: 4; align-self: center; width: 64px; height: 48px; }
+.ml-thumb--none { display: block; }
+button.ml-thumb {
+  display: block; padding: 0; overflow: hidden; cursor: zoom-in;
+  background: var(--yuebai); border: 1px solid rgba(58, 74, 76, .22); border-radius: 0;
+  transition: border-color 1s ease, opacity 1s ease;
+}
+button.ml-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; filter: saturate(.86); transition: filter 1.2s ease; }
+button.ml-thumb:hover { border-color: var(--daiqing); }
+button.ml-thumb:hover img, button.ml-thumb[aria-expanded="true"] img { filter: none; }
+button.ml-thumb[aria-expanded="true"] { border-color: var(--daiqing); cursor: zoom-out; }
+button.ml-thumb:focus-visible { outline: 1px solid var(--daiqing); outline-offset: 3px; }
+
+.ml-fig {
+  grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 18px 28px; align-items: end;
+  margin: 10px 0 6px; padding: 16px; background: rgba(226, 233, 229, .72); border: 1px solid var(--rule);
+  animation: ml-fade 1.4s ease both;
+}
+.ml-fig[hidden] { display: none; }
+.ml-fig-img { background: var(--paper-2); }
+.ml-fig-img img { display: block; width: 100%; height: auto; max-height: 560px; object-fit: contain; }
+.ml-fig figcaption { padding-bottom: 2px; }
+.ml-fig p { margin: 0; }
+.ml-cap { font-family: var(--sans); font-size: 14px; line-height: 1.8; color: var(--ink-text); overflow-wrap: anywhere; }
+.ml-credit { margin-top: 10px !important; padding-top: 10px; border-top: 1px solid var(--rule); font-size: 12.5px; line-height: 1.8; color: var(--ink-soft); overflow-wrap: anywhere; }
+.ml-credit a { color: var(--daiqing); text-decoration-color: rgba(58, 74, 76, .35); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.ml-fnote { margin-top: 4px !important; font-size: 12px; line-height: 1.7; color: rgba(85, 98, 95, .8); }
+
+@media (max-width: 720px) {
+  .ml-item { grid-template-columns: minmax(0, 1fr) auto auto; }
+  .ml-thumb { grid-column: 2; grid-row: 1 / span 3; width: 56px; height: 42px; }
+  .ml-thumb--none { display: none; }
+  .ml-link { grid-column: 3; }
+  .ml-fig { grid-template-columns: minmax(0, 1fr); gap: 12px; margin: 8px 0 4px; padding: 10px; }
+  .ml-fig-img img { max-height: 420px; }
+}

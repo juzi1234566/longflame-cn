@@ -1,4 +1,5 @@
-/* 寻非遗：国家级非遗名录页。数据由 工具/fetch_minglu.py 生成，只读本站的两个 JSON，不请求外部 */
+/* 寻非遗：国家级非遗名录页。数据由 工具/fetch_minglu.py 生成，只读本站的 JSON，不请求外部
+   配图索引 minglu-images.json 由 工具/fetch_minglu_images.py 生成：只用开放许可的图片，图片都在本站 */
 (function () {
   'use strict';
 
@@ -21,6 +22,7 @@
   };
 
   var data = [], order = [], state = { q: '', cat: '', prov: '' };
+  var imgs = {};      // 项目编号 -> 配图；只给 applies 里列出的子项显示
   var openSet = {};   // 用户点开的组，筛选变化后保持
   var shown = {};     // 每组已渲染到第几条
   var current = {};   // 当前筛选结果，按组
@@ -82,15 +84,48 @@
     }
   }
 
+  function imgOf(it) {
+    var m = imgs[it.num];
+    return m && m.applies && m.applies.indexOf(it.id) >= 0 ? m : null;
+  }
+
+  // 只放 https 链接；别的不出链接
+  function safeURL(u) { return /^https:\/\/[^\s"'<>]+$/.test(u || '') ? u : ''; }
+  function link(text, u) {
+    var h = safeURL(u);
+    return h ? '<a href="' + esc(h) + '" target="_blank" rel="noopener">' + esc(text) + '</a>' : esc(text);
+  }
+
+  // 详情：大图 + 图说 + 署名（图：作者 / 许可 / 来源）
+  function figHTML(it, m) {
+    var notes = [];
+    notes.push(m.via === 'met' || m.via === 'cma' ? '图说依据馆方藏品记录' : '图说依据原图说明');
+    // 配图是项目级的，图里的器物、场景不一定出自这一行的申报地区
+    notes.push(m.multiRegion ? '项目配图，不代表某一申报地区' : '项目配图，不一定出自所列申报地区');
+    notes.push('本站已缩放' + (m.shareAlike ? '，按 ' + esc(m.license) + ' 同样许可共享' : ''));
+    return '<figure class="ml-fig" id="ml-fig-' + esc(it.id) + '" hidden>' +
+      '<div class="ml-fig-img"><img data-src="' + esc(m.large) + '" width="' + (+m.w || 800) + '" height="' + (+m.h || 600) + '" alt="' + esc(m.caption) + '"></div>' +
+      '<figcaption><p class="ml-cap">' + esc(m.caption) + '</p>' +
+        '<p class="ml-credit">图：' + esc(m.author) + ' / ' + link(m.licenseShort || m.license, m.licenseUrl) + ' / ' + link(m.sourceName, m.sourceUrl) + '</p>' +
+        '<p class="ml-fnote">' + notes.join('；') + '</p></figcaption>' +
+      '</figure>';
+  }
+
   function itemHTML(it, q) {
     var meta = esc(it.cat) + ' · ' + (it.year || '') + ' ' + esc(it.batch) + ' · ' +
       (it.ext ? '<span class="ml-ext">扩展项目</span>' : '新增项目');
-    return '<li class="ml-item">' +
+    var m = imgOf(it);
+    var thumb = m
+      ? '<button type="button" class="ml-thumb" aria-expanded="false" aria-controls="ml-fig-' + esc(it.id) + '" aria-label="' + esc('看图：' + it.name) + '">' +
+          '<img src="' + esc(m.thumb) + '" width="240" height="180" alt="" loading="lazy" decoding="async"></button>'
+      : '<span class="ml-thumb ml-thumb--none" aria-hidden="true"></span>';
+    return '<li class="ml-item' + (m ? ' ml-item--img' : '') + '">' +
       '<span class="ml-num">' + esc(it.num) + '</span>' +
       '<h3 class="ml-name">' + hl(it.name, q) + '<span class="ml-meta">' + meta + '</span></h3>' +
-      '<span class="ml-region">' + hl(it.region, q) + '</span>' +
+      '<span class="ml-region">' + hl(it.region, q) + '</span>' + thumb +
       '<a class="ml-link" href="' + esc(it.url) + '" target="_blank" rel="noopener" aria-label="' +
         esc(it.name + '（' + it.region + '）在中国非物质文化遗产网的出处') + '">出处</a>' +
+      (m ? figHTML(it, m) : '') +
       '</li>';
   }
 
@@ -187,6 +222,17 @@
         if (g.open) delete openSet[g.dataset.key]; else openSet[g.dataset.key] = 1;
         return;
       }
+      var t = e.target.closest('.ml-thumb[aria-controls]');
+      if (t) {
+        var fig = document.getElementById(t.getAttribute('aria-controls'));
+        if (!fig) return;
+        var open = t.getAttribute('aria-expanded') !== 'true';
+        var img = fig.querySelector('img[data-src]');
+        if (open && img) { img.src = img.getAttribute('data-src'); img.removeAttribute('data-src'); }
+        fig.hidden = !open;
+        t.setAttribute('aria-expanded', String(open));
+        return;
+      }
       var b = e.target.closest('.ml-more button');
       if (!b) return;
       var d = b.closest('.ml-group');
@@ -225,8 +271,10 @@
 
   readURL();
   var getJSON = function (u) { return fetch(u, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(u); return r.json(); }); };
-  Promise.all([getJSON('assets/minglu.json'), getJSON('assets/minglu-meta.json')])
-    .then(function (r) { init(r[0], r[1]); })
+  // 配图索引缺了也照常显示名录，只是没有图
+  var getImages = getJSON('assets/minglu-images.json').then(function (r) { return (r && r.images) || {}; }, function () { return {}; });
+  Promise.all([getJSON('assets/minglu.json'), getJSON('assets/minglu-meta.json'), getImages])
+    .then(function (r) { imgs = r[2]; init(r[0], r[1]); })
     .catch(function () {
       els.total.textContent = '名录没有载入成功';
       els.empty.hidden = false;
