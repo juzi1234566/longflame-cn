@@ -1,220 +1,118 @@
-/* 寻非遗：国家级非遗名录页。和首页、站点页同一张月白素绢：墨色字、大量留白；宋代雅色，整页只有一方小朱印是点缀色 */
-/* 名录里才出现的字（地名、项目名里的生僻字），只有这一页下载。字表由 工具/build_font.py 生成，改了名录数据要重跑 */
-@font-face { font-family: "Taishou Song"; src: url("fonts/song-ext.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; unicode-range: U+2160-2169, U+3447, U+4E01, U+4E08, U+4E14, U+4E18, U+4E1A, U+4E2B, U+4E34, U+4E38-4E39, U+4E3D-4E3E, U+4E43, U+4E54, U+4E5E, U+4E60-4E61, U+4E66, U+4E71, U+4E73, U+4E7E, U+4E89, U+4E93, U+4E95, U+4E9A, U+4EA8, U+4EAD, U+4EB3, U+4EC1, U+4ECB, U+4ED3-4ED4, U+4ED7, U+4ED9, U+4EE1, U+4EEA-4EEB, U+4EF0, U+4EF2, U+4EFF, U+4F0A, U+4F0D, U+4F11, U+4F15, U+4F17, U+4F1E, U+4F24, U+4F26, U+4F2C, U+4F34, U+4F36, U+4F3D, U+4F57, U+4F5B, U+4F64, U+4F6C, U+4F73, U+4F7E, U+4F97, U+4FAC, U+4FAF, U+4FC4, U+4FDA, U+4FDE, U+4FEE, U+503B, U+5043, U+5065, U+5085, U+5088, U+50A3, U+50A9, U+50F3, U+510B, U+5144-5145, U+514B, U+5154, U+515A, U+5170, U+5174, U+5178, U+517B, U+517D, U+5180, U+5188, U+5195, U+519B-519C, U+51A0, U+51AC, U+51AF-51B0, U+51B2, U+51B6, U+51BB-51BC, U+51CC, U+51E1, U+51E4, U+51EF-51F0, U+51F3, U+51FF-5200, U+5218, U+521D, U+5223, U+5229, U+522E, U+5237, U+523A, U+5242, U+524A, U+5251, U+5254, U+5288, U+529D-529E, U+52A1, U+52A9, U+52BF, U+52C9, U+52D0, U+52D2, U+52E4, U+5300, U+5323, U+533E, U+5348, U+534D-534E, U+535A, U+535C, U+5362, U+5364, U+5366-5367, U+536B, U+537F, U+5382, U+5385, U+53A2, U+53A6, U+53BF, U+53C9, U+53CC, U+53D9, U+53EC-53ED, U+53F8, U+53FC, U+540A, U+5410, U+5412, U+5415, U+541B, U+541F, U+5427, U+5434-5435, U+5439, U+5450, U+5457-5458, U+545C, U+5473, U+548F, U+5495, U+549A, U+54AA, U+54B8, U+54C7, U+54E5, U+54E8, U+54ED, U+54F2, U+5510, U+5522, U+5531, U+5570, U+5580, U+5583-5584, U+5587, U+5589, U+559C-559D, U+55B9, U+55E6, U+55E8, U+55EC, U+55F9, U+5609, U+560E, U+5618, U+5634, U+5639, U+5676, U+56ED, U+56FA, U+571F, U+5723, U+5729, U+5733, U+5742, U+5747, U+574A, U+574E, U+5751, U+575B, U+575D-575E, U+5760-5761, U+5764, U+576A, U+576D, U+577B, U+5792, U+57A3, U+57C3, U+57C7, U+57D4-57D5, U+57E0, U+57F9, U+5802, U+5806, U+5821, U+582A, U+5830, U+5851, U+5854, U+5858, U+585E, U+5885, U+5893, U+5899, U+58C1, U+58E4, U+58EB, U+58F6, U+5915, U+591C, U+592B, U+5937, U+5947-5949, U+594E-594F, U+5951, U+5954, U+5958, U+595A, U+5973, U+5976, U+5983, U+5986-5988, U+5999, U+59B9, U+59C6, U+59CA, U+59D0-59D1, U+59D4, U+59DA, U+59DC, U+5A01, U+5A04, U+5A18, U+5A1C, U+5A32, U+5A46, U+5A5A, U+5A74, U+5A7A, U+5AC1, U+5AD8, U+5AF2, U+5B54, U+5B59, U+5B5C-5B5D, U+5B5F, U+5B63-5B64, U+5B69, U+5B7D, U+5B85, U+5B8F, U+5B9B-5B9C, U+5BA1-5BA4, U+5BB4-5BB5, U+5BBE-5BBF, U+5BD2, U+5BDF, U+5BE8, U+5BEE, U+5BFF, U+5C01, U+5C04, U+5C06, U+5C09, U+5C15, U+5C1A, U+5C27, U+5C39, U+5C3C, U+5C3F, U+5C45, U+5C48, U+5C5E, U+5C6F, U+5C7F, U+5C91, U+5C94, U+5C97, U+5C9A, U+5CA9, U+5CAB, U+5CAD, U+5CB1, U+5CB3, U+5CB7, U+5CC4, U+5CD2, U+5CD9, U+5CE1, U+5CE8, U+5CEA, U+5CF0, U+5CFB, U+5D02-5D03, U+5D07, U+5D16, U+5D4A, U+5D4C, U+5DCD, U+5DE2, U+5DE7-5DE9, U+5DEB, U+5DF4, U+5DF7, U+5E08, U+5E10, U+5E15-5E16, U+5E18, U+5E2D-5E2E, U+5E37, U+5E3D, U+5E61, U+5E7A-5E7B, U+5E84, U+5E90, U+5E97, U+5E99, U+5E9C, U+5EAD, U+5EB5, U+5ECA, U+5ED6, U+5EF6-5EF7, U+5EFF, U+5F04, U+5F0B, U+5F13, U+5F15, U+5F1F, U+5F25-5F26, U+5F39, U+5F5D, U+5F66, U+5F69, U+5F6C-5F6D, U+5F90, U+5FA1, U+5FAA, U+5FB7, U+5FCD, U+5FE0, U+5FE7, U+5FFB, U+6000, U+6012, U+602A, U+603B, U+6052, U+6069, U+606D, U+6070, U+60A6, U+60E0, U+611A, U+613F, U+6148, U+6155, U+61CB, U+6208, U+6218, U+621A, U+6233, U+623F, U+6247, U+624E, U+6251-6252, U+6258, U+625B, U+626B-626C, U+626F, U+627F, U+6284, U+629A, U+62A1-62A2, U+62A4, U+62AC, U+62BD, U+62BF, U+62C5, U+62C8, U+62D3-62D4, U+62DB-62DC, U+62E6-62E8, U+62F1, U+62F3, U+62FE, U+6302, U+6307, U+6311, U+6320, U+632F, U+634F, U+6355, U+6376, U+638C, U+6390, U+6396, U+63AA, U+63BC, U+63ED, U+640F, U+6413, U+642C, U+644A, U+6454, U+6469, U+6478-6479, U+6482, U+64AE, U+64C0, U+64C2, U+64CE, U+64E6, U+653B, U+654F, U+6556, U+6559, U+655B, U+6562-6563, U+6566, U+656C, U+6597, U+65A1, U+65BC-65BD, U+65CB, U+65D7, U+65E6, U+65EC-65ED, U+65F1, U+65FA, U+6602, U+6606, U+660A, U+660C, U+660F, U+6619, U+661F, U+6625, U+662D, U+663C, U+6643, U+664B, U+6652, U+666E, U+6670, U+6674, U+6676, U+667A, U+6691, U+66A8, U+66D9, U+66F9, U+66FE, U+6710, U+6714, U+6717, U+671B, U+671D, U+6728, U+672D, U+6735, U+6743, U+6746, U+674E-674F, U+6756, U+675C, U+675E, U+6760, U+6768, U+676D, U+676F-6770, U+6775, U+6777, U+677F, U+6787, U+6795, U+679D, U+67A2-67A3, U+67AB, U+67CF, U+67D8, U+67DC, U+67EF, U+67F1, U+67F3, U+6816-6817, U+6821, U+683D, U+6842-6844, U+6850-6851, U+6853, U+6863, U+6865-6866, U+6876, U+6881, U+6885-6886, U+6893, U+68A7-68A8, U+68AF, U+68B3, U+68B5, U+68C9, U+68CB, U+68CD, U+68D2, U+68D5, U+68DA, U+68E0, U+68EE, U+68F1, U+68F5, U+690D-690E, U+6912, U+6930, U+695E, U+696E, U+6979, U+697C, U+6984, U+6986, U+6995, U+69A8, U+69CC, U+69D0, U+69FD, U+6A1F, U+6A80, U+6B4C, U+6B59, U+6B66, U+6BBF, U+6BC5, U+6BD5, U+6BE1, U+6BEF, U+6BFD, U+6C0F, U+6C38, U+6C40-6C41, U+6C47, U+6C55, U+6C57, U+6C60, U+6C64, U+6C68, U+6C6A, U+6C72, U+6C74, U+6C76, U+6C7E, U+6C81-6C83, U+6C85, U+6C88, U+6C90, U+6C93, U+6C99, U+6C9F, U+6CA7, U+6CAA, U+6CAD-6CAE, U+6CB1, U+6CB9, U+6CBD-6CBE, U+6CC9-6CCA, U+6CCC, U+6CD7, U+6CE0-6CE1, U+6CEE, U+6CF0, U+6CF8, U+6CFB-6CFC, U+6CFE, U+6D0B, U+6D12, U+6D1B, U+6D1E, U+6D2A, U+6D2E, U+6D31-6D32, U+6D3B-6D3C, U+6D3E, U+6D47, U+6D4E, U+6D51, U+6D54, U+6D5A, U+6D66, U+6D69-6D6A, U+6D6E, U+6D74, U+6D78, U+6D82, U+6D89, U+6D8C, U+6D9E-6D9F, U+6DA1, U+6DA7, U+6DAA, U+6DAE, U+6DB2, U+6DB5, U+6DC0, U+6DC4, U+6DD6, U+6DEE, U+6DF3, U+6E14, U+6E1D, U+6E20, U+6E29, U+6E2D, U+6E3C, U+6E58, U+6E5B, U+6E5F, U+6E7E, U+6E86, U+6E9C, U+6EA7, U+6EAA, U+6EB1, U+6EC1, U+6EC7, U+6ECB, U+6ED5, U+6EE6, U+6EE8-6EE9, U+6F06, U+6F14, U+6F2B, U+6F2F, U+6F33, U+6F4D, U+6F58, U+6F5C, U+6F5E, U+6F6D-6F6E, U+6F7C, U+6F84, U+6F9C, U+6FA7, U+6FEE, U+701A-701B, U+704C, U+7070, U+7075-7076, U+7078, U+7089, U+708E, U+7095, U+70AE-70AF, U+70B8, U+70BC, U+70C2, U+70D9, U+70DF, U+70E4, U+70ED, U+70F9, U+7116, U+7119, U+7126, U+714C, U+7164, U+718A, U+718F, U+719F, U+71A8, U+71D5, U+7206, U+722A, U+722C, U+7231, U+7237, U+724D, U+7259, U+725B, U+725F, U+7261, U+7267, U+7280-7281, U+72C4, U+72CD, U+72D7, U+72EE, U+7316-7317, U+732B, U+7334, U+7384, U+7389, U+738B, U+7391, U+73A9, U+73C0, U+73CA, U+73CD, U+73D0, U+73D9, U+73DE, U+73E0, U+73ED, U+73F2, U+7405, U+7409, U+7425, U+742A, U+7434-7436, U+743C, U+745A, U+745E-745F, U+7470, U+7476-7477, U+7483, U+74A7, U+74DC, U+74E0, U+74E2-74E3, U+74E6, U+74EF, U+74F6, U+7511, U+752A-752C, U+7530, U+7532, U+7538, U+7545, U+7554, U+756A, U+7572, U+7574, U+758D, U+7597, U+75BD-75BE, U+75C5, U+75C7, U+75D4, U+75D8, U+75DB, U+75E7, U+75EB, U+7640, U+765E, U+766B, U+767B, U+768B, U+76AE, U+76C2, U+76C6, U+76CA, U+76CF-76D2, U+76D4, U+76D8, U+76DB, U+76DF, U+76FE, U+7709, U+7761-7762, U+77BF, U+77F3, U+77FB, U+77FF-7800, U+780C, U+7814, U+7816, U+781A, U+7855-7857, U+785A, U+786E, U+7887, U+7889, U+788C, U+7891, U+7893, U+789B, U+78A7, U+78B1, U+78C1, U+78D0, U+78E8, U+793C, U+793E, U+7940-7941, U+7956, U+795C-795E, U+7960, U+7965, U+7968, U+796D, U+7985, U+79B9, U+79BD-79BE, U+79C0, U+79C3, U+79C6, U+79C9, U+79D1, U+79E6-79E7, U+79ED, U+79F8, U+7A1E, U+7A37, U+7A3B, U+7A3D, U+7A46, U+7A57, U+7A74, U+7A76, U+7A96, U+7AA8, U+7ACB, U+7ADE, U+7AE5, U+7AF9, U+7AFF, U+7B06, U+7B0B, U+7B11, U+7B19, U+7B1B, U+7B3C, U+7B4B, U+7B51-7B52, U+7B54, U+7B5D, U+7B80, U+7B94, U+7BAB, U+7BAD, U+7BC6, U+7BE6, U+7BF1, U+7BF7, U+7C27, U+7C2A, U+7C73, U+7C89, U+7C92, U+7C97, U+7CA4, U+7CAC, U+7CAE, U+7CBD, U+7CD5-7CD6, U+7D2B, U+7DA6, U+7E41, U+7EB1, U+7EB3, U+7EBA, U+7ECD, U+7ED2, U+7ED8, U+7EDB-7EDE, U+7EE5, U+7EE7, U+7EE9, U+7EEB, U+7EF0, U+7EF3, U+7EF5, U+7EF8, U+7F02, U+7F19, U+7F20, U+7F2C, U+7F30, U+7F38, U+7F55, U+7F57, U+7F72, U+7F8A, U+7F8C, U+7F94, U+7FA4, U+7FB2, U+7FD4, U+7FE0-7FE1, U+7FFB-7FFC, U+8000, U+800D, U+8012, U+8033, U+8036, U+803F, U+8042, U+804A, U+805A, U+8089, U+8098, U+809D, U+80A1, U+80A5, U+80B4, U+80CC, U+80DC, U+80E1, U+80F8, U+8102, U+8109-810A, U+810F, U+8111, U+812F, U+8131, U+8138, U+814A, U+814C, U+8150-8151, U+8154, U+8170, U+817E-817F, U+818F, U+8191, U+81B3, U+81E3, U+81ED, U+820C-820D, U+821C, U+821F, U+8231, U+8239, U+826F, U+827E, U+829C-829D, U+82A6, U+82A8, U+82AE-82AF, U+82B1, U+82B3, U+82B7, U+82B9, U+82BD, U+82C7, U+82CC-82CE, U+82D1, U+82D3, U+82D7, U+82E6, U+82F1, U+8302, U+8305, U+8309, U+8328, U+832F, U+8336, U+8339, U+8346, U+8349, U+8354, U+8363, U+8365, U+8377, U+8386, U+8389, U+838E, U+8392, U+839E, U+83AB, U+83B1-83B2, U+83BA, U+83CA, U+83CF, U+83DC, U+83DF-83E0, U+8404, U+840D, U+8425, U+8427-8428, U+8457, U+845B, U+8461, U+8463, U+846B, U+8475, U+848B, U+8497, U+84B2, U+84B8, U+84BF, U+84C6, U+84DD, U+84E5, U+84EC, U+851A, U+8521, U+853A, U+8549, U+8572, U+8574, U+8585, U+85C1, U+85E4, U+864E, U+865E, U+866B, U+8679, U+867E, U+8682, U+868C, U+8695, U+86A3, U+86C7, U+86F3, U+8700, U+8702, U+8708, U+871C, U+8721, U+8774, U+8776, U+8782, U+878D, U+87AD, U+87B3, U+87BA, U+87F3, U+8840, U+8857, U+8862-8863, U+886B, U+8870, U+888B, U+888D, U+88D4-88D5, U+8944, U+89C2, U+89C9, U+8BAD, U+8BB7, U+8BC3, U+8BCA, U+8BD7, U+8BDD-8BDE, U+8BF5, U+8BF8, U+8BFA, U+8C0B, U+8C10, U+8C1A, U+8C1C, U+8C1F, U+8C23, U+8C26, U+8C2D, U+8C2F, U+8C46, U+8C49, U+8C6B, U+8D1D-8D1E, U+8D21, U+8D23-8D24, U+8D3A, U+8D3E, U+8D49, U+8D4F, U+8D5B, U+8D5E, U+8D63-8D64, U+8D6B, U+8D75-8D76, U+8DB3, U+8DE4, U+8DF5, U+8DF7, U+8E0F, U+8E22, U+8E49, U+8E69, U+8E6C, U+8E74, U+8F66-8F67, U+8F69, U+8F6C, U+8F7F, U+8F87, U+8F89, U+8F95, U+8F9B, U+8FA3, U+8FAB, U+8FB0, U+8FBE, U+8FC1, U+8FC8, U+8FCE, U+8FD0, U+8FD3, U+8FE5, U+8FEA, U+8FF7, U+8FFD, U+9001, U+900D, U+9017, U+9042, U+9065, U+9075, U+9091, U+9093, U+9095, U+909B, U+90A2, U+90A6, U+90AE-90AF, U+90B1, U+90B3, U+90B5, U+90B9, U+90C1, U+90C3, U+90CE-90CF, U+90D1, U+90D3, U+90E1, U+90E7, U+90EB, U+90ED, U+90EF, U+90F4, U+90F8, U+9102, U+9104, U+911E, U+912F, U+9131, U+9149, U+9152, U+9165, U+9171, U+9178, U+917F, U+9189, U+918B, U+91AE, U+91B4, U+91C7, U+91CE, U+9232, U+933E, U+938F, U+946B, U+9488-9489, U+94A2, U+94A6, U+94B1, U+94B4, U+94B9, U+94BB, U+94BF, U+94C1, U+94C3, U+94C5, U+94D3, U+94DB-94DC, U+94F0, U+94F6, U+94F8, U+9505, U+9510, U+9521, U+9523, U+9526, U+952D, U+953B, U+9542, U+9547, U+9572, U+9576, U+95F5, U+95F8-95F9, U+95FB, U+95FD-95FE, U+9601, U+9606, U+9614, U+9619, U+961C, U+9621, U+962E, U+9632-9633, U+9635, U+9640, U+9642, U+9644, U+9646-9649, U+964D, U+965F, U+9662, U+9675, U+9686, U+968D, U+9694, U+96B6, U+96C0-96C1, U+96C4, U+96CD, U+96D5, U+96EA, U+96F7, U+9704, U+970D, U+971C, U+971E, U+9738, U+9774, U+978B, U+978D, U+97A0, U+97A3, U+97AD, U+97E9, U+97F5-97F6, U+987E-987F, U+9887, U+9889, U+988D, U+989D, U+98CE, U+98D8, U+98DE-98DF, U+9910, U+996A, U+996D-996F, U+9976, U+997C, U+998D, U+998F, U+9992, U+9995, U+99A5, U+9A6C, U+9A6F, U+9A74, U+9A7C, U+9A7E, U+9A85-9A86, U+9A9E, U+9AA8, U+9AD3, U+9AF9, U+9AFB, U+9B03, U+9B3C, U+9B4F, U+9B54, U+9C7C, U+9C81, U+9C87, U+9C9C, U+9CA4, U+9CCC, U+9E1F, U+9E21, U+9E23, U+9E2A, U+9E2D, U+9E3F, U+9E5E, U+9E64, U+9E67, U+9E70, U+9E7F, U+9E92, U+9E9F, U+9EA6, U+9EBB, U+9EC4, U+9ECE, U+9ED4, U+9F0E, U+9F13, U+9F1F, U+9F3B, U+9F84, U+9F9A, U+9F9F, U+E81B; }
-:root {
-  --paper: #D5DFDA;       /* 月白素绢：与首页长卷、站点页同值，从首页点“寻非遗”进来不跳色 */
-  --paper-2: #C9D5D0;
-  --ink-text: #26302E;    /* 墨，带一点黛青 */
-  --ink-soft: #55625F;
-  --yuebai: #E2E9E5;      /* 月白里更亮的一层：输入框、展开的组 */
-  --tianqing: #8FAFAA;    /* 天青 */
-  --daiqing: #3A4A4C;     /* 黛青：链接、选中 */
-  --qiuxiang: #9C8B5E;    /* 秋香：编号、细线 */
-  --zhusha: #A9392A;      /* 朱砂：只给那一方小印，和首页同值 */
-  --rule: rgba(58, 74, 76, .16);
-  color-scheme: light;
-}
+/* 非遗名录：国家级非遗代表性项目名录页（数据和配图署名逻辑在 minglu.js，不动）。外壳按第三版设计规范：纸底、墨字、细线，不用圆角、胶囊、渐变 */
+/* 名录里才出现的字（地名、项目名里的生僻字），只有这一页下载。下一行由 工具/build_font.py 自动改写，保持一行 */
+@font-face { font-family: "Taishou Song"; src: url("fonts/song-ext.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; unicode-range: U+3447, U+4E01, U+4E07-4E08, U+4E14, U+4E1A, U+4E25, U+4E2B, U+4E30, U+4E38, U+4E3E, U+4E43, U+4E5D-4E5E, U+4E71, U+4E73, U+4E89, U+4E92-4E93, U+4E95, U+4E9A, U+4EA8, U+4EAD, U+4EB3, U+4EC1, U+4ED7, U+4EE1, U+4EEA-4EEB, U+4EF0, U+4EF2, U+4F0A, U+4F0D, U+4F0F, U+4F15, U+4F17, U+4F24, U+4F26, U+4F2C, U+4F34, U+4F36, U+4F3D, U+4F57, U+4F5B, U+4F64, U+4F6C, U+4F7E, U+4F97, U+4FAC, U+4FAF, U+4FC4, U+4FDA, U+4FDE, U+4FEE, U+503B, U+5043, U+5065, U+5085, U+5088, U+50A3, U+50F3, U+510B, U+513F, U+5144-5145, U+5178, U+517B, U+517D, U+5180, U+5188, U+5195, U+519B, U+51A0, U+51AC, U+51AF-51B0, U+51B2, U+51B6-51B7, U+51BB-51BC, U+51CC, U+51E1, U+51E4, U+51EF-51F0, U+51F3, U+51FF, U+5223, U+522E, U+5237, U+523A, U+5242, U+524A, U+5251, U+5254, U+5288, U+529B, U+529D, U+52A9, U+52BF, U+52C9, U+52D0, U+52D2, U+52E4, U+52FE, U+5300, U+5323, U+533E, U+534A, U+534D, U+534F, U+5353, U+535C, U+5364, U+5366-5367, U+536B, U+5374, U+5385, U+53A2, U+53A6, U+53C9-53CA, U+53CC, U+53D9, U+53E6, U+53EC-53ED, U+53FC, U+540A, U+5410, U+5412, U+541B, U+541F, U+5427, U+542B, U+5435, U+5439, U+5450, U+5457, U+545C, U+5473, U+547C, U+548F, U+5495, U+549A, U+54AA, U+54B8, U+54C7-54C8, U+54E5, U+54E8, U+54EA, U+54ED, U+54F2, U+5522, U+5531, U+5546, U+5570, U+5580, U+5583, U+5587, U+5589, U+559C-559D, U+55B9, U+55E6, U+55E8, U+55EC, U+55F9, U+560E, U+5618, U+5634, U+5639, U+5676, U+5723, U+5729, U+5733, U+5742, U+574E, U+5750-5751, U+575B, U+575D-575E, U+5760-5761, U+5764, U+5766, U+576D, U+577B, U+5792, U+57A3, U+57AB, U+57C3, U+57C7, U+57D5, U+57E0, U+57F9, U+5806, U+5821, U+582A, U+5830, U+5858, U+585E, U+5885, U+5893, U+5899, U+58E4, U+58EB, U+5915, U+591C, U+5937, U+5947-5948, U+594E, U+5951, U+5954, U+595A, U+5976, U+5986-5988, U+5999, U+59D0, U+59D4, U+59DC, U+5A01, U+5A04, U+5A46, U+5AC1, U+5AD8, U+5AF2, U+5B5C, U+5B5F, U+5B63, U+5B69, U+5B7D, U+5B8F, U+5B9B, U+5BA2, U+5BA4, U+5BB4, U+5BBE-5BBF, U+5BC6, U+5BCC, U+5BDF, U+5BEE, U+5BFF, U+5C04, U+5C09, U+5C15-5C16, U+5C1A, U+5C24, U+5C27, U+5C39, U+5C3C, U+5C3F, U+5C4B, U+5C5E, U+5C6F, U+5C7F, U+5C91, U+5C94, U+5C97, U+5C9A-5C9B, U+5CAB, U+5CAD, U+5CB1, U+5CB7-5CB8, U+5CC4, U+5CD2, U+5CD9, U+5CE1, U+5CFB, U+5D02-5D03, U+5D07, U+5D16, U+5DCD, U+5DE2, U+5DE7-5DE9, U+5DEB, U+5DF4, U+5DF7, U+5E08, U+5E0C, U+5E10, U+5E15-5E16, U+5E18, U+5E27, U+5E2D-5E2E, U+5E37, U+5E3D, U+5E61, U+5E72, U+5E7A-5E7B, U+5E90, U+5EB7, U+5ED3, U+5EF6-5EF7, U+5F04, U+5F0B, U+5F13, U+5F1F, U+5F25-5F26, U+5F39-5F3A, U+5F6C-5F6D, U+5F84, U+5FA1, U+5FCD, U+5FE0, U+5FE7, U+5FEB, U+5FFB, U+6000, U+6012, U+601D, U+602A, U+6052, U+6069, U+606D, U+6070, U+60A6, U+60AC, U+60E0, U+611A, U+611F, U+613F, U+6148, U+6155, U+61CB, U+6208, U+621A, U+6233, U+623F, U+6241, U+6247, U+624E, U+6251, U+6258, U+625B, U+626F, U+6284, U+6296, U+6298, U+629A, U+62A1-62A2, U+62BD, U+62BF, U+62C5, U+62C8, U+62D3-62D4, U+62D6, U+62DB-62DC, U+62E6-62E8, U+62F1, U+6311, U+6320, U+632F, U+634F, U+6355, U+6376, U+638C, U+6396, U+63AA, U+63BC, U+63D2, U+63ED, U+640F, U+6413, U+642C, U+6446, U+644A, U+6454, U+6469, U+6478, U+6482, U+6492, U+64AE, U+64C0, U+64C2, U+64CE, U+64E6, U+653B, U+654F, U+6556, U+655B, U+6562-6563, U+6566, U+656C, U+658B, U+6591, U+6597, U+65A1, U+65AF, U+65CB, U+65D7, U+65E6, U+65E9, U+65EC-65ED, U+65F1, U+65FA, U+6602, U+660A, U+6619, U+661F, U+663C, U+6643, U+6652, U+6670, U+6674, U+6676, U+667A, U+6691, U+6697, U+66D9, U+66F9, U+6710, U+6714, U+6717, U+671D, U+671F, U+672B, U+672D, U+6735, U+6746, U+674F, U+6756, U+675C, U+675E, U+6760, U+676F-6770, U+6775, U+6777, U+677E, U+6787, U+6795, U+67A2-67A3, U+67AB, U+67CF, U+67D4, U+67D8, U+67DC, U+67EF, U+6811, U+6816-6817, U+6821, U+683D, U+6844, U+684C, U+6850, U+6853, U+6866, U+6876, U+6881, U+6885, U+6893, U+68A6-68A7, U+68AF, U+68B5, U+68C9, U+68CB, U+68CD, U+68D2, U+68D5, U+68DA, U+68E0, U+68EE, U+68F1, U+68F5, U+690D-690E, U+6912, U+6930, U+695E, U+696E, U+6977, U+6979, U+6995, U+69A8, U+69CC, U+69D0, U+69FD, U+6A1F, U+6B3E, U+6B66, U+6BBF, U+6BC5, U+6BD5, U+6BE1, U+6BEF, U+6BFD, U+6C14, U+6C40-6C41, U+6C47, U+6C55, U+6C57, U+6C68, U+6C6A, U+6C72, U+6C74, U+6C76, U+6C7E, U+6C81-6C83, U+6C85, U+6C88, U+6C90, U+6C93, U+6CAD-6CAE, U+6CB1, U+6CBD-6CBE, U+6CCA, U+6CCC, U+6CD7, U+6CE1, U+6CEE, U+6CF8, U+6CFB-6CFC, U+6CFE, U+6D0B, U+6D12, U+6D1B, U+6D1E, U+6D2E, U+6D3B-6D3C, U+6D3E, U+6D47, U+6D51, U+6D54, U+6D5A, U+6D66, U+6D69, U+6D6E, U+6D74, U+6D78, U+6D82, U+6D89, U+6D8C, U+6D9E-6D9F, U+6DA1, U+6DA7, U+6DAA, U+6DAE, U+6DB2, U+6DB5, U+6DC0, U+6DD6, U+6DEE, U+6DF3, U+6E14, U+6E1D, U+6E20, U+6E2D, U+6E3C, U+6E5B, U+6E5F, U+6E7F, U+6E86, U+6E9C, U+6EA7, U+6EB1, U+6EC1, U+6EC7, U+6ECB, U+6ED5, U+6EE6, U+6EE8-6EE9, U+6F02, U+6F2B, U+6F2F, U+6F58, U+6F5C, U+6F5E, U+6F7C, U+6F9C, U+6FA7, U+6FEE, U+701A-701B, U+704C, U+7070, U+7076, U+7089, U+708E, U+7095, U+70AE-70AF, U+70B8, U+70BC, U+70C2, U+70D9, U+70DF, U+70F9, U+7116, U+7119, U+7126, U+714C, U+7164, U+718A, U+718F, U+719F, U+71A8, U+71D5, U+7206, U+722A, U+722C, U+7231, U+7237, U+724D, U+7259, U+725F, U+7267, U+7279, U+7280-7281, U+72C4, U+72CD, U+72D7, U+72EE, U+7316-7317, U+7334, U+7391, U+739B, U+73A9, U+73C0, U+73CA, U+73D9, U+73DE, U+73F2, U+7403, U+7425, U+742A, U+7459-745A, U+745F, U+7470, U+7477, U+74A7, U+74DC, U+74E2-74E3, U+74E6, U+7511, U+752A-752C, U+7538, U+7545, U+756A, U+7572, U+7574, U+758D, U+758F, U+7597, U+75BD-75BE, U+75C5, U+75C7, U+75D4, U+75D8, U+75DB, U+75E7, U+75EB, U+7640, U+765E, U+766B, U+768B, U+76C2, U+76CA, U+76D0-76D1, U+76D4, U+76DB, U+76DF, U+76FE, U+7709, U+773C, U+7761-7762, U+77BF, U+77FB, U+77FF-7800, U+780C, U+7816, U+7855, U+7857, U+785A, U+786C, U+7887, U+7889, U+788C, U+7891, U+7893, U+789B, U+78A7, U+78B1, U+78D0, U+78E8, U+793C, U+7940, U+795C, U+7960, U+7965, U+7968, U+796D, U+7985, U+79BD-79BE, U+79C0, U+79C3, U+79C6, U+79C9, U+79D1, U+79E7, U+79ED, U+79F8, U+7A1E, U+7A37, U+7A3B, U+7A3D, U+7A57, U+7A74, U+7A96, U+7AA8, U+7ADE, U+7AE5, U+7AFF, U+7B06, U+7B0B, U+7B11, U+7B3A, U+7B3C, U+7B4B, U+7B51-7B52, U+7B54, U+7B80, U+7B94, U+7BAB, U+7BAD, U+7BC6, U+7BF1, U+7BF7, U+7C27, U+7C2A, U+7C4D, U+7C92, U+7C97, U+7CA4, U+7CAC, U+7CBD-7CBE, U+7CCA, U+7CD5-7CD6, U+7DA6, U+7E41, U+7EB3, U+7EB5, U+7EBA, U+7ED2, U+7ED5, U+7EDB-7EDD, U+7EE2, U+7EE5, U+7EE7, U+7EEB, U+7EF0, U+7EF3, U+7EF5, U+7EF8, U+7F02, U+7F19, U+7F1D, U+7F20, U+7F2C, U+7F30, U+7F38, U+7F55, U+7F8C, U+7F94, U+7FA4, U+7FD4, U+7FE0-7FE1, U+7FFB-7FFC, U+8003, U+800D, U+8012, U+8033, U+8036, U+803F, U+8042, U+804A, U+805A, U+8087, U+8098, U+809D, U+80A1, U+80A5, U+80B4, U+80DC, U+80E1, U+80F8, U+8102, U+8109-810A, U+810F, U+812F, U+8131, U+8138, U+814A, U+814C, U+8150-8151, U+8170, U+817E-817F, U+818F, U+8191, U+81B3, U+81ED, U+820C-820D, U+8231, U+8239, U+826F, U+827E, U+8292, U+829C-829D, U+82A6, U+82A8, U+82AE, U+82B3, U+82B7, U+82B9, U+82BD, U+82C7, U+82CC-82CE, U+82D3, U+82E5-82E6, U+8302, U+8305, U+8309, U+8328, U+832F, U+8339, U+8346, U+8354, U+8363, U+8365, U+8377, U+8389, U+838E, U+8392, U+839E, U+83AB, U+83B1, U+83BA, U+83CF, U+83DC, U+83DF-83E0, U+8404, U+8427-8428, U+845B, U+8461, U+846B, U+8475, U+848B, U+8497, U+84B2, U+84B8, U+84BF, U+84C6, U+84E5, U+84EC, U+8521, U+853A, U+8549, U+8572, U+8574, U+8585, U+85C1, U+85E4, U+864E, U+865E, U+866B, U+8679, U+867E, U+8682, U+868C, U+8695, U+86A3, U+86F3, U+8700, U+8702, U+8708, U+871C, U+8774, U+8776, U+8782, U+878D, U+87AD, U+87B3, U+87F3, U+8840, U+8861-8863, U+8870, U+888B, U+888D, U+88C1, U+88D4-88D5, U+88F1, U+8944, U+89C2, U+89C9, U+8BAD, U+8BB7, U+8BC3, U+8BCA, U+8BD7, U+8BDE, U+8BED, U+8BF5, U+8BF8, U+8BFA, U+8C0B, U+8C10, U+8C1A, U+8C1C, U+8C1F, U+8C22-8C23, U+8C26, U+8C2D, U+8C2F, U+8C46, U+8C49, U+8C6B, U+8D1E, U+8D24, U+8D34, U+8D3A, U+8D3E, U+8D49, U+8D4F, U+8D5E, U+8D64, U+8D6B, U+8D85, U+8DE4, U+8DF5, U+8DF7, U+8E0F, U+8E22, U+8E49, U+8E69, U+8E6C, U+8F66-8F67, U+8F69, U+8F6E-8F6F, U+8F7F, U+8F87, U+8F89, U+8F95, U+8F9B, U+8FAB, U+8FBE, U+8FC1, U+8FC8, U+8FCE, U+8FD3, U+8FDC, U+8FDE, U+8FE5, U+8FEA, U+8FF7, U+900D, U+9017, U+9042, U+9065, U+906E, U+9075, U+9093, U+9095, U+909B, U+90A6, U+90AF, U+90B1, U+90B3, U+90B5, U+90B9, U+90C1, U+90C3, U+90CF, U+90D1, U+90D3, U+90E1, U+90E7, U+90EB, U+90ED, U+90EF, U+90F4, U+90F8, U+9102, U+9104, U+911E, U+912F, U+9131, U+9149, U+9152, U+9165, U+9178, U+9189, U+918B, U+9192, U+91B4, U+91CE, U+9232, U+933E, U+938F, U+946B, U+9489, U+949F, U+94A2, U+94A6, U+94B4, U+94B9, U+94BB, U+94BF, U+94C3, U+94C5, U+94D3, U+94DB, U+94F0, U+94F8, U+9501, U+9510, U+9523, U+9526, U+952D, U+953B, U+9542, U+9572, U+95F5, U+95F8-95F9, U+95FB, U+95FE, U+9606, U+9614, U+9619, U+961C, U+9621, U+962E, U+9632, U+9635, U+963F, U+9642, U+9644, U+9646-9647, U+9649, U+964D, U+965F, U+9675, U+9686, U+968D, U+968F, U+9694, U+96B6, U+96C0-96C1, U+96C4-96C5, U+96CD, U+9704, U+970D, U+971C, U+971E, U+9738, U+9756, U+9774, U+978B, U+978D, U+97A3, U+97AD, U+97E9, U+97F6, U+987F, U+9887, U+9889, U+988D, U+989C-989D, U+98DE-98DF, U+9910, U+996A, U+996E-996F, U+9976, U+998D, U+998F, U+9992, U+9995, U+9A6C, U+9A6F, U+9A74, U+9A7C, U+9A7E, U+9A85-9A86, U+9AD3, U+9AF9, U+9AFB, U+9B03, U+9B3C, U+9B41, U+9B4F, U+9B54, U+9C7C, U+9C87, U+9C9C, U+9CA4, U+9CCC, U+9E1F, U+9E23, U+9E2A, U+9E2D, U+9E3F, U+9E67, U+9E70, U+9E7F, U+9EA6, U+9EBB, U+9ECE, U+9F0E, U+9F1F, U+9F3B, U+9F84, U+9F9A, U+9F9F, U+E81B; }
 
-.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-
-.ml-page {
-  min-height: 100dvh; color: var(--ink-text);
-  background:
-    radial-gradient(120% 70% at 85% 0%, rgba(226, 233, 229, .7), rgba(226, 233, 229, 0) 60%),
-    var(--paper);
-  overflow-x: hidden;
-}
-.ml-page .bar nav a[aria-current="page"] { text-decoration: underline; text-decoration-color: var(--qiuxiang); text-underline-offset: 7px; }
-.ml-page .foot { border-top: 1px solid var(--rule); color: var(--ink-soft); }
-
-.ml { width: min(1080px, 100%); margin: 0 auto; padding: 0 16px clamp(60px, 10vh, 120px); }
-
-/* 题头：竖排大字，旁边一段题跋式说明，角上一方小朱印 */
-.ml-head {
-  position: relative; display: flex; align-items: flex-end; gap: clamp(22px, 5vw, 72px);
-  padding: clamp(28px, 6vh, 72px) 0 clamp(28px, 5vh, 56px) clamp(0px, 6vw, 90px);
-  animation: ml-ink 2.4s cubic-bezier(.2, .6, .2, 1) both;
-}
-.ml-title {
-  margin: 0; writing-mode: vertical-rl; text-orientation: upright;
-  font-family: var(--song); font-weight: 400; font-size: clamp(48px, 5.6vw, 80px);
-  letter-spacing: .14em; line-height: 1; color: var(--ink-text);
-}
-.ml-colophon { max-width: 26em; padding-bottom: .3em; font-family: var(--song); color: var(--ink-soft); }
+.ml-page .ml { padding-bottom: 0; }
+.ml-head .ml-colophon { margin-top: 24px; max-width: 46em; }
 .ml-colophon p { margin: 0; }
-.ml-kicker { font-size: clamp(15px, 1.5vw, 17px); letter-spacing: .2em; color: var(--ink-text); }
-.ml-count { margin-top: 14px !important; font-size: clamp(14px, 1.3vw, 15px); letter-spacing: .12em; }
-.ml-count b { font-weight: 400; font-size: 1.5em; color: var(--ink-text); letter-spacing: .04em; font-variant-numeric: oldstyle-nums; }
-.ml-source { margin-top: 22px !important; font-size: 14px; line-height: 1.9; }
-.ml-source a { color: var(--daiqing); text-underline-offset: 4px; text-decoration-thickness: 1px; }
-.ml-note { margin-top: 6px !important; font-size: 13px; line-height: 1.9; color: rgba(85, 98, 95, .78); }
-.ml-seal {
-  position: absolute; top: clamp(30px, 6.4vh, 76px); left: calc(clamp(0px, 6vw, 90px) + clamp(48px, 5.6vw, 80px) + 10px);
-  display: grid; place-items: center; width: 30px; padding: 4px 0;
-  font-family: var(--song); font-size: 12px; line-height: 1.25; color: #F6EEE4;
-  background: var(--zhusha); border-radius: 2px; opacity: .9; transform: rotate(-2deg);
-}
-@keyframes ml-ink { from { opacity: 0; filter: blur(3px); } to { opacity: 1; filter: none; } }
+.ml-kicker { font-size: 15px; letter-spacing: .06em; color: var(--ink-2); }
+.ml-count { margin-top: 8px; font-size: 15px; letter-spacing: .06em; color: var(--ink-2); }
+.ml-count b { font-weight: 400; font-family: var(--num); font-variant-numeric: tabular-nums lining-nums; font-size: 17px; color: var(--ink); }
+.ml-source { margin-top: 16px; font-size: 14px; line-height: 1.8; color: var(--ink-2); }
+.ml-source a { color: var(--ink); border-bottom: 1px solid var(--rule); }
+.ml-note { margin-top: 4px; font-size: 12px; letter-spacing: .06em; line-height: 1.8; color: var(--ink-3); }
 
 /* 查找：搜索框、地方下拉、十大门类。滚动时吸顶 */
-.ml-tools {
-  position: sticky; top: 0; z-index: 20;
-  margin: 0 -16px; padding: 12px 16px 6px;
-  background: linear-gradient(180deg, var(--paper) 82%, rgba(213, 223, 218, 0));
-}
-.ml-row { display: flex; gap: 10px; }
+.ml-tools { position: sticky; top: 0; z-index: 20; margin-top: 48px; padding-top: 16px; padding-bottom: 0; background: var(--paper); }
+.ml-row { display: flex; gap: 16px; }
 .ml-search { flex: 1 1 auto; min-width: 0; }
 .ml-search input, .ml-prov select {
-  width: 100%; min-height: 46px; padding: 0 14px;
-  font: inherit; font-family: var(--song); font-size: 16px; color: var(--ink-text);
-  background: rgba(226, 233, 229, .6); border: 0; border-bottom: 1px solid rgba(58, 74, 76, .38); border-radius: 0;
+  width: 100%; height: 48px; margin: 0; padding: 0 14px;
+  font: inherit; font-size: 15px; color: var(--ink);
+  background: var(--white); border: 1px solid var(--rule); border-radius: 0;
   -webkit-appearance: none; appearance: none;
-  transition: border-color 1.2s ease, background-color 1.2s ease;
 }
-.ml-search input::placeholder { color: rgba(85, 98, 95, .55); }
-.ml-search input:focus, .ml-prov select:focus { outline: none; border-bottom-color: var(--daiqing); background: rgba(232, 238, 235, .9); }
-.ml-search input:focus-visible, .ml-prov select:focus-visible { outline: 1px solid var(--daiqing); outline-offset: 2px; }
-.ml-prov { flex: 0 0 11em; }
-.ml-prov select {
-  padding-right: 34px; cursor: pointer;
-  background-image: linear-gradient(45deg, transparent 50%, var(--ink-soft) 50%), linear-gradient(135deg, var(--ink-soft) 50%, transparent 50%);
-  background-position: calc(100% - 18px) 21px, calc(100% - 13px) 21px;
-  background-size: 5px 5px; background-repeat: no-repeat;
-}
+.ml-search input::placeholder { color: var(--ink-3); }
+.ml-search input:focus, .ml-prov select:focus { outline: none; border-color: var(--ink); }
+.ml-prov { position: relative; flex: 0 0 12em; }
+.ml-prov select { padding-right: 32px; cursor: pointer; }
+.ml-prov::after { content: "▾"; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 13px; color: var(--ink-2); pointer-events: none; }
 
-.ml-cats { display: flex; flex-wrap: wrap; gap: 2px 4px; margin-top: 8px; }
+/* 十大门类：文字页签，当前项墨色 + 下方 1px 墨线 */
+.ml-cats { display: flex; flex-wrap: wrap; gap: 0 28px; margin-top: 16px; border-bottom: 1px solid var(--rule); }
 .ml-cat {
-  position: relative; display: inline-flex; align-items: center; min-height: 44px; padding: 0 11px;
-  font: inherit; font-family: var(--song); font-size: 15px; letter-spacing: .08em; color: var(--ink-soft);
-  background: none; border: 0; cursor: pointer; white-space: nowrap;
-  transition: color 1s ease;
+  display: inline-flex; align-items: center; min-height: 44px; margin-bottom: -1px; padding: 0;
+  font: inherit; font-size: 15px; color: var(--ink-2); line-height: 1.6;
+  background: none; border: 0; border-bottom: 1px solid transparent; cursor: pointer; white-space: nowrap;
 }
-.ml-cat::after {
-  content: ""; position: absolute; left: 11px; right: 11px; bottom: 9px; height: 1px;
-  background: var(--daiqing); transform: scaleX(0); transform-origin: left; transition: transform 1.2s cubic-bezier(.2, .6, .2, 1);
-}
-.ml-cat:hover { color: var(--ink-text); }
-.ml-cat[aria-pressed="true"] { color: var(--daiqing); }
-.ml-cat[aria-pressed="true"]::after { transform: scaleX(1); }
-.ml-cat small { margin-left: .4em; font-size: 12px; letter-spacing: 0; color: var(--qiuxiang); }
-
-.ml-result { min-height: 1.6em; margin: 4px 0 0; padding: 0 11px; font-size: 13px; letter-spacing: .08em; color: var(--ink-soft); }
+.ml-cat:hover { color: var(--ink); }
+.ml-cat[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+.ml-cat small { margin-left: .4em; font-family: var(--num); font-variant-numeric: tabular-nums lining-nums; font-size: 13px; color: var(--ink-3); }
+.ml-result { min-height: 1.6em; margin: 0; padding: 12px 0; font-size: 13px; letter-spacing: .06em; color: var(--ink-2); }
 
 /* 分组：每个省级地方一组，默认合起，点开才渲染条目 */
-.ml-groups { margin-top: 18px; }
+.ml-groups { margin-top: 24px; }
 .ml-group { border-top: 1px solid var(--rule); }
+.ml-group:first-child { border-top-color: var(--ink); }
 .ml-group:last-child { border-bottom: 1px solid var(--rule); }
-.ml-group > summary {
-  display: flex; align-items: baseline; gap: 14px; min-height: 60px; padding: 16px 11px 12px;
-  cursor: pointer; list-style: none; -webkit-tap-highlight-color: transparent;
-}
+.ml-group > summary { display: flex; align-items: baseline; gap: 14px; min-height: 64px; padding: 18px 0 14px; cursor: pointer; list-style: none; }
 .ml-group > summary::-webkit-details-marker { display: none; }
-.ml-group > summary:hover .ml-gname { color: var(--daiqing); }
-.ml-gname { font-family: var(--song); font-size: clamp(20px, 2.1vw, 24px); letter-spacing: .18em; transition: color 1s ease; }
-.ml-gcount { font-size: 13px; letter-spacing: .06em; color: var(--qiuxiang); }
+.ml-group > summary:hover .ml-gname { color: var(--ink-2); }
+.ml-gname { font-family: var(--song); font-size: 22px; line-height: 1.5; }
+.ml-gcount { font-size: 13px; color: var(--ink-3); }
 .ml-gmark { position: relative; width: 14px; height: 14px; margin-left: auto; align-self: center; }
-.ml-gmark::before, .ml-gmark::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--ink-soft); transition: transform 1s cubic-bezier(.2, .6, .2, 1); }
+.ml-gmark::before, .ml-gmark::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--ink-2); }
 .ml-gmark::after { transform: rotate(90deg); }
-.ml-group[open] .ml-gmark::after { transform: rotate(0deg); }
+.ml-group[open] .ml-gmark::after { transform: none; }
 
-.ml-list { list-style: none; margin: 0; padding: 0 0 22px; animation: ml-fade 1.4s ease both; }
-@keyframes ml-fade { from { opacity: 0; } to { opacity: 1; } }
-
+.ml-list { list-style: none; margin: 0; padding: 0 0 24px; }
 .ml-item {
-  display: grid; grid-template-columns: 6.5em minmax(0, 1.25fr) minmax(0, 1fr) auto;
-  align-items: baseline; gap: 4px 18px; padding: 12px 11px;
-  border-top: 1px dotted rgba(58, 74, 76, .14);
+  display: grid; grid-template-columns: 6.5em minmax(0, 1.25fr) minmax(0, 1fr) 64px auto;
+  align-items: baseline; gap: 4px 20px; padding: 16px 0;
+  border-top: 1px solid var(--rule);
 }
-.ml-item:first-child { border-top: 0; }
-.ml-num { font-size: 13px; letter-spacing: .04em; color: var(--qiuxiang); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.ml-name { margin: 0; font-family: var(--song); font-weight: 400; font-size: 17px; line-height: 1.6; letter-spacing: .04em; overflow-wrap: anywhere; }
-.ml-meta { display: block; margin-top: 2px; font-family: var(--sans); font-size: 12.5px; letter-spacing: .04em; color: var(--ink-soft); }
-.ml-meta .ml-ext { color: var(--daiqing); }
-.ml-region { font-size: 14px; line-height: 1.6; color: var(--ink-soft); overflow-wrap: anywhere; }
-.ml-link {
-  display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; margin: -12px -6px -12px 0; padding: 0 6px;
-  font-family: var(--song); font-size: 14px; letter-spacing: .12em; color: var(--daiqing);
-  text-decoration: underline; text-decoration-color: rgba(58, 74, 76, .35); text-underline-offset: 5px; text-decoration-thickness: 1px;
-  transition: text-decoration-color 1s ease;
+.ml-num { font-family: var(--num); font-size: 14px; color: var(--ink-2); font-variant-numeric: tabular-nums lining-nums; white-space: nowrap; }
+.ml-name { margin: 0; font-family: var(--song); font-weight: 400; font-size: 17px; line-height: 1.6; overflow-wrap: anywhere; }
+.ml-meta { display: block; margin-top: 2px; font-family: var(--sans); font-size: 12px; letter-spacing: .04em; color: var(--ink-3); }
+.ml-meta .ml-ext { color: var(--ink-2); }
+.ml-region { font-size: 14px; line-height: 1.6; color: var(--ink-2); overflow-wrap: anywhere; }
+.ml-link { display: inline-flex; align-items: center; min-height: 44px; margin: -12px 0; font-size: 14px; color: var(--ink); white-space: nowrap; }
+.ml-link:hover { color: var(--ink-2); }
+.ml-page mark { color: inherit; background: var(--ph); }
+
+.ml-more { display: flex; justify-content: center; padding: 8px 0 24px; }
+.ml-more button { height: 48px; padding: 0 28px; font: inherit; font-size: 15px; letter-spacing: .1em; color: var(--ink); background: none; border: 1px solid var(--ink); border-radius: 0; cursor: pointer; }
+
+.ml-empty { margin: 48px 0; font-size: 15px; color: var(--ink-2); }
+.ml-empty a { color: var(--ink); border-bottom: 1px solid var(--rule); }
+
+/* 名录配图（开放许可，工具/fetch_minglu_images.py 生成）：列表里一枚小图，点开是大图、图说和署名 */
+.ml-thumb { grid-column: 4; align-self: center; width: 64px; height: 48px; }
+.ml-thumb--none { display: block; }
+button.ml-thumb { display: block; padding: 0; overflow: hidden; cursor: zoom-in; background: var(--ph); border: 1px solid var(--rule); border-radius: 0; }
+button.ml-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+button.ml-thumb:hover, button.ml-thumb[aria-expanded="true"] { border-color: var(--ink); }
+button.ml-thumb[aria-expanded="true"] { cursor: zoom-out; }
+
+.ml-fig {
+  grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 16px 32px; align-items: end;
+  margin: 12px 0 4px; padding: 24px; background: var(--white); border: 1px solid var(--rule);
 }
-.ml-link:hover { text-decoration-color: var(--daiqing); }
-mark { color: inherit; background: linear-gradient(180deg, transparent 58%, rgba(143, 175, 170, .45) 58%); }
+.ml-fig[hidden] { display: none; }
+.ml-fig-img { background: var(--ph); }
+.ml-fig-img img { display: block; width: 100%; height: auto; max-height: 560px; object-fit: contain; }
+.ml-fig p { margin: 0; }
+.ml-cap { font-size: 14px; line-height: 1.8; color: var(--ink); overflow-wrap: anywhere; }
+.ml-credit { margin-top: 12px !important; padding-top: 12px; border-top: 1px solid var(--rule); font-size: 12px; line-height: 1.8; color: var(--ink-2); overflow-wrap: anywhere; }
+.ml-credit a { color: var(--ink); border-bottom: 1px solid var(--rule); }
+.ml-fnote { margin-top: 4px !important; font-size: 12px; line-height: 1.7; color: var(--ink-3); }
 
-.ml-more { display: flex; justify-content: center; padding: 6px 0 22px; }
-.ml-more button {
-  min-height: 44px; padding: 0 22px; font: inherit; font-family: var(--song); font-size: 15px; letter-spacing: .14em;
-  color: var(--daiqing); background: none; border: 1px solid rgba(58, 74, 76, .3); cursor: pointer;
-}
-
-.ml-empty { margin: 48px 0; text-align: center; font-family: var(--song); font-size: 16px; letter-spacing: .08em; color: var(--ink-soft); }
-.ml-empty a { color: var(--daiqing); }
-
-/* 手机：题头收窄，门类改成一条可横滑的细带（只在带子里滑，整页不横向滚动） */
-@media (max-width: 720px) {
-  .ml-page .bar nav a { padding: 0 7px; letter-spacing: .06em; }
-  .ml-page .bar-brand { gap: 8px; }
-  .ml-page .bar-brand span { font-size: 16px; letter-spacing: .1em; }
-  .ml-head { gap: 30px; padding: 18px 0 24px 4px; }
-  .ml-title { font-size: 46px; letter-spacing: .1em; }
-  .ml-seal { top: 20px; left: 54px; width: 20px; font-size: 10px; }
-  .ml-count { margin-top: 8px !important; }
-  .ml-kicker { font-size: 14px; letter-spacing: .12em; }
-  .ml-source { margin-top: 14px !important; font-size: 13px; }
-  .ml-note { font-size: 12px; }
-  .ml-row { flex-wrap: nowrap; gap: 8px; }
-  .ml-prov { flex: 0 0 7.4em; }
-  .ml-prov select { padding: 0 26px 0 10px; font-size: 15px; background-position: calc(100% - 15px) 21px, calc(100% - 10px) 21px; }
+@media (max-width: 640px) {
+  .ml-tools { margin-top: 32px; }
+  .ml-row { gap: 8px; }
+  .ml-prov { flex: 0 0 7.6em; }
+  .ml-prov select { padding: 0 26px 0 10px; }
+  .ml-prov::after { right: 10px; }
   .ml-search input { padding: 0 10px; }
-  .ml-cats {
-    flex-wrap: nowrap; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; margin: 6px -16px 0; padding: 0 10px;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 28px), transparent);
-            mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 28px), transparent);
-  }
+  .ml-cats { flex-wrap: nowrap; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; gap: 0 20px; }
   .ml-cats::-webkit-scrollbar { display: none; }
-  .ml-cat { padding: 0 9px; font-size: 14px; }
-  .ml-cat::after { left: 9px; right: 9px; }
-  .ml-item { grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; padding: 12px 8px 12px 11px; }
+  .ml-item { grid-template-columns: minmax(0, 1fr) auto auto; gap: 2px 12px; }
   .ml-num { grid-column: 1; grid-row: 1; }
   .ml-name { grid-column: 1; grid-row: 2; font-size: 16px; }
   .ml-region { grid-column: 1; grid-row: 3; font-size: 13px; }
-  .ml-link { grid-column: 2; grid-row: 1 / span 3; align-self: center; margin: 0; }
-}
-
-/* 名录配图（开放许可，工具/fetch_minglu_images.py 生成）：列表里一枚小图，点开是大图、图说和署名 */
-.ml-item { grid-template-columns: 6.5em minmax(0, 1.25fr) minmax(0, 1fr) 64px auto; }
-.ml-thumb { grid-column: 4; align-self: center; width: 64px; height: 48px; }
-.ml-thumb--none { display: block; }
-button.ml-thumb {
-  display: block; padding: 0; overflow: hidden; cursor: zoom-in;
-  background: var(--yuebai); border: 1px solid rgba(58, 74, 76, .22); border-radius: 0;
-  transition: border-color 1s ease, opacity 1s ease;
-}
-button.ml-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; filter: saturate(.86); transition: filter 1.2s ease; }
-button.ml-thumb:hover { border-color: var(--daiqing); }
-button.ml-thumb:hover img, button.ml-thumb[aria-expanded="true"] img { filter: none; }
-button.ml-thumb[aria-expanded="true"] { border-color: var(--daiqing); cursor: zoom-out; }
-button.ml-thumb:focus-visible { outline: 1px solid var(--daiqing); outline-offset: 3px; }
-
-.ml-fig {
-  grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 18px 28px; align-items: end;
-  margin: 10px 0 6px; padding: 16px; background: rgba(226, 233, 229, .72); border: 1px solid var(--rule);
-  animation: ml-fade 1.4s ease both;
-}
-.ml-fig[hidden] { display: none; }
-.ml-fig-img { background: var(--paper-2); }
-.ml-fig-img img { display: block; width: 100%; height: auto; max-height: 560px; object-fit: contain; }
-.ml-fig figcaption { padding-bottom: 2px; }
-.ml-fig p { margin: 0; }
-.ml-cap { font-family: var(--sans); font-size: 14px; line-height: 1.8; color: var(--ink-text); overflow-wrap: anywhere; }
-.ml-credit { margin-top: 10px !important; padding-top: 10px; border-top: 1px solid var(--rule); font-size: 12.5px; line-height: 1.8; color: var(--ink-soft); overflow-wrap: anywhere; }
-.ml-credit a { color: var(--daiqing); text-decoration-color: rgba(58, 74, 76, .35); text-underline-offset: 3px; text-decoration-thickness: 1px; }
-.ml-fnote { margin-top: 4px !important; font-size: 12px; line-height: 1.7; color: rgba(85, 98, 95, .8); }
-
-@media (max-width: 720px) {
-  .ml-item { grid-template-columns: minmax(0, 1fr) auto auto; }
   .ml-thumb { grid-column: 2; grid-row: 1 / span 3; width: 56px; height: 42px; }
   .ml-thumb--none { display: none; }
-  .ml-link { grid-column: 3; }
-  .ml-fig { grid-template-columns: minmax(0, 1fr); gap: 12px; margin: 8px 0 4px; padding: 10px; }
+  .ml-link { grid-column: 3; grid-row: 1 / span 3; align-self: center; margin: 0; }
+  .ml-fig { grid-template-columns: minmax(0, 1fr); gap: 12px; margin: 8px 0 4px; padding: 12px; }
   .ml-fig-img img { max-height: 420px; }
 }
