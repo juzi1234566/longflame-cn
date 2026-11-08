@@ -8,17 +8,17 @@
 @font-face { font-family: "Taishou Song"; src: url("fonts/song-600.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
 
 :root {
-  --paper: #F6F3EE;
+  --paper: #FFFFFF;
   --white: #FFFFFF;
-  --ink: #1A1714;
-  --ink-2: #6B635A;
-  --ink-3: #8C8379;
-  --rule: #D9D2C7;
-  --dark: #14110F;
-  --on-dark: #F6F3EE;
-  --on-dark-2: #9A9187;
-  --ph: #E3DDD3;
-  --ph-dark: #2A2521;
+  --ink: #111111;
+  --ink-2: #6E6E6E;
+  --ink-3: #8F8F8F;
+  --rule: #E5E5E5;
+  --dark: #111111;
+  --on-dark: #FFFFFF;
+  --on-dark-2: #9A9A9A;
+  --ph: #EEEEEE;
+  --ph-dark: #2A2A2A;
   --song: "Taishou Song", "Noto Serif SC", "Songti SC", "STSong", "Source Han Serif SC", "SimSun", serif;
   --sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   --num: "EB Garamond", Georgia, "Times New Roman", serif;
@@ -86,7 +86,7 @@ h1, h2, h3, p, blockquote, dl, dd, ol, ul { margin: 0; }
 .foot-nav { grid-column: 6 / span 2; }
 .foot-contact { grid-column: 8 / span 3; }
 .foot-mp { grid-column: 11 / span 2; }
-.mp-code { width: 112px; height: 112px; background: var(--ph); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--ink-2); }
+.mp-code { width: 112px; height: 112px; background: var(--ph); display: flex; align-items: center; justify-content: center; padding: 8px; text-align: center; font-size: 12px; line-height: 1.6; color: var(--ink-2); }
 .foot-mp .cap { font-size: 12px; color: var(--ink-3); line-height: 1.6; }
 .foot-base { margin-top: 64px; border-top: 1px solid var(--rule); min-height: 64px; display: flex; align-items: center; font-size: 12px; letter-spacing: .06em; color: var(--ink-3); }
 .foot-base .num { font-size: 13px; }
@@ -227,7 +227,7 @@ h1, h2, h3, p, blockquote, dl, dd, ol, ul { margin: 0; }
 .cover { display: block; }
 .cover .ph { max-height: 810px; }
 .cover .ph-cap { left: var(--gutter); }
-.band { display: block; height: 4px; background: var(--main, #1A1714); }
+.band { display: block; height: 4px; background: var(--main, #111111); }
 .maker-head { margin-top: 96px; }
 .maker-name { grid-column: 1 / span 6; }
 .maker-name h1 { font-family: var(--song); font-size: 64px; font-weight: 400; line-height: 1.25; }
@@ -240,7 +240,7 @@ h1, h2, h3, p, blockquote, dl, dd, ol, ul { margin: 0; }
 .maker-tall .cover-col { grid-column: 1 / span 6; }
 .maker-tall .name-col { grid-column: 8 / span 5; padding-top: 48px; }
 .maker-tall .maker-quote { padding-top: 0; margin-top: 56px; }
-.tint { margin-top: 128px; padding: 96px 0; background: var(--tint, #FFFFFF); }
+.tint { margin-top: 128px; padding: 96px 0; background: var(--tint, #F5F5F5); }
 .steps { list-style: none; padding: 0; }
 .step-t { margin-top: 16px; display: flex; align-items: baseline; gap: 14px; }
 .step-t .num { font-size: 15px; color: var(--ink-2); }
@@ -248,6 +248,38 @@ h1, h2, h3, p, blockquote, dl, dd, ol, ul { margin: 0; }
 .colophon { margin-top: 128px; }
 .colophon p { border-top: 1px solid var(--rule); padding: 20px 0; font-size: 12px; letter-spacing: .06em; color: var(--ink-3); }
 .colophon .num { font-size: 13px; }
+
+/* 关于这项技艺：已核实事实，每条后标来源编号；末尾列来源 */
+.proj { align-items: start; }
+.facts { list-style: none; padding: 0; margin: 32px 0 0; border-top: 1px solid var(--rule); }
+.facts li { padding: 20px 0; border-bottom: 1px solid var(--rule); }
+.facts p { font-size: 16px; line-height: 1.9; }
+.facts .src { margin-left: 2px; font-size: 14px; color: var(--ink-3); white-space: nowrap; }
+.facts .src:hover { color: var(--ink); }
+.proj-media { display: flex; flex-direction: column; gap: 40px; }
+.sources { margin-top: 64px; }
+.sources ol { list-style: none; padding: 0; margin-top: 12px; border-top: 1px solid var(--rule); }
+.sources li { display: grid; grid-template-columns: 28px minmax(0, 1fr); column-gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--rule); font-size: 13px; line-height: 1.8; color: var(--ink-2); }
+.sources li .num { font-size: 14px; color: var(--ink-3); }
+.sources a { color: var(--ink); border-bottom: 1px solid var(--rule); overflow-wrap: anywhere; }
+.sources li:target { background: var(--ph); }
+/* 一年的农事：五个环节横排，每个环节一个以后要拍的照片位 */
+.basis { margin-top: 12px; }
+.basis a { color: var(--ink-2); border-bottom: 1px solid var(--rule); }
+.cal { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); column-gap: 24px; }
+.cal li { display: flex; flex-direction: column; }
+.cal-t { display: flex; flex-direction: column; }
+.cal .when { margin-top: 16px; font-family: var(--song); font-size: 20px; line-height: 1.5; }
+.cal .what { margin-top: 6px; font-size: 14px; line-height: 1.8; color: var(--ink-2); }
+/* 资料图：开放授权的照片，不是寻访实拍；统一 3:2 取景，图下注明作者、许可、出处 */
+.media { margin: 0; }
+.media img { width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; background: var(--ph); }
+.media figcaption { margin-top: 10px; display: flex; flex-direction: column; gap: 2px; }
+.media figcaption .t { font-size: 14px; line-height: 1.6; color: var(--ink); }
+.media figcaption .c { font-size: 12px; line-height: 1.7; color: var(--ink-3); }
+.media figcaption a { color: var(--ink-3); border-bottom: 1px solid var(--rule); }
+.media figcaption a:hover { color: var(--ink); }
+.works-none { color: var(--ink-2); }
 
 /* ---------- 一段记忆 ---------- */
 .mem-film { margin-top: 48px; }
@@ -354,6 +386,8 @@ mark { background: var(--ph); color: inherit; }
   .foot-in .g12 > .foot-brand { grid-column: 1 / -1; }
   .foot-in .g12 > .foot-nav, .foot-in .g12 > .foot-contact, .foot-in .g12 > .foot-mp { grid-column: auto; }
   .links2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .proj-media { margin-top: 48px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .cal { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 40px; }
 }
 @media (max-width: 640px) {
   :root { --gutter: 20px; }
@@ -429,6 +463,14 @@ mark { background: var(--ph); color: inherit; }
   .foot-in .g12 { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 16px; }
   .foot-in .g12 > .foot-mp { grid-column: 1 / -1; }
   .foot-base { margin-top: 48px; padding: 16px 0; }
+  .place .g3 { grid-template-columns: minmax(0, 1fr); row-gap: 32px; }
+  .facts p { font-size: 15px; }
+  .proj-media { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .sources { margin-top: 48px; }
+  .cal { grid-template-columns: minmax(0, 1fr); row-gap: 0; border-top: 1px solid var(--rule); }
+  .cal li { display: grid; grid-template-columns: 40% minmax(0, 1fr); column-gap: 16px; align-items: start; padding: 16px 0; border-bottom: 1px solid var(--rule); }
+  .cal .when { margin-top: 0; font-size: 18px; }
+  .cal .ph-cap { left: 6px; bottom: 6px; right: 6px; font-size: 10px; }
 }
 .lt { margin-top: 64px; }
 .nos { margin-top: 16px; }
