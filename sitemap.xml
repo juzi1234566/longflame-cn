@@ -1,44 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://longflame.cn/</loc></url>
+  <url><loc>https://longflame.cn/yaji.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/01.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/01-2.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/01-3.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/02.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/02-2.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/02-3.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/02-4.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/03.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/03-2.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/03-3.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/04.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/04-2.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/04-3.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/05.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/05-2.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/05-3.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/06.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/06-2.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/07.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/07-2.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/07-3.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/08.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/08-2.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/08-3.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/08-4.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/08-5.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/09.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/10.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/10-2.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/10-3.html</loc></url>
+  <url><loc>https://longflame.cn/yaji/10-4.html</loc></url>
   <url><loc>https://longflame.cn/episodes.html</loc></url>
   <url><loc>https://longflame.cn/episodes/01.html</loc></url>
   <url><loc>https://longflame.cn/people.html</loc></url>
   <url><loc>https://longflame.cn/people/001.html</loc></url>
+  <url><loc>https://longflame.cn/meishi.html</loc></url>
+  <url><loc>https://longflame.cn/creators.html</loc></url>
+  <url><loc>https://longflame.cn/haowu.html</loc></url>
   <url><loc>https://longflame.cn/about.html</loc></url>
   <url><loc>https://longflame.cn/privacy.html</loc></url>
-  <url><loc>https://longflame.cn/minglu.html</loc></url>
-  <url><loc>https://longflame.cn/tujian.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/01.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/01-2.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/01-3.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/02.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/02-2.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/02-3.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/02-4.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/03.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/03-2.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/03-3.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/04.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/04-2.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/04-3.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/05.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/05-2.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/05-3.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/06.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/06-2.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/07.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/07-2.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/07-3.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/08.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/08-2.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/08-3.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/08-4.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/08-5.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/09.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/10.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/10-2.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/10-3.html</loc></url>
-  <url><loc>https://longflame.cn/tujian/10-4.html</loc></url>
-  <url><loc>https://longflame.cn/meishi.html</loc></url>
 </urlset>
