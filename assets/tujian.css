@@ -1,0 +1,142 @@
+/* 非遗图鉴、非遗美食（中文站专用，手写）。页面由 工具/build_cn_site.py 生成，数据整理在 工具/tujian_data.py。
+   沿用 site.css 的变量和版式：素白、墨字、细线、衬线标题；不用圆角、阴影、渐变。配图只用名录图库里有许可的图，每张都署名。
+   名录里才出现的字（地名、项目名里的生僻字）只有图鉴和美食这些页面下载。下一行由 工具/build_font.py 自动改写，保持一行 */
+@font-face { font-family: "Taishou Song"; src: url("fonts/song-ext.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; unicode-range: U+3447, U+4E07-4E08, U+4E14, U+4E25, U+4E2B, U+4E30, U+4E38, U+4E43, U+4E5E, U+4E71, U+4E73, U+4E89, U+4E92-4E93, U+4E9A, U+4EA8, U+4EAD, U+4EB3, U+4EC1, U+4ED7, U+4EE1, U+4EEA-4EEB, U+4EF0, U+4EF2, U+4F0A, U+4F0D, U+4F0F, U+4F15, U+4F17, U+4F24, U+4F26, U+4F2C, U+4F34, U+4F36, U+4F3D, U+4F57, U+4F5B, U+4F64, U+4F6C, U+4F7E, U+4F97, U+4FAC, U+4FAF, U+4FC4, U+4FDA, U+4FDE, U+4FEE, U+503B, U+5043, U+5065, U+5085, U+5088, U+50A3, U+50F3, U+510B, U+513F, U+5144-5145, U+5178, U+517B, U+517D, U+5180, U+5188, U+5195, U+519B, U+51A0, U+51AC, U+51AF-51B0, U+51B6-51B7, U+51BB-51BC, U+51CC, U+51E1, U+51E4, U+51EF-51F0, U+51F3, U+51FF, U+5223, U+522E, U+5237, U+523A, U+524A, U+5251, U+5254, U+5288, U+529B, U+529D, U+52A9, U+52BF, U+52C9, U+52D0, U+52D2, U+52E4, U+52FE, U+5300, U+5323, U+533E, U+534A, U+534D, U+534F, U+5353, U+535C, U+5364, U+5366, U+536B, U+5374, U+5385, U+53A2, U+53A6, U+53C9, U+53D9, U+53EC-53ED, U+53FC, U+5410, U+5412, U+541B, U+541F, U+5427, U+5435, U+5439, U+5450, U+5457, U+545C, U+5473, U+548F, U+5495, U+549A, U+54B8, U+54C7-54C8, U+54E5, U+54E8, U+54EA, U+54ED, U+54F2, U+5522, U+5531, U+5570, U+5580, U+5583, U+5587, U+5589, U+559C-559D, U+55B9, U+55E6, U+55E8, U+55EC, U+55F9, U+560E, U+5618, U+5634, U+5639, U+5676, U+5723, U+5729, U+5733, U+5742, U+574E, U+5750-5751, U+575B, U+575D, U+5760-5761, U+5764, U+5766, U+576D, U+577B, U+5792, U+57A3, U+57AB, U+57C3, U+57C7, U+57D5, U+57E0, U+57F9, U+5806, U+5821, U+582A, U+5830, U+5858, U+585E, U+5885, U+5893, U+5899, U+58E4, U+58EB, U+591C, U+5937, U+5948, U+594E, U+5951, U+5954, U+595A, U+5976, U+5986-5988, U+5999, U+59D0, U+59D4, U+59DC, U+5A01, U+5A04, U+5A46, U+5AC1, U+5AD8, U+5AF2, U+5B5C, U+5B5F, U+5B69, U+5B7D, U+5B8F, U+5B9B, U+5BA4, U+5BB4, U+5BBE-5BBF, U+5BCC, U+5BDF, U+5BEE, U+5BFF, U+5C04, U+5C09, U+5C15-5C16, U+5C24, U+5C27, U+5C39, U+5C3C, U+5C3F, U+5C4B, U+5C6F, U+5C7F, U+5C91, U+5C94, U+5C9A-5C9B, U+5CAB, U+5CAD, U+5CB1, U+5CB7-5CB8, U+5CC4, U+5CD2, U+5CD9, U+5CE1, U+5CFB, U+5D02-5D03, U+5D07, U+5D16, U+5DCD, U+5DE2, U+5DE7-5DE9, U+5DEB, U+5DF4, U+5DF7, U+5E08, U+5E0C, U+5E10, U+5E16, U+5E18, U+5E27, U+5E2D-5E2E, U+5E37, U+5E3D, U+5E72, U+5E7A-5E7B, U+5E90, U+5EB7, U+5ED3, U+5EF6-5EF7, U+5F04, U+5F0B, U+5F13, U+5F1F, U+5F25-5F26, U+5F62, U+5F6C-5F6D, U+5FA1, U+5FAA, U+5FCD, U+5FE0, U+5FE7, U+5FEB, U+5FFB, U+6000, U+6012, U+601D, U+602A, U+6052, U+6069, U+606D, U+6070, U+60A6, U+60AC, U+60E0, U+611A, U+611F, U+613F, U+6148, U+6155, U+6162, U+61CB, U+6208, U+621A, U+6233, U+623F, U+6241, U+6247, U+624E, U+6251, U+625B, U+626F, U+6284, U+6298, U+629A, U+62A1-62A2, U+62BD, U+62BF, U+62C5, U+62C8, U+62D3-62D4, U+62D6, U+62DB-62DC, U+62E6-62E8, U+62F1, U+6311, U+6320, U+632F, U+634F, U+6355, U+6376, U+638C, U+6396, U+63AA, U+63BC, U+63ED, U+640F, U+6413, U+642C, U+6446, U+644A, U+6454, U+6469, U+6478, U+6482, U+6492, U+64AE, U+64C0, U+64C2, U+64CE, U+64E6, U+653B, U+654F, U+6556, U+655B, U+6562-6563, U+6566, U+656C, U+658B, U+6591, U+6597, U+65A1, U+65AF, U+65CB, U+65D7, U+65E6, U+65E9, U+65ED, U+65FA, U+6602, U+660A, U+6619, U+663C, U+6643, U+6670, U+6674, U+6676, U+667A, U+6691, U+6697, U+66D9, U+66F9, U+6710, U+6714, U+6717, U+671D, U+672D, U+6735, U+6746, U+674F, U+6756, U+675C, U+675E, U+6760, U+676F-6770, U+6775, U+6777, U+677E, U+6787, U+6795, U+67A2-67A3, U+67AB, U+67CF, U+67D4, U+67D8, U+67DC, U+67EF, U+6811, U+6816-6817, U+6821, U+683D, U+6844, U+684C, U+6850, U+6853, U+6866, U+6876, U+6881, U+6885, U+6893, U+68A6-68A7, U+68AF, U+68B5, U+68C9, U+68CB, U+68CD, U+68D2, U+68D5, U+68E0, U+68EE, U+68F1, U+68F5, U+690E, U+6912, U+6930, U+695E, U+696E, U+6977, U+6979, U+6995, U+69A8, U+69CC, U+69D0, U+69FD, U+6A1F, U+6B3E, U+6B65, U+6BBF, U+6BC5, U+6BD5, U+6BE1, U+6BEF, U+6BFD, U+6C40-6C41, U+6C47, U+6C55, U+6C57, U+6C68, U+6C6A, U+6C72, U+6C74, U+6C76, U+6C7E, U+6C81-6C83, U+6C85, U+6C88, U+6C90, U+6C93, U+6CAD-6CAE, U+6CB1, U+6CBD-6CBE, U+6CCC, U+6CD7, U+6CE1, U+6CEE, U+6CF8, U+6CFB-6CFC, U+6CFE, U+6D0B, U+6D12, U+6D1E, U+6D2E, U+6D3C, U+6D3E, U+6D47, U+6D51, U+6D54, U+6D5A, U+6D66, U+6D69, U+6D6E, U+6D74, U+6D78, U+6D82, U+6D89, U+6D8C, U+6D9E-6D9F, U+6DA1, U+6DA7, U+6DAA, U+6DAE, U+6DB2, U+6DB5, U+6DC0, U+6DD6, U+6DEE, U+6DF3, U+6E14, U+6E1D, U+6E20, U+6E2D, U+6E3C, U+6E5B, U+6E5F, U+6E7F, U+6E86, U+6E9C, U+6EA7, U+6EB1, U+6EC1, U+6EC7, U+6ECB, U+6ED5, U+6EE6, U+6EE8-6EE9, U+6F02, U+6F2B, U+6F2F, U+6F58, U+6F5C, U+6F5E, U+6F7C, U+6F9C, U+6FA7, U+6FEE, U+701A-701B, U+7070, U+7076, U+7089, U+708E, U+7095, U+70AF, U+70B8, U+70BC, U+70C2, U+70D9, U+70DF, U+70F9, U+7116, U+7119, U+7126, U+714C, U+7164, U+718A, U+718F, U+71A8, U+71D5, U+7206, U+722A, U+722C, U+7231, U+7237, U+724D, U+7259, U+725F, U+7267, U+7279, U+7280-7281, U+72C4, U+72CD, U+72D7, U+72EE, U+7316-7317, U+7334, U+7391, U+739B, U+73A9, U+73C0, U+73CA, U+73D9, U+73DE, U+73F2, U+7403, U+7425, U+742A, U+7459-745A, U+745F, U+7470, U+7477, U+74DC, U+74E2-74E3, U+74E6, U+7511, U+752A-752C, U+7538, U+7545, U+756A, U+7572, U+7574, U+758D, U+758F, U+75BD, U+75C7, U+75D4, U+75D8, U+75DB, U+75E7, U+75EB, U+7640, U+765E, U+766B, U+768B, U+76C2, U+76CA, U+76D0, U+76D4, U+76DB, U+76DF, U+76FE, U+7709, U+7761-7762, U+77BF, U+77FB, U+77FF-7800, U+780C, U+7816, U+7855, U+7857, U+785A, U+786C, U+7887, U+7889, U+788C, U+7891, U+7893, U+789B, U+78A7, U+78B1, U+78D0, U+78E8, U+793C, U+7940, U+795C, U+7960, U+7965, U+7968, U+796D, U+7985, U+79B9, U+79BD-79BE, U+79C0, U+79C3, U+79C6, U+79C9, U+79ED, U+79F8, U+7A1E, U+7A37, U+7A3D, U+7A57, U+7A74, U+7A96, U+7AA8, U+7ADE, U+7AE5, U+7AFF, U+7B06, U+7B0B, U+7B11, U+7B3A, U+7B3C, U+7B4B, U+7B51-7B52, U+7B54, U+7B94, U+7BAB, U+7BAD, U+7BC6, U+7BF1, U+7BF7, U+7C27, U+7C2A, U+7C4D, U+7C97, U+7CA4, U+7CAC, U+7CBD-7CBE, U+7CCA, U+7CD5-7CD6, U+7DA6, U+7E41, U+7EB3, U+7EB5, U+7EBA, U+7ED2, U+7ED5, U+7EDB-7EDD, U+7EE2, U+7EE5, U+7EE7, U+7EEB, U+7EF0, U+7EF3, U+7EF5, U+7EF8, U+7F02, U+7F19, U+7F1D, U+7F20, U+7F2C, U+7F30, U+7F38, U+7F55, U+7F8C, U+7F94, U+7FA4, U+7FD4, U+7FE0-7FE1, U+7FFB-7FFC, U+8003, U+800D, U+8012, U+8033, U+8036, U+803F, U+8042, U+805A, U+8087, U+8098, U+809D, U+80A1, U+80A5, U+80B4, U+80DC, U+80E1, U+80F8, U+8102, U+8109-810A, U+810F, U+812F, U+8138, U+814A, U+814C, U+8150-8151, U+8170, U+817E-817F, U+818F, U+8191, U+81B3, U+81ED, U+820C-820D, U+8231, U+8239, U+826F, U+827E, U+8292, U+829C-829D, U+82A6, U+82A8, U+82AE, U+82B3, U+82B7, U+82B9, U+82BD, U+82C7, U+82CC-82CE, U+82D3, U+82E5-82E6, U+8302, U+8305, U+8309, U+8328, U+832F, U+8339, U+8346, U+8354, U+8363, U+8365, U+8377, U+8389, U+838E, U+8392, U+839E, U+83AB, U+83B1, U+83BA, U+83CF, U+83DF-83E0, U+8404, U+8427-8428, U+845B, U+8461, U+846B, U+8475, U+848B, U+8497, U+84B2, U+84B8, U+84BF, U+84C6, U+84E5, U+84EC, U+851A, U+8521, U+853A, U+8549, U+8572, U+8574, U+8585, U+85C1, U+85E4, U+864E, U+865E, U+866B, U+8679, U+867E, U+8682, U+868C, U+8695, U+86A3, U+86F3, U+8700, U+8702, U+8708, U+871C, U+8774, U+8776, U+8782, U+878D, U+87AD, U+87B3, U+87F3, U+8840, U+8861-8863, U+8870, U+888B, U+888D, U+88D4-88D5, U+88F1, U+8944, U+89C9, U+8BAD, U+8BB7, U+8BC3, U+8BD7, U+8BDE, U+8BED, U+8BF5, U+8BF8, U+8BFA, U+8C0B, U+8C10, U+8C1A, U+8C1C, U+8C1F, U+8C22-8C23, U+8C26, U+8C2F, U+8C46, U+8C49, U+8C6B, U+8D1E, U+8D23-8D24, U+8D34, U+8D3A, U+8D3E, U+8D49, U+8D4F, U+8D5E, U+8D64, U+8D6B, U+8D85, U+8DB3, U+8DE4, U+8DF5, U+8DF7, U+8E22, U+8E49, U+8E69, U+8E6C, U+8F66-8F67, U+8F69, U+8F6E-8F6F, U+8F7F, U+8F87, U+8F89, U+8F95, U+8F9B, U+8FAB, U+8FBE, U+8FC1, U+8FC8, U+8FCE, U+8FD3, U+8FDC, U+8FDE, U+8FE5, U+8FEA, U+8FF7, U+900D, U+9017, U+9042, U+9065, U+9075, U+9093, U+9095, U+909B, U+90A6, U+90AF, U+90B1, U+90B3, U+90B5, U+90B9, U+90C1, U+90C3, U+90CF, U+90D1, U+90D3, U+90E1, U+90E7, U+90EB, U+90ED, U+90EF, U+90F4, U+90F8, U+9102, U+9104, U+911E, U+912F, U+9131, U+9149, U+9152, U+9165, U+9178, U+9189, U+918B, U+9192, U+91B4, U+91CE, U+9232, U+933E, U+938F, U+946B, U+9489, U+949F, U+94A2, U+94A6, U+94B4, U+94B9, U+94BB, U+94BF, U+94C3, U+94C5, U+94D3, U+94DB, U+94F0, U+94F8, U+9501, U+9510, U+9523, U+9526, U+952D, U+953B, U+9542, U+9572, U+95F5, U+95F8-95F9, U+95FB, U+95FE, U+9606, U+9614, U+9619, U+961C, U+9621, U+962E, U+9632, U+9635, U+963F, U+9642, U+9646-9647, U+965F, U+9675, U+9686, U+968D, U+9694, U+96B6, U+96C0-96C1, U+96C4-96C5, U+96CD, U+9704, U+970D, U+971C, U+971E, U+9738, U+9756, U+9774, U+978B, U+978D, U+97A3, U+97AD, U+97E9, U+97F6, U+987F, U+9887, U+9889, U+988D, U+989C-989D, U+98DE, U+9910, U+996A, U+996F, U+9976, U+998D, U+998F, U+9992, U+9995, U+9A6C, U+9A6F, U+9A74, U+9A7C, U+9A7E, U+9A85-9A86, U+9AD3, U+9AF9, U+9AFB, U+9B03, U+9B3C, U+9B41, U+9B4F, U+9B54, U+9C7C, U+9C87, U+9C9C, U+9CA4, U+9CCC, U+9E1F, U+9E23, U+9E2A, U+9E2D, U+9E3F, U+9E67, U+9E70, U+9E7F, U+9F0E, U+9F1F, U+9F3B, U+9F84, U+9F9A, U+9F9F, U+E81B; }
+
+/* 图鉴条（每页页脚上方）：十个门类的小入口 */
+.tj-strip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); column-gap: 24px; row-gap: 32px; list-style: none; padding: 0; }
+.tj-strip a { display: block; }
+.tj-strip .ph { aspect-ratio: 4 / 3; }
+.tj-strip b { display: block; font-family: var(--song); font-weight: 400; font-size: 20px; letter-spacing: .1em; line-height: 1.4; margin-top: 12px; }
+.tj-strip a > span { display: block; font-size: 12px; color: var(--g2); }
+.tj-strip small { display: block; margin-top: 4px; font-size: 11px; line-height: 1.6; color: var(--g3); overflow-wrap: anywhere; }
+.tj-strip small a { border-bottom: 1px solid var(--line); display: inline; }
+.tj-strip a:hover b { border-bottom: 1px solid var(--ink); display: inline-block; }
+.reg-head a + a { margin-left: 8px; }
+
+/* 图鉴首页：十个门类，一类一行 */
+.tj-cats { list-style: none; padding: 0; border-top: 3px double var(--ink); margin-bottom: 120px; }
+.tj-cats > li { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: start; border-bottom: 1px solid var(--line); padding: 36px 0 36px; }
+.tj-cat { grid-column: 1 / 9; display: grid; grid-template-columns: 200px minmax(0, 1fr); column-gap: 24px; align-items: start; }
+.tj-no { font-size: 120px; line-height: .82; letter-spacing: -.02em; margin-left: -4px; }
+.tj-cat-b h2 { font-family: var(--song); font-size: 60px; letter-spacing: .14em; line-height: 1.2; }
+.tj-cat-b .label { margin-top: 10px; font-size: 14px; letter-spacing: .2em; color: var(--ink); }
+.tj-cat-s { margin-top: 20px; font-size: 15px; line-height: 1.9; color: var(--g2); max-width: 30em; }
+.tj-go { margin-top: 24px; font-size: 14px; letter-spacing: .08em; }
+.tj-go, .tj-cat:hover h2 { text-decoration: none; }
+.tj-cat:hover .tj-go { border-bottom: 1px solid var(--ink); display: inline-block; }
+.tj-cover { grid-column: 9 / 13; }
+.tj-cover .ph { display: block; aspect-ratio: 4 / 3; }
+.tj-cover figcaption { font-size: 11px; overflow-wrap: anywhere; }
+.tj-lead { font-size: 26px; max-width: 28em; }
+
+/* 门类页：页首 */
+.tj-head { padding-top: 24px; padding-bottom: 48px; align-items: end; }
+.tj-head-no { grid-column: 1 / 4; font-size: 208px; line-height: .74; letter-spacing: -.02em; margin-left: -8px; }
+.tj-head-b { grid-column: 4 / 13; }
+.tj-head-b h1 { font-family: var(--song); font-size: 84px; letter-spacing: .14em; line-height: 1.15; margin-top: 10px; }
+.tj-head-b .sub { margin-top: 18px; font-size: 15px; color: var(--g2); letter-spacing: .06em; }
+.tj-head-b .note { max-width: 46em; }
+.tj-head-b .note a { margin-left: 6px; color: var(--g2); white-space: nowrap; }
+
+/* 门类页：项目列表。一个项目一行：编号｜项目名和各申报地区｜配图（有才放） */
+.tj-list { list-style: none; padding: 0; border-top: 3px double var(--ink); }
+.tj-p { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: start; border-bottom: 1px solid var(--line); padding: 22px 0 20px; }
+.tj-num { font-family: var(--song); font-size: 14px; color: var(--g2); letter-spacing: .04em; line-height: 2.3; }
+.tj-p > .tj-num { grid-column: 1 / 4; }
+.tj-p-b { grid-column: 4 / 13; min-width: 0; }
+.tj-p.has-fig .tj-p-b { grid-column: 4 / 11; }
+.tj-p-b h3 { font-family: var(--song); font-size: 26px; letter-spacing: .06em; line-height: 1.4; }
+.tj-subs { list-style: none; padding: 0; margin-top: 8px; }
+.tj-subs li { display: grid; grid-template-columns: minmax(0, 1fr) 190px 72px; column-gap: 20px; align-items: baseline; padding: 6px 0; border-top: 1px solid var(--line); font-size: 14px; line-height: 1.7; }
+.tj-subs li:first-child { border-top: 0; }
+.tj-subs b { grid-column: 1 / 4; font-family: var(--song); font-weight: 400; font-size: 16px; letter-spacing: .03em; }
+.tj-subs .r { color: var(--ink); overflow-wrap: anywhere; }
+.tj-subs .m { font-size: 12px; color: var(--g3); }
+.src { font-size: 12px; color: var(--g2); white-space: nowrap; justify-self: end; border-bottom: 1px solid var(--line); }
+.src:hover { color: var(--ink); border-bottom-color: var(--ink); }
+.tj-fig { grid-column: 11 / 13; }
+.tj-fig .ph { aspect-ratio: 4 / 3; }
+.tj-fig figcaption { font-size: 11px; line-height: 1.6; margin-top: 8px; overflow-wrap: anywhere; }
+.tj-fig .c { display: block; color: var(--g2); }
+
+/* 分页 */
+.tj-pager { display: flex; justify-content: space-between; align-items: baseline; gap: 24px; padding: 28px 0 80px; font-size: 14px; letter-spacing: .08em; }
+.tj-pager .pg-n { display: flex; flex-wrap: wrap; gap: 4px 22px; }
+.tj-pager .pg-n a { font-size: 20px; color: var(--g3); padding-bottom: 2px; border-bottom: 1px solid transparent; }
+.tj-pager .pg-n a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--ink); }
+.tj-pager .pg-n a:hover { color: var(--ink); }
+.tj-pager .pg-step { border-bottom: 1px solid var(--ink); padding-bottom: 3px; }
+.tj-pager .pg-step.off { color: var(--g3); border-bottom-color: transparent; }
+.tj-list + .pn, .tj-list:last-child { margin-bottom: 80px; }
+
+/* 非遗美食：省份索引（文字，不是地图）和项目卡片 */
+.ms-index { list-style: none; padding: 16px 0 14px; margin-bottom: 80px; display: flex; flex-wrap: wrap; gap: 6px 28px; border-top: 3px double var(--ink); border-bottom: 1px solid var(--line); }
+.ms-index a { font-size: 14px; line-height: 2; letter-spacing: .04em; white-space: nowrap; }
+.ms-index a:hover { border-bottom: 1px solid var(--ink); }
+.ms-index small { margin-left: 5px; font-size: 13px; color: var(--g3); }
+.ms-cards { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 24px; row-gap: 0; }
+.ms-card { display: flex; gap: 16px; justify-content: space-between; border-top: 1px solid var(--line); padding: 18px 0 22px; min-width: 0; }
+.ms-cards > li:nth-child(-n+3) { border-top: 0; padding-top: 4px; }
+.ms-b { min-width: 0; flex: 1; }
+.ms-b .tj-num { display: block; font-size: 12px; line-height: 1.6; }
+.ms-b h3 { font-family: var(--song); font-size: 20px; letter-spacing: .04em; line-height: 1.5; margin-top: 2px; overflow-wrap: anywhere; }
+.ms-b .r { font-size: 14px; line-height: 1.7; margin-top: 6px; overflow-wrap: anywhere; }
+.ms-b .m { font-size: 12px; color: var(--g3); line-height: 1.7; }
+.ms-b .src { display: inline-block; margin-top: 8px; }
+.ms-card figure { flex: none; width: 112px; }
+.ms-card .ph { aspect-ratio: 4 / 3; }
+.ms-card figcaption { font-size: 10px; line-height: 1.5; margin-top: 6px; overflow-wrap: anywhere; }
+
+@media (max-width: 1100px) {
+  .tj-strip b { font-size: 17px; }
+  .tj-cat { grid-template-columns: 140px minmax(0, 1fr); }
+  .tj-no { font-size: 88px; }
+  .tj-cat-b h2 { font-size: 46px; }
+  .ms-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ms-cards > li:nth-child(3) { border-top: 1px solid var(--line); padding-top: 18px; }
+  .tj-subs li { grid-template-columns: minmax(0, 1fr) 150px 64px; }
+}
+
+/* 手机 */
+@media (max-width: 700px) {
+  .tj-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 12px; row-gap: 24px; }
+  .tj-strip b { font-size: 17px; margin-top: 8px; }
+  .reg-head a + a { margin-left: 4px; }
+  .tj-cats { margin-bottom: 80px; }
+  .tj-cats > li { display: block; padding: 24px 0 26px; }
+  .tj-cat { grid-template-columns: 76px minmax(0, 1fr); column-gap: 12px; }
+  .tj-no { font-size: 56px; line-height: .9; margin-left: -2px; }
+  .tj-cat-b h2 { font-size: 34px; letter-spacing: .1em; }
+  .tj-cat-b .label { margin-top: 4px; font-size: 12px; }
+  .tj-cat-s { margin-top: 10px; font-size: 13px; line-height: 1.8; }
+  .tj-go { margin-top: 12px; font-size: 13px; }
+  .tj-cover { margin-top: 18px; }
+  .tj-lead { font-size: 19px; }
+  .tj-head { padding-top: 8px; padding-bottom: 28px; }
+  .tj-head-no { font-size: 112px; line-height: .8; margin-left: -4px; }
+  .tj-head-b h1 { font-size: 40px; letter-spacing: .1em; margin-top: 8px; }
+  .tj-head-b .sub { font-size: 13px; margin-top: 12px; line-height: 1.8; }
+  .tj-head-b .note a { display: inline-block; margin-left: 0; }
+  .tj-p { display: block; padding: 16px 0 16px; }
+  .tj-p > .tj-num { display: block; font-size: 12px; line-height: 1.6; }
+  .tj-p-b h3 { font-size: 21px; }
+  .tj-subs li { display: block; font-size: 13px; padding: 7px 0; }
+  .tj-subs b, .tj-subs .r { display: block; }
+  .tj-subs b { font-size: 15px; }
+  .tj-subs .src { margin-left: 12px; }
+  .tj-fig { display: flex; gap: 12px; margin-top: 12px; }
+  .tj-fig .ph { flex: none; width: 120px; }
+  .tj-fig figcaption { margin-top: 0; }
+  .tj-pager { padding: 22px 0 56px; font-size: 13px; }
+  .tj-pager .pg-n { gap: 4px 16px; }
+  .tj-pager .pg-n a { font-size: 18px; }
+  .ms-index { margin-bottom: 56px; gap: 2px 20px; padding: 12px 0 10px; }
+  .ms-index a { font-size: 13px; }
+  .ms-cards { grid-template-columns: 1fr; }
+  .ms-cards > li:nth-child(-n+3) { border-top: 1px solid var(--line); padding-top: 16px; }
+  .ms-cards > li:first-child { border-top: 0; padding-top: 0; }
+  .ms-card { padding: 16px 0 18px; }
+  .ms-b h3 { font-size: 19px; }
+  .ms-card figure { width: 96px; }
+}
