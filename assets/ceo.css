@@ -178,10 +178,19 @@ main > .band.paper:last-child, .band.paper:has(+ .band.dark), .band.paper:has(+ 
 .duo-map h2, .biz h2 { font-size: 48px; letter-spacing: .1em; line-height: 1.3; margin-bottom: 22px; }
 .mini { display: block; }
 .mini-tiles { display: grid; grid-template-columns: repeat(8, 30px); grid-auto-rows: 30px; gap: 7px; }
-.mini-tiles i { background: var(--ink); border: 1px solid var(--ink); transition: background-color .3s ease; }
-.mini-tiles i.e { background: transparent; border-color: var(--ink-2); }
-.mini:hover .mini-tiles i:not(.e) { background: var(--zhe); border-color: var(--zhe); }
-.mini small { display: block; font-size: 11px; letter-spacing: .08em; color: var(--ink-2); margin-top: 14px; text-align: right; }
+.mini-tiles i { position: relative; display: flex; align-items: center; justify-content: center; background: var(--ink-2); border: 1px solid var(--ink-2); color: var(--mi); font-family: var(--song); font-style: normal; font-size: 11px; line-height: 1; letter-spacing: 0; }
+.mini-tiles i.l2 { background: var(--zhe-d); border-color: var(--zhe-d); }
+.mini-tiles i.l3 { background: var(--ink); border-color: var(--ink); }
+.mini-tiles i.e { background: transparent; border-color: var(--ink-2); color: var(--ink-2); }
+.mini-tiles i:hover { outline: 2px solid var(--zhe); outline-offset: 2px; z-index: 3; }
+.mini-tiles i::after { content: attr(data-tip); position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%); background: var(--xuan); color: var(--mi); border: 1px solid var(--jin); padding: 5px 8px; font-family: var(--sans); font-size: 11px; line-height: 1.4; letter-spacing: .04em; white-space: nowrap; opacity: 0; visibility: hidden; pointer-events: none; z-index: 4; transition: opacity .15s ease; }
+.mini-tiles i:hover::after { opacity: 1; visibility: visible; }
+.mini-legend { display: flex; align-items: center; justify-content: flex-end; gap: 6px; margin-top: 12px; font-size: 11px; letter-spacing: .04em; color: var(--ink-2); }
+.mini-legend i { display: inline-block; width: 10px; height: 10px; background: var(--ink-2); border: 1px solid var(--ink-2); }
+.mini-legend i.l2 { background: var(--zhe-d); border-color: var(--zhe-d); }
+.mini-legend i.l3 { background: var(--ink); border-color: var(--ink); }
+.mini-legend i.e { background: transparent; border-color: var(--ink-2); }
+.mini small { display: block; font-size: 11px; letter-spacing: .08em; color: var(--ink-2); margin-top: 8px; text-align: right; }
 .doors2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .door2 { display: block; border: 1px solid rgba(239, 231, 214, .42); padding: 44px 48px 48px; transition: background-color .4s ease; }
 .door2:hover { background: var(--zhe-d); }
@@ -582,6 +591,7 @@ sup a { color: var(--zhe-d); }
   .duo-map h2, .biz h2 { font-size: 34px; margin-bottom: 14px; }
   .lead { font-size: 18px; }
   .mini { justify-self: start; }
+  .mini-legend { justify-content: flex-start; }
   .mini small { text-align: left; }
   .doors2, .duo-links, .coops { grid-template-columns: 1fr; gap: 14px; }
   .door2 { padding: 28px 24px 32px; }
