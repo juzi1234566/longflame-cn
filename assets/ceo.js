@@ -162,12 +162,13 @@
       rows.forEach(function (p) {
         var es = p.e.filter(function (e) { return e[2] === prov; });
         subs += es.length;
-        var fig = p.g ? '<figure class="pj-fig"><div class="ph r43"><img src="../' + esc(p.g[0]) + '" alt="' + esc(p.g[1]) + '" width="240" height="180" loading="lazy"></div><figcaption><span class="c">' + esc(p.g[1]) + '</span>' + p.g[2] + '</figcaption></figure>' : '';
-        html += '<li class="pj' + (p.g ? ' has-fig' : '') + '"><span class="pj-num">' + esc(p.n) + '</span><div class="pj-b"><h3>' + esc(p.t) + '</h3><ul class="pj-subs">' +
-          es.map(function (e) {
-            return '<li>' + (e[0] !== p.t ? '<b>' + esc(e[0]) + '</b>' : '') + '<span class="r">' + esc(e[1]) + '</span><span class="m">' + batchOf(e[3], e[4]) + ' · ' + (e[5] ? '扩展项目' : '新增项目') + '</span>' +
-              '<a class="src" href="' + esc(e[6]) + '" target="_blank" rel="noopener" aria-label="' + esc(e[0] + '（' + e[1] + '）在中国非物质文化遗产网的页面') + '">官方页 ' + ARROW + '</a></li>';
-          }).join('') + '</ul></div>' + fig + '</li>';
+        var subHtml = es.map(function (e) {
+          return '<li>' + (e[0] !== p.t ? '<b>' + esc(e[0]) + '</b>' : '') + '<span class="r">' + esc(e[1]) + '</span><span class="m">' + batchOf(e[3], e[4]) + ' · ' + (e[5] ? '扩展项目' : '新增项目') + '</span>' +
+            '<a class="src" href="' + esc(e[6]) + '" target="_blank" rel="noopener" aria-label="' + esc(e[0] + '（' + e[1] + '）在中国非物质文化遗产网的页面') + '">官方页 ' + ARROW + '</a></li>';
+        }).join('');
+        var fig = p.g ? '<figure class="pj-fig"><div class="ph r11"><img src="../' + esc(p.g[0]) + '" alt="' + esc(p.t) + ' ' + esc(p.g[1]) + '" width="240" height="240" loading="lazy"></div></figure>' : '';
+        var detail = fig ? '<div class="pj-detail">' + fig + '<ul class="pj-subs">' + subHtml + '</ul></div>' : '<ul class="pj-subs">' + subHtml + '</ul>';
+        html += '<li class="pj' + (p.g ? ' has-fig' : '') + '"><span class="pj-num">' + esc(p.n) + '</span><div class="pj-b"><h3>' + esc(p.t) + '</h3>' + detail + '</div></li>';
       });
       list.innerHTML = html;
       result.hidden = false;
