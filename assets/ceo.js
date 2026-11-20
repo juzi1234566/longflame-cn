@@ -66,6 +66,9 @@
         (group && list.length ? '<a href="#' + group.id + '">在完整清单里看 ↓</a>' : '') + '</div>';
       if (!list.length) { panel.innerHTML = h + '<p class="panel-empty">暂未收录</p>'; return; }
       panel.innerHTML = h + '<ul>' + list.map(function (x) {
+        var meta = '<p class="r">' + esc(x.r) + '</p><p class="m">' + esc(x.c) + ' · ' + batchOf(x.y, x.b) + ' · ' + (x.e ? '扩展项目' : '新增项目') + '</p>' +
+          '<a class="src" href="' + esc(x.u) + '" target="_blank" rel="noopener" aria-label="' + esc(x.n + '（' + x.r + '）在中国非物质文化遗产网的页面') + '">官方页 ' + ARROW + '</a>';
+        if (x.p) return '<li class="p-item has-photo"><div><h3>' + esc(x.n) + '</h3><div class="ms-photo-row"><figure><div class="ph r11"><img src="' + esc(x.p) + '" alt="' + esc(x.n) + '（AI 演绎）" width="480" height="480" loading="lazy"></div><figcaption>AI 演绎</figcaption></figure><div class="ms-meta">' + meta + '</div></div></div></li>';
         var fig = x.g ? '<figure><div class="ph r43"><img src="' + esc(x.g[0]) + '" alt="' + esc(x.g[1]) + '" width="240" height="180" loading="lazy"></div><figcaption>' + x.g[2] + '</figcaption></figure>' : '';
         return '<li class="p-item' + (x.g ? ' has-fig' : '') + '"><div><h3>' + esc(x.n) + '</h3><p class="r">' + esc(x.r) + '</p>' +
           '<p class="m">' + esc(x.c) + ' · ' + batchOf(x.y, x.b) + ' · ' + (x.e ? '扩展项目' : '新增项目') + '</p>' +

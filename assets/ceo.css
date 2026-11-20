@@ -63,7 +63,7 @@ figcaption, .cap { font-size: 11px; line-height: 1.7; color: var(--ink-2); margi
 .empty { font-family: var(--song); font-size: 22px; letter-spacing: .2em; color: var(--ink-2); padding: 28px 0 8px; }
 .ph { position: relative; display: block; overflow: hidden; background: var(--mi-2); }
 .ph img, .player img { width: 100%; height: 100%; object-fit: cover; }
-.r169 { aspect-ratio: 16 / 9; } .r32 { aspect-ratio: 3 / 2; } .r43 { aspect-ratio: 4 / 3; } .r21 { aspect-ratio: 2 / 1; }
+.r169 { aspect-ratio: 16 / 9; } .r32 { aspect-ratio: 3 / 2; } .r43 { aspect-ratio: 4 / 3; } .r21 { aspect-ratio: 2 / 1; } .r11 { aspect-ratio: 1 / 1; }
 
 /* 滚动淡入：只在有 JS 时生效；系统设了“减少动态效果”就不动 */
 .js .rv { opacity: 0; transform: translateY(16px); transition: opacity .9s ease, transform .9s ease; }
@@ -400,6 +400,19 @@ sup a { color: var(--zhe-d); }
 .ms-card .m { font-size: 12px; color: var(--ink-2); }
 .ms-card .src { display: inline-block; text-align: left; }
 .ms-card figcaption { font-size: 9px; line-height: 1.5; margin-top: 4px; }
+.ms-card.has-photo { grid-template-columns: minmax(0, 1fr); }
+.ms-photo-row { display: grid; grid-template-columns: 132px minmax(0, 1fr); column-gap: 18px; margin-top: 18px; }
+.ms-photo-row figure { margin: 0; }
+.ms-photo-row figcaption { font-size: 9px; line-height: 1.5; color: var(--dim); margin-top: 4px; }
+.ms-meta p { font-size: 13px; }
+.ms-meta .r { color: var(--ink-2); }
+.ms-meta .m { font-size: 12px; color: var(--ink-2); }
+.ms-meta .src { display: inline-block; color: var(--zhe-d); margin-top: 6px; }
+.ms-meta .src:hover { border-bottom: 1px solid currentColor; }
+.p-item.has-photo, .p-item.has-photo.has-fig { grid-template-columns: minmax(0, 1fr); }
+.p-item.has-photo figure { grid-column: auto; grid-row: auto; }
+.p-item.has-photo .ms-photo-row { margin-top: 10px; grid-template-columns: 104px minmax(0, 1fr); column-gap: 16px; }
+.p-item.has-photo .ms-meta p { margin-top: 0; }
 
 /* ---------- 创作者空间、非遗好物 ---------- */
 .ways { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
