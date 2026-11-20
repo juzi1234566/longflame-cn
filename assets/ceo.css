@@ -88,7 +88,6 @@ figcaption, .cap { font-size: 11px; line-height: 1.7; color: var(--ink-2); margi
 .mk-seal img { width: 38px; height: 38px; }
 .mk-lf img { width: 32px; height: 32px; object-fit: contain; }
 .mk-lf span { font-family: var(--num); font-size: 17px; letter-spacing: .06em; }
-.mk-sep { color: var(--dim); font-size: 14px; }
 .nav-m { display: none; }
 .nav-m summary { list-style: none; cursor: pointer; font-size: 14px; letter-spacing: .2em; padding: 8px 10px 8px 13px; border: 1px solid var(--dim); min-height: 40px; display: flex; align-items: center; }
 .nav-m summary::-webkit-details-marker { display: none; }
@@ -558,7 +557,6 @@ sup a { color: var(--zhe-d); }
   .mk-seal img { width: 32px; height: 32px; }
   .mk-lf img { width: 28px; height: 28px; }
   .mk-lf span { display: none; }
-  .mk-sep { display: none; }
   .band { padding: 64px 0; }
   .band.tight { padding: 52px 0 0; }
   main > .band.paper:last-child, .band.paper:has(+ .band.dark), .band.paper:has(+ .band.ochre) { padding-bottom: 72px; }
