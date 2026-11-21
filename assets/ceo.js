@@ -217,4 +217,36 @@
     if (input.form) input.form.addEventListener('submit', function (e) { e.preventDefault(); run(); });
     run();
   })();
+
+  (function () {
+    var btn = document.querySelector('[data-random-hall]');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var links = [].slice.call(document.querySelectorAll('.yj-card'));
+      if (!links.length) return;
+      window.location.href = links[Math.floor(Math.random() * links.length)].getAttribute('href');
+    });
+  })();
+
+  (function () {
+    var box = $('home-food');
+    if (!box || !window.HOME_FOOD) return;
+    var data = window.HOME_FOOD;
+    var shot = box.querySelector('.food-shot');
+    var name = $('home-food-name'), num = $('home-food-num'), link = $('home-food-link');
+    var btns = [].slice.call(document.querySelectorAll('.mini-tiles button[data-prov]'));
+    var show = function (prov) {
+      var d = data[prov];
+      if (!d) return;
+      btns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-prov') === prov)); });
+      shot.innerHTML = d.photo
+        ? '<img id="home-food-img" src="' + esc(d.photo) + '" alt="' + esc(d.s + ' · ' + d.name) + '（AI 演绎示意）" width="480" height="480"><figcaption>AI 演绎示意</figcaption>'
+        : '<span class="food-empty">该省暂无示意图片</span><figcaption>暂未收录</figcaption>';
+      name.textContent = d.s + ' · ' + d.name;
+      num.textContent = '编号 ' + (d.num || '—') + ' · ' + d.n + ' 项子项目';
+      link.href = 'meishi.html#' + d.h;
+    };
+    btns.forEach(function (b) { b.addEventListener('click', function () { show(b.getAttribute('data-prov')); }); });
+    show('上海市');
+  })();
 })();
