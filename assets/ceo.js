@@ -47,6 +47,54 @@
     for (var m = 0; m < scenes.length; m++) io.observe(scenes[m].node);
   })();
 
+  /* ---------- 互动探索：一盏灯，照见一门手艺 ---------- */
+  (function () {
+    var game = $('lantern-game'), facts = window.LANTERN_FACTS;
+    if (!game || !facts || !facts.length) return;
+    var stage = game.querySelector('.lantern-stage'), card = $('lantern-card');
+    var count = $('lantern-count'), finish = $('lantern-finish'), hint = $('lantern-hint');
+    var found = {}, total = facts.length;
+    var setLight = function (event) {
+      var box = stage.getBoundingClientRect();
+      var x = Math.max(0, Math.min(100, (event.clientX - box.left) / box.width * 100));
+      var y = Math.max(0, Math.min(100, (event.clientY - box.top) / box.height * 100));
+      stage.style.setProperty('--light-x', x + '%');
+      stage.style.setProperty('--light-y', y + '%');
+    };
+    var render = function (id) {
+      var item = null;
+      for (var i = 0; i < facts.length; i++) if (facts[i].id === id) { item = facts[i]; break; }
+      if (!item) return;
+      found[id] = true;
+      var n = Object.keys(found).length;
+      card.innerHTML = '<p class="label">' + esc(item.eyebrow) + '</p><h2>' + esc(item.title) + '</h2><p>' + esc(item.text) + '</p><a href="' + esc(item.link) + '">' + esc(item.action) + ' ' + ARROW + '</a>';
+      count.textContent = n;
+      var spot = game.querySelector('[data-lantern-id="' + id + '"]');
+      var progress = game.querySelector('[data-lantern-progress="' + id + '"]');
+      if (spot) { spot.classList.add('found'); spot.setAttribute('aria-pressed', 'true'); }
+      if (progress) progress.classList.add('found');
+      if (hint) hint.textContent = n === total ? '四处线索已点亮。' : '已点亮 ' + n + ' 条线索，再找找其余的微光。';
+      if (finish) finish.hidden = n !== total;
+    };
+    stage.addEventListener('pointermove', setLight);
+    stage.addEventListener('pointerdown', setLight);
+    var spots = game.querySelectorAll('[data-lantern-id]');
+    for (var i = 0; i < spots.length; i++) {
+      spots[i].addEventListener('click', function (event) { setLight(event); render(this.getAttribute('data-lantern-id')); });
+      spots[i].addEventListener('focus', function () { render(this.getAttribute('data-lantern-id')); });
+    }
+    var reset = $('lantern-reset');
+    if (reset) reset.addEventListener('click', function () {
+      found = {}; count.textContent = '0';
+      card.innerHTML = '<p>灯光落下之前，这里只有一片等待辨认的风土。</p>';
+      if (hint) hint.textContent = '移动或轻触画面，寻找四处微光。';
+      if (finish) finish.hidden = true;
+      for (var j = 0; j < spots.length; j++) { spots[j].classList.remove('found'); spots[j].setAttribute('aria-pressed', 'false'); }
+      var progress = game.querySelectorAll('[data-lantern-progress]');
+      for (var k = 0; k < progress.length; k++) progress[k].classList.remove('found');
+    });
+  })();
+
   /* ---------- 手机菜单：按 Esc 或点别处收起 ---------- */
   (function () {
     var m = document.querySelector('.nav-m');
