@@ -65,10 +65,32 @@
     var tiles = [].slice.call(document.querySelectorAll('.tile, .tile-x'));
     var grid = [].slice.call(box.querySelectorAll('.tile'));
     var chips = [].slice.call(document.querySelectorAll('.chip'));
-    var cat = '', current = null;
+    var search = $('food-q'), clearSearch = $('food-search-clear'), searchStatus = $('food-search-status');
+    var region = $('food-region'), category = $('food-category'), batch = $('food-batch'), resetFilters = $('food-filter-reset');
+    var favoritesToggle = $('favorites-toggle'), favoritesCount = $('favorites-count');
+    var detailDialog = $('food-dialog'), detailBody = $('food-dialog-body'), detailClose = $('food-dialog-close');
+    var favoritesDialog = $('favorites-dialog'), favoritesBody = $('favorites-dialog-body'), favoritesClose = $('favorites-dialog-close');
+    var compareDialog = $('compare-dialog'), compareBody = $('compare-dialog-body'), compareClose = $('compare-dialog-close');
+    var todayBox = $('food-today'), randomBox = $('food-random'), randomButton = $('food-random-button');
+    var routeSelect = $('route-provinces'), routeCount = $('route-count'), routeButton = $('route-generate'), routeResult = $('route-result'), routeChosen = [];
+    var flavor = '', query = '', selectedRegion = '', selectedCategory = '', selectedBatch = '', current = null;
+    var favoriteKey = 'taishou-food-favorites-v1', favorites = {}, byId = {}, compared = [];
+    var allItems = [];
+    Object.keys(PROVS).forEach(function (prov) {
+      (PROVS[prov].items || []).forEach(function (item) { byId[String(item.id)] = item; allItems.push(item); });
+    });
+    try { favorites = JSON.parse(window.localStorage.getItem(favoriteKey) || '{}') || {}; } catch (e) { favorites = {}; }
+    var saveFavorites = function () { try { window.localStorage.setItem(favoriteKey, JSON.stringify(favorites)); } catch (e) { /* 不可用时仍可在本次浏览中收藏 */ } };
+    var isFavorite = function (id) { return !!favorites[String(id)]; };
+    var matches = function (x) {
+      var text = (x.n + ' ' + x.r + ' ' + x.f + ' ' + x.c).toLowerCase();
+      return (!flavor || x.f === flavor) && (!query || text.indexOf(query) >= 0) &&
+        (!selectedRegion || x.p0 === selectedRegion) && (!selectedCategory || x.c === selectedCategory) &&
+        (!selectedBatch || x.b === selectedBatch);
+    };
     var itemsOf = function (prov) {
       var list = (PROVS[prov] || { items: [] }).items;
-      return cat ? list.filter(function (x) { return x.c === cat; }) : list;
+      return list.filter(matches);
     };
     var paintTiles = function () {
       tiles.forEach(function (t) {
@@ -85,18 +107,15 @@
       if (!current) { panel.innerHTML = '<p class="panel-hint">点一个方块，看这个省份的非遗美食。</p>'; return; }
       var list = itemsOf(current), short = (PROVS[current] || {}).s || current;
       var group = document.querySelector('.ms-group[data-prov="' + current + '"]');
-      var h = '<div class="panel-head"><h2>' + esc(current) + '</h2><p>' + (list.length ? numSpan(list.length) + ' 子项' : '') + '</p>' +
-        (group && list.length ? '<a href="#' + group.id + '">在完整清单里看 ↓</a>' : '') + '</div>';
-      if (!list.length) { panel.innerHTML = h + '<p class="panel-empty">暂未收录</p>'; return; }
-      panel.innerHTML = h + '<ul>' + list.map(function (x) {
-        var meta = '<p class="r">' + esc(x.r) + '</p><p class="m">' + esc(x.c) + ' · ' + batchOf(x.y, x.b) + ' · ' + (x.e ? '扩展项目' : '新增项目') + '</p>' +
-          '<a class="src" href="' + esc(x.u) + '" target="_blank" rel="noopener" aria-label="' + esc(x.n + '（' + x.r + '）在中国非物质文化遗产网的页面') + '">官方页 ' + ARROW + '</a>';
-        if (x.p) return '<li class="p-item has-photo"><div><h3>' + esc(x.n) + '</h3><div class="ms-photo-row"><figure><div class="ph r11"><img src="' + esc(x.p) + '" alt="' + esc(x.n) + '（AI 演绎）" width="480" height="480" loading="lazy"></div><figcaption>AI 演绎</figcaption></figure><div class="ms-meta">' + meta + '</div></div></div></li>';
-        var fig = x.g ? '<figure><div class="ph r43"><img src="' + esc(x.g[0]) + '" alt="' + esc(x.g[1]) + '" width="240" height="180" loading="lazy"></div><figcaption>' + x.g[2] + '</figcaption></figure>' : '';
-        return '<li class="p-item' + (x.g ? ' has-fig' : '') + '"><div><h3>' + esc(x.n) + '</h3><p class="r">' + esc(x.r) + '</p>' +
-          '<p class="m">' + esc(x.c) + ' · ' + batchOf(x.y, x.b) + ' · ' + (x.e ? '扩展项目' : '新增项目') + '</p>' +
-          '<a class="src" href="' + esc(x.u) + '" target="_blank" rel="noopener" aria-label="' + esc(x.n + '（' + x.r + '）在中国非物质文化遗产网的页面') + '">官方页 ' + ARROW + '</a></div>' + fig + '</li>';
-      }).join('') + '</ul>';
+      var h = '<div class="panel-head"><div><p class="panel-eyebrow">风味落点 · ' + esc(short) + '</p><h2>' + esc(current) + '</h2></div><p>' + (list.length ? numSpan(list.length) + ' 子项' : '') + '</p>' +
+        (group && list.length ? '<a href="#' + group.id + '">看完整清单 ↓</a>' : '') + '</div>';
+      if (!list.length) { panel.innerHTML = h + '<p class="panel-empty">当前筛选下暂未收录；可切换到“全部风味”继续探索。</p>'; return; }
+      var picks = list.slice(0, 3);
+      panel.innerHTML = h + '<ul class="map-food-cards">' + picks.map(function (x) {
+        var photo = x.p ? '<img src="' + esc(x.p) + '" alt="' + esc(x.n) + '（AI 演绎）" width="480" height="480" loading="lazy">' : (x.g ? '<img src="' + esc(x.g[0]) + '" alt="' + esc(x.g[1]) + '" width="240" height="180" loading="lazy">' : '<span>暂无配图</span>');
+        var isCompared = compared.indexOf(String(x.id)) >= 0;
+        return '<li><div class="map-food-img ph r11">' + photo + '</div><div><p class="map-food-type">' + esc(x.f) + '</p><h3>' + esc(x.n) + '</h3><p class="r">' + esc(x.r) + '</p><p class="map-card-actions"><button type="button" class="food-detail" data-food-id="' + esc(x.id) + '">查看详情</button><button type="button" class="food-favorite" data-food-id="' + esc(x.id) + '" aria-pressed="' + (isFavorite(x.id) ? 'true' : 'false') + '">' + (isFavorite(x.id) ? '已收藏' : '收藏') + '</button><button type="button" class="food-compare" data-food-id="' + esc(x.id) + '" aria-pressed="' + (isCompared ? 'true' : 'false') + '">对比</button></p><a class="src" href="' + esc(x.u) + '" target="_blank" rel="noopener">官方资料 ' + ARROW + '</a></div></li>';
+      }).join('') + '</ul>' + (list.length > picks.length ? '<p class="panel-more">本省还有 ' + numSpan(list.length - picks.length) + ' 项，可在完整清单中继续浏览。</p>' : '');
       void short;
     };
     var select = function (prov, fromHash) {
@@ -108,11 +127,14 @@
       }
     };
     var paintList = function () {
+      var resultTotal = 0;
       [].forEach.call(document.querySelectorAll('.ms-group'), function (g) {
         var n = 0;
         [].forEach.call(g.querySelectorAll('.ms-card'), function (c) {
-          var show = !cat || c.dataset.cat === cat;
-          c.hidden = !show; if (show) n++;
+          var show = (!flavor || c.dataset.flavor === flavor) && (!query || (c.dataset.search || '').toLowerCase().indexOf(query) >= 0) &&
+            (!selectedRegion || c.dataset.province === selectedRegion) && (!selectedCategory || c.dataset.category === selectedCategory) &&
+            (!selectedBatch || c.dataset.batch === selectedBatch);
+          c.hidden = !show; if (show) { n++; resultTotal++; }
         });
         g.hidden = !n;
         var cnt = g.querySelector('.ms-n'); if (cnt) cnt.textContent = n;
@@ -123,14 +145,140 @@
         var s = li.querySelector('small'), c = g && g.querySelector('.ms-n');
         if (s && c) s.textContent = c.textContent;
       });
+      if (searchStatus) {
+        var parts = [];
+        if (query) parts.push('“' + (search ? search.value.trim() : query) + '”');
+        if (flavor) parts.push(flavor);
+        if (selectedRegion) parts.push(selectedRegion);
+        if (selectedCategory) parts.push(selectedCategory);
+        if (selectedBatch) parts.push(selectedBatch);
+        searchStatus.hidden = !parts.length;
+        searchStatus.textContent = parts.length ? '筛选 “' + parts.join(' · ') + '”：找到 ' + resultTotal + ' 项' : '';
+      }
+    };
+    var syncFavoriteButtons = function () {
+      [].forEach.call(document.querySelectorAll('.food-favorite[data-food-id]'), function (button) {
+        var active = isFavorite(button.dataset.foodId);
+        button.setAttribute('aria-pressed', active ? 'true' : 'false');
+        button.textContent = active ? '已收藏' : '收藏';
+      });
+      if (favoritesCount) favoritesCount.textContent = Object.keys(favorites).length;
+    };
+    var syncCompareButtons = function () {
+      [].forEach.call(document.querySelectorAll('.food-compare[data-food-id]'), function (button) {
+        var active = compared.indexOf(String(button.dataset.foodId)) >= 0;
+        button.setAttribute('aria-pressed', active ? 'true' : 'false');
+        button.textContent = active ? '已选入对比' : '对比';
+      });
+    };
+    var refresh = function () {
+      if (resetFilters) resetFilters.hidden = !(query || flavor || selectedRegion || selectedCategory || selectedBatch);
+      paintTiles(); paintPanel(); paintList(); syncFavoriteButtons(); syncCompareButtons();
+    };
+    var toggleFavorite = function (id) {
+      id = String(id);
+      if (isFavorite(id)) delete favorites[id]; else favorites[id] = 1;
+      saveFavorites(); syncFavoriteButtons(); paintPanel();
+      if (favoritesDialog && favoritesDialog.open) renderFavorites();
+    };
+    var imageFor = function (x) {
+      if (x.p) return '<figure><div class="ph r11"><img src="' + esc(x.p) + '" alt="' + esc(x.n) + '（AI 演绎）" width="480" height="480"></div><figcaption>AI 演绎</figcaption></figure>';
+      if (x.g) return '<figure><div class="ph r43"><img src="' + esc(x.g[0]) + '" alt="' + esc(x.g[1]) + '" width="480" height="360"></div><figcaption>' + esc(x.g[2]) + '</figcaption></figure>';
+      return '<div class="food-dialog-no-image">暂无配图</div>';
+    };
+    var showDetails = function (id) {
+      var x = byId[String(id)];
+      if (!x || !detailDialog || !detailBody) return;
+      detailBody.innerHTML = '<p class="food-dialog-eyebrow">非遗美食档案 · ' + esc(x.f) + '</p><h2 id="food-dialog-title">' + esc(x.n) + '</h2>' +
+        '<div class="food-dialog-grid">' + imageFor(x) + '<div><dl class="food-dialog-info"><div><dt>申报地区</dt><dd>' + esc(x.r) + '</dd></div><div><dt>名录门类</dt><dd>' + esc(x.c) + '</dd></div><div><dt>入选批次</dt><dd>' + esc(x.b) + (x.y ? ' · ' + esc(x.y) + '年' : '') + '</dd></div><div><dt>项目类型</dt><dd>' + (x.e ? '扩展项目' : '新增项目') + '</dd></div></dl>' +
+        '<div class="food-dialog-actions"><button type="button" class="food-favorite" data-food-id="' + esc(x.id) + '" aria-pressed="' + (isFavorite(x.id) ? 'true' : 'false') + '">' + (isFavorite(x.id) ? '已收藏' : '收藏') + '</button><a href="' + esc(x.u) + '" target="_blank" rel="noopener">查看官方资料 ' + ARROW + '</a></div></div></div>';
+      if (typeof detailDialog.showModal === 'function') detailDialog.showModal(); else detailDialog.setAttribute('open', 'open');
+      syncFavoriteButtons();
+    };
+    var brief = function (x) { return '<h3>' + esc(x.n) + '</h3><p>' + esc(x.p0) + ' · ' + esc(x.f) + '</p>'; };
+    var showQuick = function (box, x, lead) {
+      if (!box || !x) return;
+      box.innerHTML = '<p class="quick-lead">' + esc(lead) + '</p>' + brief(x) + '<button type="button" class="food-detail" data-food-id="' + esc(x.id) + '">去看看 ' + ARROW + '</button>';
+    };
+    var showCompare = function () {
+      if (compared.length < 2 || !compareBody) return;
+      var picks = compared.map(function (id) { return byId[id]; }).filter(Boolean);
+      var rows = [['地区', 'p0'], ['申报地区', 'r'], ['风味', 'f'], ['官方门类', 'c'], ['入选批次', 'b']];
+      compareBody.innerHTML = '<p class="food-dialog-eyebrow">并排阅读</p><h2 id="compare-dialog-title">两项美食的档案对比</h2><div class="compare-table"><div class="compare-head"><span></span>' + picks.map(function (x) { return '<strong>' + esc(x.n) + '</strong>'; }).join('') + '</div>' + rows.map(function (row) { return '<div><b>' + row[0] + '</b>' + picks.map(function (x) { return '<span>' + esc(x[row[1]]) + '</span>'; }).join('') + '</div>'; }).join('') + '</div>';
+      if (typeof compareDialog.showModal === 'function') compareDialog.showModal(); else compareDialog.setAttribute('open', 'open');
+    };
+    var toggleCompare = function (id) {
+      id = String(id); var pos = compared.indexOf(id);
+      if (pos >= 0) { compared.splice(pos, 1); syncCompareButtons(); paintPanel(); return; }
+      if (compared.length >= 2) { compared.shift(); }
+      compared.push(id); syncCompareButtons(); paintPanel();
+      if (compared.length === 2) showCompare();
+    };
+    var renderFavorites = function () {
+      if (!favoritesBody) return;
+      var picks = allItems.filter(function (x) { return isFavorite(x.id); });
+      favoritesBody.innerHTML = '<p class="food-dialog-eyebrow">浏览器本地保存</p><h2 id="favorites-dialog-title">我的收藏</h2>' +
+        (picks.length ? '<ul class="favorites-list">' + picks.map(function (x) { return '<li><div><h3>' + esc(x.n) + '</h3><p>' + esc(x.p0) + ' · ' + esc(x.r) + ' · ' + esc(x.f) + '</p></div><div><button type="button" class="food-detail" data-food-id="' + esc(x.id) + '">详情</button><button type="button" class="food-favorite" data-food-id="' + esc(x.id) + '" aria-pressed="true">已收藏</button></div></li>'; }).join('') + '</ul>' : '<p class="favorites-empty">还没有收藏。看到感兴趣的项目，点“收藏”就会保存在这台设备上。</p>');
+      syncFavoriteButtons();
     };
     tiles.forEach(function (t) { t.addEventListener('click', function () { select(t.dataset.prov); }); });
     chips.forEach(function (c) {
       c.addEventListener('click', function () {
-        cat = c.dataset.cat || '';
+        flavor = c.dataset.flavor || '';
         chips.forEach(function (x) { x.setAttribute('aria-pressed', x === c ? 'true' : 'false'); });
-        paintTiles(); paintPanel(); paintList();
+        refresh();
       });
+    });
+    if (search) {
+      var updateSearch = function () {
+        query = search.value.trim().toLowerCase();
+        if (clearSearch) clearSearch.hidden = !query;
+        refresh();
+      };
+      search.addEventListener('input', updateSearch);
+      if (search.form) search.form.addEventListener('submit', function (e) { e.preventDefault(); updateSearch(); });
+      if (clearSearch) clearSearch.addEventListener('click', function () { search.value = ''; updateSearch(); search.focus(); });
+    }
+    [region, category, batch].forEach(function (filter) { if (filter) filter.addEventListener('change', function () {
+      selectedRegion = region ? region.value : ''; selectedCategory = category ? category.value : ''; selectedBatch = batch ? batch.value : ''; refresh();
+    }); });
+    if (resetFilters) resetFilters.addEventListener('click', function () {
+      flavor = ''; query = ''; selectedRegion = ''; selectedCategory = ''; selectedBatch = '';
+      if (search) search.value = ''; if (region) region.value = ''; if (category) category.value = ''; if (batch) batch.value = '';
+      chips.forEach(function (x) { x.setAttribute('aria-pressed', x.dataset.flavor ? 'false' : 'true'); });
+      if (clearSearch) clearSearch.hidden = true; refresh();
+    });
+    if (favoritesToggle) favoritesToggle.addEventListener('click', function () { renderFavorites(); if (favoritesDialog && typeof favoritesDialog.showModal === 'function') favoritesDialog.showModal(); else if (favoritesDialog) favoritesDialog.setAttribute('open', 'open'); });
+    if (detailClose) detailClose.addEventListener('click', function () { detailDialog.close ? detailDialog.close() : detailDialog.removeAttribute('open'); });
+    if (favoritesClose) favoritesClose.addEventListener('click', function () { favoritesDialog.close ? favoritesDialog.close() : favoritesDialog.removeAttribute('open'); });
+    if (compareClose) compareClose.addEventListener('click', function () { compareDialog.close ? compareDialog.close() : compareDialog.removeAttribute('open'); });
+    if (randomButton) randomButton.addEventListener('click', function () { showQuick(randomBox, allItems[Math.floor(Math.random() * allItems.length)], '一口打开陌生的风土。'); });
+    if (todayBox && allItems.length) {
+      var now = new Date(), day = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 86400000;
+      showQuick(todayBox, allItems[Math.abs(day) % allItems.length], '每天一项，今天从这里出发。');
+    }
+    if (routeSelect) [].forEach.call(routeSelect.querySelectorAll('[data-route-prov]'), function (button) { button.addEventListener('click', function () {
+      var prov = button.dataset.routeProv, at = routeChosen.indexOf(prov);
+      if (at >= 0) routeChosen.splice(at, 1); else if (routeChosen.length < 4) routeChosen.push(prov); else { if (routeResult) routeResult.innerHTML = '<p>最多选择 4 个地区。</p>'; return; }
+      [].forEach.call(routeSelect.querySelectorAll('[data-route-prov]'), function (x) { x.setAttribute('aria-pressed', routeChosen.indexOf(x.dataset.routeProv) >= 0 ? 'true' : 'false'); });
+      if (routeCount) routeCount.textContent = routeChosen.length;
+    }); });
+    if (routeButton) routeButton.addEventListener('click', function () {
+      var chosen = routeChosen.slice();
+      if (chosen.length < 2 || chosen.length > 4) { routeResult.innerHTML = '<p>请选择 2—4 个地区。</p>'; return; }
+      var names = chosen.map(function (p) { return (PROVS[p] || {}).s || p; });
+      var items = chosen.map(function (p) { return (PROVS[p] || { items: [] }).items.filter(matches)[0]; }).filter(Boolean);
+      routeResult.innerHTML = '<p class="route-title">' + esc(names.join(' · ')) + ' 漫游线</p><ol>' + items.map(function (x) { return '<li><button type="button" class="food-detail" data-food-id="' + esc(x.id) + '">' + esc(x.n) + '</button></li>'; }).join('') + '</ol>';
+    });
+    [].forEach.call(document.querySelectorAll('[data-story-flavor]'), function (button) { button.addEventListener('click', function () {
+      flavor = button.dataset.storyFlavor; chips.forEach(function (x) { x.setAttribute('aria-pressed', x.dataset.flavor === flavor ? 'true' : 'false'); }); refresh(); box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }); });
+    document.addEventListener('click', function (e) {
+      var target = e.target.closest && e.target.closest('[data-food-id]');
+      if (!target) return;
+      if (target.classList.contains('food-detail')) { showDetails(target.dataset.foodId); }
+      if (target.classList.contains('food-favorite')) { toggleFavorite(target.dataset.foodId); }
+      if (target.classList.contains('food-compare')) { toggleCompare(target.dataset.foodId); }
     });
     /* 方向键在方块之间移动：按方位找最近的一个 */
     box.addEventListener('keydown', function (e) {
@@ -156,11 +304,45 @@
     };
     window.addEventListener('hashchange', fromHash);
     fromHash();
+    if (!current && panel.dataset.default && PROVS[panel.dataset.default]) select(panel.dataset.default, true);
+    refresh();
+    /* 中国省级地图：本地 GeoJSON 转为可点击的 SVG，避免依赖第三方脚本。 */
+    var renderChinaMap = function (geo) {
+      if (!geo || !geo.features || !box) return;
+      var minLon = 73.5, maxLon = 135.1, minLat = 18, maxLat = 54.5, w = 720, h = 510, ox = 10, oy = 10;
+      var alias = { '台湾省': '台湾', '香港特别行政区': '香港', '澳门特别行政区': '澳门' };
+      var project = function (p) { return [ox + (p[0] - minLon) / (maxLon - minLon) * w, oy + (maxLat - p[1]) / (maxLat - minLat) * h]; };
+      var ring = function (points) { return points.map(function (p, i) { var q = project(p); return (i ? 'L' : 'M') + q[0].toFixed(1) + ' ' + q[1].toFixed(1); }).join('') + 'Z'; };
+      var shape = function (g) {
+        var parts = g.type === 'Polygon' ? [g.coordinates] : g.coordinates;
+        return parts.map(function (poly) { return poly.map(ring).join(''); }).join('');
+      };
+      var center = function (g) {
+        var points = [], take = function (x) { if (typeof x[0] === 'number') points.push(x); else x.forEach(take); }; take(g.coordinates);
+        var sum = points.reduce(function (a, p) { a[0] += p[0]; a[1] += p[1]; return a; }, [0, 0]); return project([sum[0] / points.length, sum[1] / points.length]);
+      };
+      var markup = '';
+      geo.features.forEach(function (feature) {
+        var prov = alias[feature.properties.name] || feature.properties.name;
+        if (!PROVS[prov]) return;
+        var c = center(feature.geometry), short = PROVS[prov].s || prov;
+        markup += '<path class="tile' + ((PROVS[prov].items || []).length ? '' : ' empty') + '" d="' + shape(feature.geometry) + '" fill-rule="evenodd" data-prov="' + esc(prov) + '" data-short="' + esc(short) + '" data-r="' + c[1].toFixed(1) + '" data-c="' + c[0].toFixed(1) + '" role="button" tabindex="0" aria-pressed="false"><title>' + esc(short) + '</title></path>';
+        markup += '<text class="map-province-label" x="' + c[0].toFixed(1) + '" y="' + c[1].toFixed(1) + '" text-anchor="middle">' + esc(short) + '</text>';
+      });
+      box.innerHTML = markup;
+      tiles = [].slice.call(box.querySelectorAll('.tile')); grid = tiles;
+      tiles.forEach(function (t) { t.addEventListener('click', function () { select(t.dataset.prov); }); });
+      paintTiles();
+      if (current) select(current, true);
+    };
+    if (window.fetch) fetch('assets/china-provinces.geojson').then(function (r) { return r.ok ? r.json() : null; }).then(renderChinaMap).catch(function () {
+      box.innerHTML = '<text x="370" y="270" text-anchor="middle" class="map-loading">地图暂未载入，请刷新后重试。</text>';
+    });
   })();
 
-  /* ---------- 门类馆：按地区筛选项目档案库 ---------- */
+  /* ---------- 门类馆：按地区、关键词、排序浏览项目档案库 ---------- */
   (function () {
-    var sel = $('arch-prov'), list = $('arch-list');
+    var sel = $('arch-prov'), list = $('arch-list'), query = $('arch-q'), sort = $('arch-sort');
     if (!sel || !list) return;
     var hall = sel.dataset.hall, pager = $('arch-pager'), result = $('arch-result'), range = $('arch-range');
     var original = list.innerHTML, loading = false;
@@ -173,34 +355,51 @@
       s.onerror = function () { loading = false; result.hidden = false; result.textContent = '数据没有载入，请刷新后再试。'; };
       document.head.appendChild(s);
     };
+    var card = function (p, entries) {
+      var places = [], seen = {};
+      entries.forEach(function (e) { if (!seen[e[2]]) { seen[e[2]] = true; places.push(e[2]); } });
+      var placeText = places.slice(0, 3).join(' · ') + (places.length > 3 ? ' 等 ' + places.length + ' 地' : '');
+      var subHtml = entries.map(function (e) {
+        return '<li>' + (e[0] !== p.t ? '<b>' + esc(e[0]) + '</b>' : '') + '<span class="r">' + esc(e[1]) + '</span><span class="m">' + batchOf(e[3], e[4]) + ' · ' + (e[5] ? '扩展项目' : '新增项目') + '</span>' +
+          '<a class="src" href="' + esc(e[6]) + '" target="_blank" rel="noopener" aria-label="' + esc(e[0] + '（' + e[1] + '）在中国非物质文化遗产网的页面') + '">官方页 ' + ARROW + '</a></li>';
+      }).join('');
+      var fig = p.g ? '<figure class="pj-fig"><div class="ph r11"><img src="../' + esc(p.g[0]) + '" alt="' + esc(p.t) + ' ' + esc(p.g[1]) + '" width="480" height="480" loading="lazy"></div></figure>' : '<div class="pj-empty" aria-hidden="true"><span>' + esc(p.n) + '</span></div>';
+      return '<li class="pj"><article class="pj-card">' + fig + '<div class="pj-b"><div class="pj-top"><span class="pj-num">' + esc(p.n) + '</span><span class="pj-count">' + numSpan(entries.length) + ' 项子项目</span></div><h3>' + esc(p.t) + '</h3><p class="pj-places">' + esc(placeText) + '</p><details class="pj-detail"><summary>展开档案明细<span>' + numSpan(entries.length) + ' 条</span></summary><ul class="pj-subs">' + subHtml + '</ul></details></div></article></li>';
+    };
+    var reset = function () {
+      list.innerHTML = original; result.hidden = true; result.innerHTML = '';
+      if (pager) pager.hidden = false; if (range) range.hidden = false;
+    };
     var render = function () {
-      var prov = sel.value;
-      if (!prov) {
-        list.innerHTML = original; result.hidden = true; result.innerHTML = '';
-        if (pager) pager.hidden = false; if (range) range.hidden = false;
+      var prov = sel.value, q = (query ? query.value : '').trim().toLowerCase(), order = sort ? sort.value : '';
+      if (!prov && !q && !order) {
+        reset();
         return;
       }
-      var subs = 0, html = '';
-      var rows = window.YJ[hall].filter(function (p) { return p.e.some(function (e) { return e[2] === prov; }); });
-      rows.forEach(function (p) {
-        var es = p.e.filter(function (e) { return e[2] === prov; });
-        subs += es.length;
-        var subHtml = es.map(function (e) {
-          return '<li>' + (e[0] !== p.t ? '<b>' + esc(e[0]) + '</b>' : '') + '<span class="r">' + esc(e[1]) + '</span><span class="m">' + batchOf(e[3], e[4]) + ' · ' + (e[5] ? '扩展项目' : '新增项目') + '</span>' +
-            '<a class="src" href="' + esc(e[6]) + '" target="_blank" rel="noopener" aria-label="' + esc(e[0] + '（' + e[1] + '）在中国非物质文化遗产网的页面') + '">官方页 ' + ARROW + '</a></li>';
-        }).join('');
-        var fig = p.g ? '<figure class="pj-fig"><div class="ph r11"><img src="../' + esc(p.g[0]) + '" alt="' + esc(p.t) + ' ' + esc(p.g[1]) + '" width="240" height="240" loading="lazy"></div></figure>' : '';
-        var detail = fig ? '<div class="pj-detail">' + fig + '<ul class="pj-subs">' + subHtml + '</ul></div>' : '<ul class="pj-subs">' + subHtml + '</ul>';
-        html += '<li class="pj' + (p.g ? ' has-fig' : '') + '"><span class="pj-num">' + esc(p.n) + '</span><div class="pj-b"><h3>' + esc(p.t) + '</h3>' + detail + '</div></li>';
+      if (!window.YJ || !window.YJ[hall]) return;
+      var subs = 0;
+      var rows = window.YJ[hall].filter(function (p) {
+        var text = (p.t + ' ' + p.e.map(function (e) { return e[0] + ' ' + e[1] + ' ' + e[2]; }).join(' ')).toLowerCase();
+        return (!prov || p.e.some(function (e) { return e[2] === prov; })) && (!q || text.indexOf(q) !== -1);
       });
-      list.innerHTML = html;
+      if (order === 'entries') rows.sort(function (a, b) { return b.e.length - a.e.length || a.t.localeCompare(b.t, 'zh-Hans-CN'); });
+      if (order === 'name') rows.sort(function (a, b) { return a.t.localeCompare(b.t, 'zh-Hans-CN'); });
+      var html = rows.map(function (p) {
+        var es = prov ? p.e.filter(function (e) { return e[2] === prov; }) : p.e;
+        subs += es.length;
+        return card(p, es);
+      }).join('');
+      list.innerHTML = html || '<li class="arch-empty">未找到匹配的项目，请换一个关键词或地区。</li>';
       result.hidden = false;
-      result.innerHTML = esc(prov) + '：' + numSpan(rows.length) + ' 项、' + numSpan(subs) + ' 子项<button type="button" id="arch-clear">看全部地区</button>';
-      $('arch-clear').addEventListener('click', function () { sel.value = ''; render(); sel.focus(); });
+      result.innerHTML = (prov ? esc(prov) + ' · ' : '') + '找到 ' + numSpan(rows.length) + ' 项、' + numSpan(subs) + ' 子项目<button type="button" id="arch-clear">清除筛选</button>';
+      $('arch-clear').addEventListener('click', function () { sel.value = ''; if (query) query.value = ''; if (sort) sort.value = ''; reset(); if (query) query.focus(); });
       if (pager) pager.hidden = true; if (range) range.hidden = true;
     };
-    sel.addEventListener('change', function () { if (sel.value) load(render); else render(); });
-    if (sel.value) load(render);   /* 浏览器后退时会记住下拉框的值 */
+    var requestRender = function () { load(render); };
+    sel.addEventListener('change', requestRender);
+    if (sort) sort.addEventListener('change', requestRender);
+    if (query) query.addEventListener('input', requestRender);
+    if (sel.value || (query && query.value) || (sort && sort.value)) requestRender();
   })();
 
   /* ---------- 站内搜索（只有 search.html 有数据） ---------- */
