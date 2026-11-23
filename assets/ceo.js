@@ -24,6 +24,29 @@
     for (var j = 0; j < els.length; j++) io.observe(els[j]);
   })();
 
+  /* ---------- 专题页：滚动时标明当前阅读场景 ---------- */
+  (function () {
+    var nav = document.querySelector('.topic-jump');
+    if (!nav || !('IntersectionObserver' in window)) return;
+    var links = nav.querySelectorAll('a[data-topic-target]');
+    var scenes = [];
+    for (var i = 0; i < links.length; i++) {
+      var target = document.getElementById(links[i].getAttribute('data-topic-target'));
+      if (target) scenes.push({ node: target, link: links[i] });
+    }
+    if (!scenes.length) return;
+    var activate = function (link) {
+      for (var j = 0; j < scenes.length; j++) scenes[j].link.removeAttribute('aria-current');
+      link.setAttribute('aria-current', 'location');
+    };
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) { if (entry.isIntersecting) {
+        for (var k = 0; k < scenes.length; k++) if (scenes[k].node === entry.target) activate(scenes[k].link);
+      }});
+    }, { rootMargin: '-24% 0px -63% 0px', threshold: 0 });
+    for (var m = 0; m < scenes.length; m++) io.observe(scenes[m].node);
+  })();
+
   /* ---------- 手机菜单：按 Esc 或点别处收起 ---------- */
   (function () {
     var m = document.querySelector('.nav-m');
