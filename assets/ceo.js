@@ -618,6 +618,49 @@
     });
   })();
 
+  /* ---------- 十大雅集：雅集拾笺 ---------- */
+  (function () {
+    var root = $('yaji-draw'), data = window.YAJI_DRAW_CARDS;
+    if (!root || !data || !data.length) return;
+    var box = $('yaji-draw-cards'), result = $('yaji-draw-result'), refresh = $('yaji-draw-refresh'), count = $('yaji-draw-count');
+    var store = 'longflame-yaji-collection-v1', seen = [], choices = [], opened = false;
+    try { seen = JSON.parse(window.localStorage.getItem(store) || '[]'); } catch (e) { seen = []; }
+    if (!Array.isArray(seen)) seen = [];
+    var save = function () { try { window.localStorage.setItem(store, JSON.stringify(seen)); } catch (e) {} };
+    var paintCount = function () { if (count) count.textContent = seen.length; };
+    var shuffle = function (arr) {
+      var copy = arr.slice();
+      for (var i = copy.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var tmp = copy[i]; copy[i] = copy[j]; copy[j] = tmp; }
+      return copy;
+    };
+    var cardFace = function (item, index) {
+      return '<button type="button" class="yaji-draw-card" data-yaji-card="' + esc(item.id) + '" aria-label="翻开第 ' + (index + 1) + ' 张雅集笺">'
+        + '<span class="yaji-draw-card-inner"><span class="yaji-draw-card-back"><i>雅</i><b>拾笺</b><em>' + (index + 1) + '</em></span>'
+        + '<span class="yaji-draw-card-front"><img src="' + esc(item.cover) + '" alt="" width="800" height="600"><i>' + esc(item.cat) + '</i><b>' + esc(item.name) + '</b></span></span></button>';
+    };
+    var resetResult = function () {
+      result.innerHTML = '<p class="label">等待翻笺</p><h3 class="hv">哪一门手艺，先与你相见？</h3><p>每次会呈现三张不同门类笺。选择后可将它留在本机的雅集册中。</p>';
+    };
+    var deal = function () {
+      choices = shuffle(data).slice(0, Math.min(3, data.length)); opened = false;
+      box.innerHTML = choices.map(cardFace).join(''); resetResult();
+      [].forEach.call(box.querySelectorAll('[data-yaji-card]'), function (button) { button.addEventListener('click', function () { reveal(button.dataset.yajiCard, button); }); });
+    };
+    var reveal = function (id, button) {
+      if (opened) return;
+      var item = data.filter(function (x) { return String(x.id) === String(id); })[0];
+      if (!item) return;
+      opened = true; button.classList.add('is-open');
+      [].forEach.call(box.querySelectorAll('[data-yaji-card]'), function (x) { if (x !== button) x.classList.add('is-rest'); x.disabled = true; });
+      var fresh = seen.indexOf(item.id) < 0;
+      result.innerHTML = '<p class="label">' + (fresh ? '新入一笺' : '已在雅集册中') + '</p><h3 class="hv">' + esc(item.name) + '</h3><p class="yaji-draw-kind">' + esc(item.cat) + ' · ' + numSpan(item.count) + ' 项 / ' + numSpan(item.subitems) + ' 子项</p><p>从“' + esc((item.examples || []).join('、')) + '”等项目，进入这间门类馆的档案脉络。</p><div class="yaji-draw-actions"><button type="button" data-yaji-keep="' + esc(item.id) + '"' + (fresh ? '' : ' disabled') + '>' + (fresh ? '入藏此笺' : '已入藏') + '</button><a href="' + esc(item.href) + '">走入此馆</a></div>';
+      var keep = result.querySelector('[data-yaji-keep]');
+      if (keep) keep.addEventListener('click', function () { if (seen.indexOf(item.id) >= 0) return; seen.push(item.id); save(); paintCount(); keep.disabled = true; keep.textContent = '已入藏'; result.querySelector('.label').textContent = '已收入雅集册'; });
+    };
+    if (refresh) refresh.addEventListener('click', deal);
+    paintCount(); deal();
+  })();
+
   (function () {
     var box = $('home-food');
     if (!box || !window.HOME_FOOD) return;
