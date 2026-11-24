@@ -128,6 +128,75 @@
     if (again) again.addEventListener('click', resetGame);
   })();
 
+  /* ---------- 美食地图互动游戏：山河食旅 ---------- */
+  (function () {
+    var game = $('food-journey'), stops = window.FOOD_JOURNEY;
+    if (!game || !stops || !stops.length) return;
+    var mapStops = game.querySelectorAll('[data-journey-stop]'), runes = game.querySelectorAll('[data-journey-rune]');
+    var place = $('journey-place'), name = $('journey-name'), tone = $('journey-tone'), stamp = $('journey-stamp');
+    var day = $('journey-day'), bag = $('journey-bag'), start = $('journey-start'), status = $('journey-status'), feast = $('journey-feast'), ending = $('journey-ending');
+    var key = 'longflame-food-journey-v1', state = { current: 0, done: {}, ending: false }, pattern = [], input = [], phase = 'idle', timers = [];
+    try { var saved = JSON.parse(localStorage.getItem(key) || 'null'); if (saved && typeof saved.current === 'number' && saved.done) state = saved; } catch (e) {}
+    var save = function () { try { localStorage.setItem(key, JSON.stringify(state)); } catch (e) {} };
+    var clearTimers = function () { while (timers.length) window.clearTimeout(timers.pop()); };
+    var current = function () { return stops[Math.min(state.current, stops.length - 1)]; };
+    var setRunes = function (disabled) {
+      var s = current();
+      for (var i = 0; i < runes.length; i++) { runes[i].querySelector('span').textContent = s.runes[i]; runes[i].disabled = !!disabled; runes[i].classList.remove('pulse', 'good', 'wrong'); }
+    };
+    var render = function () {
+      var s = current(), doneCount = Object.keys(state.done).length;
+      place.textContent = '第' + (state.current + 1) + '站 · ' + s.province + s.city;
+      name.textContent = s.name; tone.textContent = s.tone; stamp.textContent = s.tag; day.textContent = ('0' + (state.current + 1)).slice(-2);
+      for (var i = 0; i < mapStops.length; i++) {
+        var button = mapStops[i], id = button.getAttribute('data-journey-stop');
+        button.classList.toggle('unlocked', i <= state.current); button.classList.toggle('active', i === state.current); button.classList.toggle('done', !!state.done[id]);
+        button.setAttribute('aria-current', i === state.current ? 'step' : 'false');
+      }
+      bag.innerHTML = stops.filter(function (item) { return state.done[item.id]; }).map(function (item) { return '<li>' + esc(item.city) + '</li>'; }).join('');
+      feast.disabled = doneCount !== stops.length; ending.hidden = !state.ending;
+      start.disabled = state.ending; start.textContent = state.ending ? '茶席已成' : (state.done[s.id] ? '回看这一站' : '点亮灯语');
+      phase = 'idle'; input = []; setRunes(true);
+      status.textContent = state.ending ? '四张茶笺已备齐。回到地图继续下一条路线吧。' : (state.done[s.id] ? '这一站的茶笺已收入行囊，继续前往下一站。' : '先点亮灯语，观察它的节奏，再依次触碰三枚线索。');
+    };
+    var pulse = function (index, delay) {
+      timers.push(window.setTimeout(function () { var rune = runes[index]; rune.classList.add('pulse'); timers.push(window.setTimeout(function () { rune.classList.remove('pulse'); }, 420)); }, delay));
+    };
+    var begin = function () {
+      if (state.ending || state.done[current().id]) { status.textContent = state.done[current().id] ? '茶笺已经在行囊里了。可以前往下一站，或重新启程。' : status.textContent; return; }
+      clearTimers(); input = []; phase = 'watch'; setRunes(true);
+      pattern = [0, 1, 2].sort(function () { return Math.random() - .5; });
+      status.textContent = '灯语正在闪现，请记住它的顺序。';
+      for (var i = 0; i < pattern.length; i++) pulse(pattern[i], 430 + i * 820);
+      timers.push(window.setTimeout(function () { phase = 'play'; setRunes(false); status.textContent = '轮到你了：按刚才的节奏，依次触碰三枚线索。'; }, 430 + pattern.length * 820));
+    };
+    var complete = function () {
+      var s = current(); state.done[s.id] = true;
+      if (state.current < stops.length - 1) state.current += 1;
+      save(); render();
+      status.textContent = state.current < stops.length - 1 ? '茶笺已收进行囊，下一站的灯已经亮起。' : '四张茶笺齐备，现在可以筹办江南茶席。';
+    };
+    for (var i = 0; i < runes.length; i++) runes[i].addEventListener('click', function () {
+      if (phase !== 'play') return;
+      var index = +this.getAttribute('data-journey-rune');
+      if (index === pattern[input.length]) {
+        input.push(index); this.classList.add('good');
+        if (input.length === pattern.length) { phase = 'idle'; timers.push(window.setTimeout(complete, 420)); }
+      } else {
+        this.classList.add('wrong'); input = []; status.textContent = '灯语散开了，再听一遍它的节奏。';
+        phase = 'idle'; timers.push(window.setTimeout(function () { setRunes(true); }, 420));
+      }
+    });
+    for (var j = 0; j < mapStops.length; j++) mapStops[j].addEventListener('click', function () {
+      var index = stops.map(function (item) { return item.id; }).indexOf(this.getAttribute('data-journey-stop'));
+      if (index >= 0 && index <= state.current) { clearTimers(); state.current = index; save(); render(); }
+    });
+    start.addEventListener('click', begin);
+    $('journey-reset').addEventListener('click', function () { clearTimers(); state = { current: 0, done: {}, ending: false }; save(); render(); });
+    feast.addEventListener('click', function () { if (!feast.disabled) { state.ending = true; save(); render(); ending.scrollIntoView({ behavior: 'smooth', block: 'center' }); } });
+    render();
+  })();
+
   /* ---------- 手机菜单：按 Esc 或点别处收起 ---------- */
   (function () {
     var m = document.querySelector('.nav-m');
