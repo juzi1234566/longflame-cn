@@ -134,15 +134,23 @@
     if (!game || !stops || !stops.length) return;
     var mapStops = game.querySelectorAll('[data-journey-stop]'), runes = game.querySelectorAll('[data-journey-rune]');
     var place = $('journey-place'), name = $('journey-name'), tone = $('journey-tone'), stamp = $('journey-stamp');
-    var day = $('journey-day'), bag = $('journey-bag'), start = $('journey-start'), status = $('journey-status'), feast = $('journey-feast'), ending = $('journey-ending');
-    var key = 'longflame-food-journey-v1', state = { current: 0, done: {}, ending: false }, pattern = [], input = [], phase = 'idle', timers = [];
-    try { var saved = JSON.parse(localStorage.getItem(key) || 'null'); if (saved && typeof saved.current === 'number' && saved.done) state = saved; } catch (e) {}
+    var day = $('journey-day'), bag = $('journey-bag'), start = $('journey-start'), status = $('journey-status'), feast = $('journey-feast'), ending = $('journey-ending'), travel = $('journey-travel'), events = $('journey-events');
+    var resources = { leaf: $('res-leaf'), spring: $('res-spring'), fire: $('res-fire'), craft: $('res-craft') };
+    var key = 'longflame-food-journey-v2', state = { current: 0, done: {}, visits: {}, resources: { leaf: 0, spring: 0, fire: 0, craft: 0 }, ending: false }, pattern = [], input = [], phase = 'idle', timers = [];
+    try {
+      var saved = JSON.parse(localStorage.getItem(key) || 'null');
+      if (saved && typeof saved.current === 'number' && saved.done && saved.visits && saved.resources) state = saved;
+    } catch (e) {}
     var save = function () { try { localStorage.setItem(key, JSON.stringify(state)); } catch (e) {} };
     var clearTimers = function () { while (timers.length) window.clearTimeout(timers.pop()); };
     var current = function () { return stops[Math.min(state.current, stops.length - 1)]; };
     var setRunes = function (disabled) {
       var s = current();
       for (var i = 0; i < runes.length; i++) { runes[i].querySelector('span').textContent = s.runes[i]; runes[i].disabled = !!disabled; runes[i].classList.remove('pulse', 'good', 'wrong'); }
+    };
+    var eventMarkup = function (s) {
+      if (state.visits[s.id] !== undefined) return '<p class="journey-event-done">已完成走访：' + esc(s.events[state.visits[s.id]][0]) + '</p>';
+      return s.events.map(function (item, index) { return '<button type="button" data-journey-event="' + index + '"><b>' + esc(item[0]) + '</b><span>' + esc(item[1]) + '</span><i>收下 ' + item[3] + ' 份' + esc(item[2] === 'leaf' ? '茶芽' : item[2] === 'spring' ? '山泉' : '火候') + '</i></button>'; }).join('');
     };
     var render = function () {
       var s = current(), doneCount = Object.keys(state.done).length;
@@ -153,17 +161,21 @@
         button.classList.toggle('unlocked', i <= state.current); button.classList.toggle('active', i === state.current); button.classList.toggle('done', !!state.done[id]);
         button.setAttribute('aria-current', i === state.current ? 'step' : 'false');
       }
+      for (var keyName in resources) resources[keyName].textContent = state.resources[keyName] || 0;
       bag.innerHTML = stops.filter(function (item) { return state.done[item.id]; }).map(function (item) { return '<li>' + esc(item.city) + '</li>'; }).join('');
       feast.disabled = doneCount !== stops.length; ending.hidden = !state.ending;
-      start.disabled = state.ending; start.textContent = state.ending ? '茶席已成' : (state.done[s.id] ? '回看这一站' : '点亮灯语');
+      events.innerHTML = eventMarkup(s);
+      start.disabled = state.ending || !!state.done[s.id] || state.visits[s.id] === undefined;
+      start.textContent = state.ending ? '茶席已成' : (state.done[s.id] ? '本地茶笺已收齐' : '前往识香工坊');
+      travel.hidden = !state.done[s.id] || state.current >= stops.length - 1 || state.ending;
       phase = 'idle'; input = []; setRunes(true);
-      status.textContent = state.ending ? '四张茶笺已备齐。回到地图继续下一条路线吧。' : (state.done[s.id] ? '这一站的茶笺已收入行囊，继续前往下一站。' : '先点亮灯语，观察它的节奏，再依次触碰三枚线索。');
+      status.textContent = state.ending ? '四张茶笺已备齐。回到地图继续下一条路线吧。' : (state.done[s.id] ? '这一站的茶笺已收入行囊，准备向下一站启程。' : state.visits[s.id] === undefined ? '先选择一种走访方式，准备这一站的茶事。' : '走访完成。前往工坊，复现这一站的茶事节奏。');
     };
     var pulse = function (index, delay) {
       timers.push(window.setTimeout(function () { var rune = runes[index]; rune.classList.add('pulse'); timers.push(window.setTimeout(function () { rune.classList.remove('pulse'); }, 420)); }, delay));
     };
     var begin = function () {
-      if (state.ending || state.done[current().id]) { status.textContent = state.done[current().id] ? '茶笺已经在行囊里了。可以前往下一站，或重新启程。' : status.textContent; return; }
+      if (state.ending || state.done[current().id] || state.visits[current().id] === undefined) return;
       clearTimers(); input = []; phase = 'watch'; setRunes(true);
       pattern = [0, 1, 2].sort(function () { return Math.random() - .5; });
       status.textContent = '灯语正在闪现，请记住它的顺序。';
@@ -171,10 +183,9 @@
       timers.push(window.setTimeout(function () { phase = 'play'; setRunes(false); status.textContent = '轮到你了：按刚才的节奏，依次触碰三枚线索。'; }, 430 + pattern.length * 820));
     };
     var complete = function () {
-      var s = current(); state.done[s.id] = true;
-      if (state.current < stops.length - 1) state.current += 1;
+      var s = current(); state.done[s.id] = true; state.resources.craft += 1;
       save(); render();
-      status.textContent = state.current < stops.length - 1 ? '茶笺已收进行囊，下一站的灯已经亮起。' : '四张茶笺齐备，现在可以筹办江南茶席。';
+      status.textContent = state.current < stops.length - 1 ? '茶笺与技艺印记已收入行囊，现在可以启程前往下一站。' : '四张茶笺齐备，现在可以筹办江南茶席。';
     };
     for (var i = 0; i < runes.length; i++) runes[i].addEventListener('click', function () {
       if (phase !== 'play') return;
@@ -191,8 +202,15 @@
       var index = stops.map(function (item) { return item.id; }).indexOf(this.getAttribute('data-journey-stop'));
       if (index >= 0 && index <= state.current) { clearTimers(); state.current = index; save(); render(); }
     });
+    events.addEventListener('click', function (event) {
+      var target = event.target.closest('[data-journey-event]'); if (!target || state.visits[current().id] !== undefined) return;
+      var choice = +target.getAttribute('data-journey-event'), item = current().events[choice];
+      state.visits[current().id] = choice; state.resources[item[2]] += item[3]; save(); render();
+      status.textContent = '走访已完成。你收下了旅途素材，可以进入识香工坊。';
+    });
     start.addEventListener('click', begin);
-    $('journey-reset').addEventListener('click', function () { clearTimers(); state = { current: 0, done: {}, ending: false }; save(); render(); });
+    travel.addEventListener('click', function () { if (state.done[current().id] && state.current < stops.length - 1) { state.current += 1; save(); render(); } });
+    $('journey-reset').addEventListener('click', function () { clearTimers(); state = { current: 0, done: {}, visits: {}, resources: { leaf: 0, spring: 0, fire: 0, craft: 0 }, ending: false }; save(); render(); });
     feast.addEventListener('click', function () { if (!feast.disabled) { state.ending = true; save(); render(); ending.scrollIntoView({ behavior: 'smooth', block: 'center' }); } });
     render();
   })();
