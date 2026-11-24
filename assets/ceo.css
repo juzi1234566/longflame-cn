@@ -17,8 +17,8 @@
   --ink: #151A20;       /* 浅色底上的字 */
   --ink-2: #59616B;     /* 浅色底上的次要字 */
   --dim: #B8B7AF;       /* 深色底上的次要字 */
-  --portal-blue: #146497;
-  --portal-blue-deep: #0A3D61;
+  --portal-blue: #314B41;
+  --portal-blue-deep: #17231F;
   --song: "Taishou Song CEO", "Songti SC", "Noto Serif SC", "Source Han Serif SC", "STSong", "SimSun", serif;
   --sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   --num: "EB Garamond", "Taishou Song CEO", "Songti SC", Georgia, serif;
@@ -79,7 +79,7 @@ figcaption, .cap { font-size: 11px; line-height: 1.7; color: var(--ink-2); margi
 
 /* ---------- 顶栏 ---------- */
 .top { background: var(--portal-blue-deep); color: var(--mi); position: relative; z-index: 20; border-bottom: 1px solid rgba(240, 236, 227, .2); }
-.top.over { position: absolute; left: 0; right: 0; top: 0; background: linear-gradient(to bottom, rgba(10, 61, 97, .96), rgba(10, 61, 97, .7)); }
+.top.over { position: absolute; left: 0; right: 0; top: 0; background: linear-gradient(to bottom, rgba(23, 35, 31, .96), rgba(23, 35, 31, .68)); }
 .top-in { height: 78px; display: flex; align-items: center; gap: 22px; }
 .brand { font-size: 20px; letter-spacing: .22em; white-space: nowrap; }
 .nav-drawer { position: relative; margin-left: auto; font-size: 14px; letter-spacing: .12em; white-space: nowrap; }
@@ -110,8 +110,8 @@ figcaption, .cap { font-size: 11px; line-height: 1.7; color: var(--ink-2); margi
 .hero-bg, .hero-bg img { position: absolute; inset: 0; width: 100%; height: 100%; }
 .hero-bg img { object-fit: cover; object-position: 66% 50%; }
 .hero::before { content: ""; position: absolute; inset: 0; z-index: 1; background:
-  linear-gradient(90deg, rgba(10, 61, 97, .94) 0%, rgba(10, 61, 97, .76) 34%, rgba(10, 61, 97, .18) 72%, rgba(10, 61, 97, .34) 100%),
-  linear-gradient(to top, rgba(6, 40, 63, .92) 0%, rgba(6, 40, 63, .3) 32%, rgba(6, 40, 63, 0) 62%); }
+  linear-gradient(90deg, rgba(20, 25, 23, .94) 0%, rgba(28, 43, 37, .76) 34%, rgba(20, 25, 23, .16) 72%, rgba(20, 25, 23, .32) 100%),
+  linear-gradient(to top, rgba(15, 19, 17, .92) 0%, rgba(15, 19, 17, .28) 32%, rgba(15, 19, 17, 0) 62%); }
 .hero::after { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxODAgMTgwJz48ZmlsdGVyIGlkPSduJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nLjknIG51bU9jdGF2ZXM9JzMnIHN0aXRjaFRpbGVzPSdzdGl0Y2gnLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0nMTAwJScgaGVpZ2h0PScxMDAlJyBmaWx0ZXI9J3VybCgjbiknLz48L3N2Zz4="); background-size: 180px 180px; opacity: .025; mix-blend-mode: screen; }
 .hero-in { position: relative; z-index: 3; width: 100%; display: grid; grid-template-rows: 1fr auto; padding-top: 100px; padding-bottom: 34px; min-height: 520px; }
 .hero-title { align-self: center; max-width: 52rem; padding: 34px 0 18px; }
@@ -1007,8 +1007,8 @@ sup a { color: var(--zhe-d); }
   .hero { min-height: min(100svh, 760px); }
   .hero-bg img { object-position: 69% 50%; }
   .hero::before { background:
-    linear-gradient(to right, rgba(10, 61, 97, .84) 0%, rgba(10, 61, 97, .2) 70%),
-    linear-gradient(to top, rgba(6, 40, 63, 1) 0%, rgba(6, 40, 63, .72) 22%, rgba(6, 40, 63, 0) 52%); }
+    linear-gradient(to right, rgba(20, 25, 23, .84) 0%, rgba(28, 43, 37, .22) 70%),
+    linear-gradient(to top, rgba(15, 19, 17, 1) 0%, rgba(15, 19, 17, .72) 22%, rgba(15, 19, 17, 0) 52%); }
   .hero-in { padding-top: 92px; padding-bottom: 36px; min-height: 600px; }
   .hero-title { padding: 28px 0 16px; }.hero-kicker { font-size: 11px; }.slogan { max-width: 6.3em; font-size: clamp(52px, 14.5vw, 72px); margin-left: 4px; }.hero-lead { max-width: 19em; margin-top: 18px; padding-left: 13px; font-size: 15px; }
   .slogan span + span { padding-left: .62em; }
