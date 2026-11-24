@@ -72,6 +72,7 @@ figcaption, .cap { font-size: 11px; line-height: 1.7; color: var(--ink-2); margi
   html { scroll-behavior: auto; }
   .js .rv { opacity: 1; transform: none; transition: none; }
   .slogan span { animation: none !important; }
+  .lantern-sparks i, .lantern-spot span, .lantern-stage > img { animation: none !important; }
 }
 
 /* ---------- 顶栏 ---------- */
@@ -177,18 +178,28 @@ main > .band.paper:last-child, .band.paper:has(+ .band.dark), .band.paper:has(+ 
 .lantern-stage > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .lantern-stage::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1; background: radial-gradient(circle 24vmax at var(--light-x) var(--light-y), rgba(255, 232, 170, 0) 0 14%, rgba(12, 14, 15, .1) 34%, rgba(12, 14, 15, .64) 77%); transition: background .16s linear; }
 .lantern-glow { position: absolute; left: var(--light-x); top: var(--light-y); z-index: 2; width: 34vmax; aspect-ratio: 1; border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; background: radial-gradient(circle, rgba(255, 213, 132, .2), rgba(255, 194, 70, .04) 38%, transparent 70%); mix-blend-mode: screen; }
+.lantern-sparks { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+.lantern-sparks i { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #FBE2A1; box-shadow: 0 0 12px 4px rgba(245, 198, 107, .36); opacity: .55; animation: lanternDrift 5s ease-in-out infinite alternate; }
+.lantern-sparks i:nth-child(1) { left: 18%; top: 32%; animation-delay: -1s; }.lantern-sparks i:nth-child(2) { left: 39%; top: 69%; animation-delay: -3s; }.lantern-sparks i:nth-child(3) { left: 65%; top: 22%; animation-delay: -2s; }.lantern-sparks i:nth-child(4) { left: 77%; top: 61%; animation-delay: -4s; }.lantern-sparks i:nth-child(5) { left: 30%; top: 49%; animation-delay: -.5s; }
 .lantern-spot { position: absolute; z-index: 3; width: 42px; height: 42px; border: 0; border-radius: 50%; background: transparent; cursor: pointer; }
 .lantern-spot span, .lantern-spot::after { position: absolute; content: ""; border-radius: 50%; }
 .lantern-spot span { inset: 13px; background: #F5D28D; box-shadow: 0 0 0 5px rgba(245, 210, 141, .16), 0 0 22px 9px rgba(243, 178, 72, .58); animation: lanternPulse 2.2s ease-in-out infinite; }
 .lantern-spot::after { inset: 2px; border: 1px solid rgba(255, 241, 202, .86); opacity: .6; }
 .lantern-spot:hover span, .lantern-spot:focus-visible span, .lantern-spot.found span { transform: scale(1.18); background: #FFF0BA; }
+.lantern-spot.guided span { animation: lanternGuide .36s ease-in-out 5; background: #FFF7D8; }
 .lantern-spot:focus-visible { outline: 2px solid #FFF0BA; outline-offset: 3px; }
 .lantern-spot.water { left: 9%; bottom: 27%; }
 .lantern-spot.rice { left: 48%; top: 56%; }
 .lantern-spot.stone { right: 16%; bottom: 19%; }
 .lantern-spot.scroll { right: 10%; top: 31%; }
 @keyframes lanternPulse { 50% { box-shadow: 0 0 0 8px rgba(245, 210, 141, .1), 0 0 28px 12px rgba(243, 178, 72, .74); } }
-.lantern-hint { position: absolute; left: 20px; bottom: 18px; z-index: 3; padding: 8px 11px; background: rgba(15, 14, 12, .58); color: rgba(255,255,255,.84); font-size: 12px; letter-spacing: .06em; backdrop-filter: blur(8px); }
+@keyframes lanternDrift { to { transform: translate(18px, -24px); opacity: .95; } }
+@keyframes lanternGuide { 50% { transform: scale(1.9); box-shadow: 0 0 0 11px rgba(255, 238, 181, .2), 0 0 36px 16px rgba(243, 178, 72, .94); } }
+@keyframes lanternReveal { 35% { filter: brightness(1.18) saturate(1.15); } }
+.lantern-stage.discovered > img { animation: lanternReveal .8s ease-out; }
+.lantern-hud { position: absolute; left: 20px; bottom: 18px; z-index: 4; display: flex; align-items: center; gap: 8px; }
+.lantern-hint { margin: 0; padding: 8px 11px; background: rgba(15, 14, 12, .58); color: rgba(255,255,255,.84); font-size: 12px; letter-spacing: .06em; backdrop-filter: blur(8px); }
+.lantern-guide { padding: 8px 11px; border: 1px solid rgba(245, 210, 141, .58); background: rgba(24, 19, 14, .68); color: #F5D28D; font: inherit; font-size: 12px; letter-spacing: .08em; cursor: pointer; backdrop-filter: blur(8px); transition: background .2s ease, color .2s ease; }.lantern-guide:hover, .lantern-guide:focus-visible { background: #F5D28D; color: #1A1510; }
 .lantern-panel { display: flex; min-width: 0; flex-direction: column; padding: 32px 28px; border-left: 1px solid var(--xuan-line); background: #17130F; }
 .lantern-panel > .label { color: var(--jin); }
 .lantern-card { min-height: 186px; margin-top: 20px; padding: 20px; border-top: 1px solid var(--jin); border-bottom: 1px solid var(--xuan-line); }
@@ -196,10 +207,12 @@ main > .band.paper:last-child, .band.paper:has(+ .band.dark), .band.paper:has(+ 
 .lantern-card p:not(.label) { color: var(--dim); font-size: 14px; line-height: 1.85; }
 .lantern-card a { display: inline-block; color: var(--jin); font-size: 13px; letter-spacing: .1em; margin-top: 16px; border-bottom: 1px solid currentColor; }
 .lantern-progress { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 24px; }
-.lantern-progress li { display: flex; align-items: center; gap: 8px; color: var(--dim); font-size: 13px; }
+.lantern-progress li button { display: flex; width: 100%; align-items: center; gap: 8px; padding: 4px 0; border: 0; background: transparent; color: var(--dim); font: inherit; font-size: 13px; text-align: left; cursor: pointer; }
 .lantern-progress i { width: 8px; height: 8px; border: 1px solid var(--dim); border-radius: 50%; }
-.lantern-progress li.found { color: var(--mi); }
+.lantern-progress li.found button { color: var(--mi); }
+.lantern-progress li.found button:hover, .lantern-progress li.found button:focus-visible { color: var(--jin); }
 .lantern-progress li.found i { border-color: var(--jin); background: var(--jin); box-shadow: 0 0 12px rgba(245, 198, 107, .7); }
+.lantern-meter { height: 2px; margin-top: 22px; overflow: hidden; background: var(--xuan-line); }.lantern-meter i { display: block; width: 0; height: 100%; background: linear-gradient(90deg, #946E32, #F5D28D); box-shadow: 0 0 12px rgba(245, 198, 107, .58); transition: width .46s ease; }
 .lantern-reset { align-self: flex-start; margin-top: auto; padding: 0 0 3px; color: var(--dim); font: inherit; font-size: 12px; letter-spacing: .12em; background: transparent; border: 0; border-bottom: 1px solid currentColor; cursor: pointer; }
 .lantern-reset:hover, .lantern-reset:focus-visible { color: var(--jin); }
 .lantern-finish { grid-column: 1 / -1; padding: 34px 38px 38px; border-top: 1px solid var(--jin); background: #201811; }
@@ -207,6 +220,7 @@ main > .band.paper:last-child, .band.paper:has(+ .band.dark), .band.paper:has(+ 
 .lantern-finish h2 { font-size: 36px; letter-spacing: .1em; margin-top: 10px; }
 .lantern-finish p:not(.label) { max-width: 48em; color: var(--dim); font-size: 15px; line-height: 1.85; margin-top: 10px; }
 .lantern-finish .btn { margin-top: 22px; }
+.lantern-finish-actions { display: flex; gap: 14px; align-items: center; }.lantern-finish-actions button { margin-top: 22px; padding: 10px 0; border: 0; border-bottom: 1px solid var(--dim); background: transparent; color: var(--dim); font: inherit; font-size: 13px; letter-spacing: .08em; cursor: pointer; }.lantern-finish-actions button:hover, .lantern-finish-actions button:focus-visible { color: var(--jin); border-color: var(--jin); }
 .lantern-note { color: var(--ink-2); font-size: 12px; line-height: 1.7; margin-top: 12px; }
 
 /* ---------- 首页：十大雅集卡片 ---------- */
@@ -1136,10 +1150,12 @@ sup a { color: var(--zhe-d); }
   .lantern-stage { min-height: 440px; }
   .lantern-stage > img { object-position: 48% center; }
   .lantern-stage::after { background: radial-gradient(circle 34vmax at var(--light-x) var(--light-y), rgba(255, 232, 170, 0) 0 14%, rgba(12, 14, 15, .12) 34%, rgba(12, 14, 15, .62) 77%); }
+  .lantern-hud { left: 14px; right: 14px; bottom: 14px; align-items: stretch; }.lantern-hint { flex: 1; }.lantern-guide { flex: 0 0 auto; }
   .lantern-panel { padding: 25px 20px; border-top: 1px solid var(--xuan-line); border-left: 0; }
   .lantern-card { min-height: 0; }
   .lantern-finish { padding: 26px 20px 30px; }
   .lantern-finish h2 { font-size: 28px; }
+  .lantern-finish-actions { flex-wrap: wrap; }
   .home-people { grid-template-columns: 1fr; }
   .pc-photo { aspect-ratio: 1 / 1; }
   .goods-strip { grid-template-columns: 1fr; }
