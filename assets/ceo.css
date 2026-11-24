@@ -72,7 +72,7 @@ figcaption, .cap { font-size: 11px; line-height: 1.7; color: var(--ink-2); margi
   html { scroll-behavior: auto; }
   .js .rv { opacity: 1; transform: none; transition: none; }
   .slogan span { animation: none !important; }
-  .lantern-sparks i, .lantern-spot span, .lantern-stage > img { animation: none !important; }
+  .lantern-sparks i, .lantern-spot span, .lantern-stage > img, .lantern-token-fly { animation: none !important; }
 }
 
 /* ---------- 顶栏 ---------- */
@@ -178,6 +178,8 @@ main > .band.paper:last-child, .band.paper:has(+ .band.dark), .band.paper:has(+ 
 .lantern-stage > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .lantern-stage::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1; background: radial-gradient(circle 24vmax at var(--light-x) var(--light-y), rgba(255, 232, 170, 0) 0 14%, rgba(12, 14, 15, .1) 34%, rgba(12, 14, 15, .64) 77%); transition: background .16s linear; }
 .lantern-glow { position: absolute; left: var(--light-x); top: var(--light-y); z-index: 2; width: 34vmax; aspect-ratio: 1; border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; background: radial-gradient(circle, rgba(255, 213, 132, .2), rgba(255, 194, 70, .04) 38%, transparent 70%); mix-blend-mode: screen; }
+.lantern-carrier { position: absolute; left: var(--light-x); top: calc(var(--light-y) - 31px); z-index: 4; width: 24px; height: 31px; transform: translate(-50%, -100%); pointer-events: none; opacity: 0; transition: opacity .22s ease, left .12s linear, top .12s linear; }
+.lantern-carrier.moving { opacity: 1; }.lantern-carrier::before { content: ""; position: absolute; left: 10px; top: -20px; width: 1px; height: 21px; background: rgba(255, 236, 186, .78); }.lantern-carrier i { position: absolute; inset: 7px 3px 0; border: 1px solid #F5D28D; border-radius: 5px 5px 8px 8px; background: radial-gradient(circle at 50% 42%, #FFF3B7 0 10%, #D68A2B 40%, #813A17 100%); box-shadow: 0 0 18px 5px rgba(245, 184, 84, .52); }.lantern-carrier b { position: absolute; left: 7px; top: 0; width: 10px; height: 10px; border: 1px solid #F5D28D; border-bottom: 0; border-radius: 9px 9px 0 0; }
 .lantern-sparks { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
 .lantern-sparks i { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #FBE2A1; box-shadow: 0 0 12px 4px rgba(245, 198, 107, .36); opacity: .55; animation: lanternDrift 5s ease-in-out infinite alternate; }
 .lantern-sparks i:nth-child(1) { left: 18%; top: 32%; animation-delay: -1s; }.lantern-sparks i:nth-child(2) { left: 39%; top: 69%; animation-delay: -3s; }.lantern-sparks i:nth-child(3) { left: 65%; top: 22%; animation-delay: -2s; }.lantern-sparks i:nth-child(4) { left: 77%; top: 61%; animation-delay: -4s; }.lantern-sparks i:nth-child(5) { left: 30%; top: 49%; animation-delay: -.5s; }
@@ -197,6 +199,8 @@ main > .band.paper:last-child, .band.paper:has(+ .band.dark), .band.paper:has(+ 
 @keyframes lanternGuide { 50% { transform: scale(1.9); box-shadow: 0 0 0 11px rgba(255, 238, 181, .2), 0 0 36px 16px rgba(243, 178, 72, .94); } }
 @keyframes lanternReveal { 35% { filter: brightness(1.18) saturate(1.15); } }
 .lantern-stage.discovered > img { animation: lanternReveal .8s ease-out; }
+.lantern-token-fly { position: absolute; left: var(--token-x); top: var(--token-y); z-index: 7; display: grid; width: 42px; height: 42px; place-items: center; border: 1px solid #F7DB9C; border-radius: 50%; background: rgba(38, 25, 15, .92); color: #FFF0BA; font-family: var(--song); font-size: 20px; box-shadow: 0 0 0 8px rgba(245, 210, 141, .12), 0 0 28px rgba(245, 198, 107, .64); transform: translate(-50%, -50%); pointer-events: none; animation: lanternToken .94s cubic-bezier(.16,.8,.24,1) forwards; }
+@keyframes lanternToken { 55% { opacity: 1; } 100% { transform: translate(28vw, -22vh) scale(.32) rotate(18deg); opacity: 0; } }
 .lantern-hud { position: absolute; left: 20px; bottom: 18px; z-index: 4; display: flex; align-items: center; gap: 8px; }
 .lantern-hint { margin: 0; padding: 8px 11px; background: rgba(15, 14, 12, .58); color: rgba(255,255,255,.84); font-size: 12px; letter-spacing: .06em; backdrop-filter: blur(8px); }
 .lantern-guide { padding: 8px 11px; border: 1px solid rgba(245, 210, 141, .58); background: rgba(24, 19, 14, .68); color: #F5D28D; font: inherit; font-size: 12px; letter-spacing: .08em; cursor: pointer; backdrop-filter: blur(8px); transition: background .2s ease, color .2s ease; }.lantern-guide:hover, .lantern-guide:focus-visible { background: #F5D28D; color: #1A1510; }
@@ -207,11 +211,13 @@ main > .band.paper:last-child, .band.paper:has(+ .band.dark), .band.paper:has(+ 
 .lantern-card p:not(.label) { color: var(--dim); font-size: 14px; line-height: 1.85; }
 .lantern-card a { display: inline-block; color: var(--jin); font-size: 13px; letter-spacing: .1em; margin-top: 16px; border-bottom: 1px solid currentColor; }
 .lantern-progress { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 24px; }
-.lantern-progress li button { display: flex; width: 100%; align-items: center; gap: 8px; padding: 4px 0; border: 0; background: transparent; color: var(--dim); font: inherit; font-size: 13px; text-align: left; cursor: pointer; }
-.lantern-progress i { width: 8px; height: 8px; border: 1px solid var(--dim); border-radius: 50%; }
+.lantern-ledger > p { margin-top: 20px; color: var(--dim); font-size: 11px; letter-spacing: .12em; }.lantern-ledger .lantern-progress { margin-top: 12px; }
+.lantern-progress li button { display: grid; width: 100%; grid-template-columns: 25px 1fr auto; align-items: center; gap: 7px; min-height: 42px; padding: 6px 8px; border: 1px solid rgba(255,255,255,.06); background: rgba(255,255,255,.015); color: var(--dim); font: inherit; font-size: 13px; text-align: left; cursor: pointer; transition: border-color .25s ease, background .25s ease, color .25s ease; }
+.lantern-progress i { display: grid; width: 23px; height: 23px; place-items: center; border: 1px solid var(--dim); border-radius: 50%; color: transparent; font-family: var(--song); font-size: 12px; font-style: normal; }
+.lantern-progress b { color: var(--jin); font-size: 10px; font-weight: 400; letter-spacing: .06em; opacity: 0; }
 .lantern-progress li.found button { color: var(--mi); }
-.lantern-progress li.found button:hover, .lantern-progress li.found button:focus-visible { color: var(--jin); }
-.lantern-progress li.found i { border-color: var(--jin); background: var(--jin); box-shadow: 0 0 12px rgba(245, 198, 107, .7); }
+.lantern-progress li.found button:hover, .lantern-progress li.found button:focus-visible { color: var(--jin); border-color: rgba(245, 210, 141, .5); background: rgba(245, 210, 141, .07); }
+.lantern-progress li.found i { border-color: var(--jin); background: rgba(245, 198, 107, .14); color: var(--jin); box-shadow: 0 0 12px rgba(245, 198, 107, .42); }.lantern-progress li.found b { opacity: 1; }.lantern-progress button:disabled { cursor: default; opacity: .54; }
 .lantern-meter { height: 2px; margin-top: 22px; overflow: hidden; background: var(--xuan-line); }.lantern-meter i { display: block; width: 0; height: 100%; background: linear-gradient(90deg, #946E32, #F5D28D); box-shadow: 0 0 12px rgba(245, 198, 107, .58); transition: width .46s ease; }
 .lantern-reset { align-self: flex-start; margin-top: auto; padding: 0 0 3px; color: var(--dim); font: inherit; font-size: 12px; letter-spacing: .12em; background: transparent; border: 0; border-bottom: 1px solid currentColor; cursor: pointer; }
 .lantern-reset:hover, .lantern-reset:focus-visible { color: var(--jin); }
@@ -220,6 +226,7 @@ main > .band.paper:last-child, .band.paper:has(+ .band.dark), .band.paper:has(+ 
 .lantern-finish h2 { font-size: 36px; letter-spacing: .1em; margin-top: 10px; }
 .lantern-finish p:not(.label) { max-width: 48em; color: var(--dim); font-size: 15px; line-height: 1.85; margin-top: 10px; }
 .lantern-finish .btn { margin-top: 22px; }
+.lantern-constellation { display: flex; gap: 0; max-width: 520px; margin-top: 24px; overflow: hidden; border: 1px solid rgba(245, 210, 141, .24); }.lantern-constellation li { position: relative; display: grid; flex: 1; min-width: 0; place-items: center; gap: 5px; padding: 14px 8px; background: rgba(255,255,255,.02); text-align: center; }.lantern-constellation li + li::before { content: ""; position: absolute; left: -50%; top: 27px; width: 100%; border-top: 1px dashed rgba(245, 210, 141, .5); }.lantern-constellation i { position: relative; z-index: 1; display: grid; width: 28px; height: 28px; place-items: center; border: 1px solid var(--jin); border-radius: 50%; background: #2A1E14; color: var(--jin); font-family: var(--song); font-style: normal; }.lantern-constellation span { color: var(--dim); font-size: 11px; }
 .lantern-finish-actions { display: flex; gap: 14px; align-items: center; }.lantern-finish-actions button { margin-top: 22px; padding: 10px 0; border: 0; border-bottom: 1px solid var(--dim); background: transparent; color: var(--dim); font: inherit; font-size: 13px; letter-spacing: .08em; cursor: pointer; }.lantern-finish-actions button:hover, .lantern-finish-actions button:focus-visible { color: var(--jin); border-color: var(--jin); }
 .lantern-note { color: var(--ink-2); font-size: 12px; line-height: 1.7; margin-top: 12px; }
 
@@ -1156,6 +1163,7 @@ sup a { color: var(--zhe-d); }
   .lantern-finish { padding: 26px 20px 30px; }
   .lantern-finish h2 { font-size: 28px; }
   .lantern-finish-actions { flex-wrap: wrap; }
+  .lantern-constellation { width: 100%; }.lantern-constellation li { padding: 12px 4px; }
   .home-people { grid-template-columns: 1fr; }
   .pc-photo { aspect-ratio: 1 / 1; }
   .goods-strip { grid-template-columns: 1fr; }

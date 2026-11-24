@@ -51,7 +51,7 @@
   (function () {
     var game = $('lantern-game'), facts = window.LANTERN_FACTS;
     if (!game || !facts || !facts.length) return;
-    var stage = game.querySelector('.lantern-stage'), card = $('lantern-card');
+    var stage = game.querySelector('.lantern-stage'), card = $('lantern-card'), carrier = game.querySelector('.lantern-carrier');
     var count = $('lantern-count'), finish = $('lantern-finish'), hint = $('lantern-hint'), meter = $('lantern-meter'), guide = $('lantern-guide');
     var found = {}, total = facts.length;
     var setLight = function (event) {
@@ -60,6 +60,9 @@
       var y = Math.max(0, Math.min(100, (event.clientY - box.top) / box.height * 100));
       stage.style.setProperty('--light-x', x + '%');
       stage.style.setProperty('--light-y', y + '%');
+      stage.style.setProperty('--token-x', x + '%');
+      stage.style.setProperty('--token-y', y + '%');
+      if (carrier) carrier.classList.add('moving');
     };
     var render = function (id) {
       var item = null;
@@ -73,12 +76,16 @@
       var spot = game.querySelector('[data-lantern-id="' + id + '"]');
       var progress = game.querySelector('[data-lantern-progress="' + id + '"]');
       if (spot) { spot.classList.add('found'); spot.setAttribute('aria-pressed', 'true'); }
-      if (progress) progress.classList.add('found');
+      if (progress) { progress.classList.add('found'); var reviewButton = progress.querySelector('button'); if (reviewButton) reviewButton.disabled = false; }
       if (meter) meter.style.width = (n / total * 100) + '%';
       if (fresh) {
         stage.classList.remove('discovered');
         window.setTimeout(function () { stage.classList.add('discovered'); }, 10);
         window.setTimeout(function () { stage.classList.remove('discovered'); }, 820);
+        var token = document.createElement('span');
+        token.className = 'lantern-token-fly'; token.textContent = item.glyph || '灯';
+        stage.appendChild(token);
+        window.setTimeout(function () { if (token.parentNode) token.parentNode.removeChild(token); }, 950);
       }
       if (hint) hint.textContent = n === total ? '四处线索已点亮。' : '已点亮 ' + n + ' 条线索，再找找其余的微光。';
       if (finish) finish.hidden = n !== total;
@@ -113,7 +120,7 @@
       if (finish) finish.hidden = true;
       for (var j = 0; j < spots.length; j++) { spots[j].classList.remove('found'); spots[j].setAttribute('aria-pressed', 'false'); }
       var progress = game.querySelectorAll('[data-lantern-progress]');
-      for (var k = 0; k < progress.length; k++) progress[k].classList.remove('found');
+      for (var k = 0; k < progress.length; k++) { progress[k].classList.remove('found'); var reviewButton = progress[k].querySelector('button'); if (reviewButton) reviewButton.disabled = true; }
       stage.scrollIntoView({ behavior: 'smooth', block: 'center' });
     };
     if (reset) reset.addEventListener('click', resetGame);
