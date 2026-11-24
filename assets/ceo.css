@@ -123,6 +123,15 @@ figcaption, .cap { font-size: 11px; line-height: 1.7; color: var(--ink-2); margi
 .hero-ep i { font-style: normal; font-size: 14px; letter-spacing: .14em; color: var(--jin); border-bottom: 1px solid var(--jin); padding-bottom: 2px; }
 .hero-cap { position: absolute; right: 14px; top: 50%; z-index: 3; writing-mode: vertical-rl; font-size: 10px; letter-spacing: .3em; color: rgba(239, 231, 214, .62); }
 
+/* ---------- 首页：四个清晰入口 ---------- */
+.home-hubs-band { padding-top: 76px; padding-bottom: 82px; }
+.home-hubs-head { display: flex; align-items: end; justify-content: space-between; gap: 44px; padding-bottom: 25px; border-bottom: 1px solid var(--mi-line); }
+.home-hubs-head h2 { margin-top: 7px; font-size: clamp(36px, 4.1vw, 56px); letter-spacing: .12em; line-height: 1.25; }.home-hubs-head > p { max-width: 31em; color: var(--ink-2); font-size: 15px; line-height: 1.85; }
+.home-hubs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-bottom: 1px solid var(--mi-line); }
+.home-hubs li { min-width: 0; border-right: 1px solid var(--mi-line); }.home-hubs li:last-child { border-right: 0; }
+.home-hubs a { position: relative; display: flex; min-height: 268px; flex-direction: column; align-items: flex-start; padding: 27px 24px; overflow: hidden; transition: background-color .3s ease, color .3s ease; }.home-hubs a::after { content: ""; position: absolute; right: -25px; bottom: -35px; width: 125px; height: 125px; border: 1px solid currentColor; border-radius: 50%; opacity: .09; transition: transform .4s ease, opacity .35s ease; }.home-hubs a:hover, .home-hubs a:focus-visible { background: var(--ink); color: var(--mi); outline: 0; }.home-hubs a:hover::after, .home-hubs a:focus-visible::after { opacity: .26; transform: scale(1.35); }
+.home-hub-no { color: var(--zhe); font-size: 15px; letter-spacing: .08em; }.home-hubs h2 { margin-top: 24px; font-size: 28px; letter-spacing: .08em; line-height: 1.4; }.home-hubs p { margin-top: 12px; color: var(--ink-2); font-size: 14px; line-height: 1.85; transition: color .3s ease; }.home-hubs b { margin-top: auto; padding-top: 20px; color: var(--zhe); font-size: 13px; font-weight: 400; letter-spacing: .09em; }.home-hubs a:hover p, .home-hubs a:focus-visible p { color: var(--dim); }.home-hubs a:hover b, .home-hubs a:focus-visible b { color: var(--jin); }
+
 /* ---------- 色带、栏头 ---------- */
 .band { padding: 104px 0; }
 .band.paper { background: var(--mi); color: var(--ink); }
@@ -245,6 +254,8 @@ main > .band.paper:last-child, .band.paper:has(+ .band.dark), .band.paper:has(+ 
 
 /* ---------- 首页：十大雅集卡片 ---------- */
 .yj-cards { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+.yj-cards-featured { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 920px; }
+.home-hall-index { margin-top: 24px; border-top: 1px solid var(--xuan-line); border-bottom: 1px solid var(--xuan-line); }.home-hall-index summary { display: flex; align-items: center; min-height: 54px; color: var(--dim); font-size: 13px; letter-spacing: .12em; cursor: pointer; list-style: none; }.home-hall-index summary::-webkit-details-marker { display: none; }.home-hall-index summary::after { content: "+"; margin-left: auto; color: var(--jin); font-size: 20px; }.home-hall-index[open] summary { color: var(--mi); border-bottom: 1px solid var(--xuan-line); }.home-hall-index[open] summary::after { content: "−"; }.home-hall-index ol { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }.home-hall-index li { min-width: 0; border-right: 1px solid var(--xuan-line); border-bottom: 1px solid var(--xuan-line); }.home-hall-index li:nth-child(5n) { border-right: 0; }.home-hall-index li:nth-last-child(-n+5) { border-bottom: 0; }.home-hall-index a { display: block; padding: 15px; transition: background-color .25s ease; }.home-hall-index a:hover, .home-hall-index a:focus-visible { background: rgba(239,231,214,.06); outline: 0; }.home-hall-index b { display: block; font-family: var(--song); font-size: 18px; font-weight: 400; letter-spacing: .06em; }.home-hall-index span { display: block; margin-top: 6px; color: var(--dim); font-size: 11px; letter-spacing: .05em; line-height: 1.45; }
 .yj-card { position: relative; display: flex; align-items: center; justify-content: center; aspect-ratio: 3 / 4.1; background: radial-gradient(120% 95% at 50% 38%, #241E1A 0%, #1C1713 48%, #141210 100%); border: 1px solid var(--xuan-line); overflow: hidden; transition: border-color .4s ease, box-shadow .4s ease; }
 .yj-card::before { content: ""; position: absolute; inset: 0; z-index: 1; opacity: .08; background-repeat: repeat; background-position: center; background-size: 120px 160px; pointer-events: none; transition: opacity .4s ease; }
 .yj-cards li:nth-child(1) .yj-card::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 160'%3E%3Cg fill='none' stroke='%23BD9A5F' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M-10 120 Q20 70 45 105 T95 85 T135 110'/%3E%3Cpath d='M-10 135 Q25 85 50 120 T100 100 T140 125'/%3E%3Cpath d='M-10 150 Q30 100 55 135 T105 115 T145 140'/%3E%3Cpath d='M0 95 Q25 55 48 82 T92 62 T130 90'/%3E%3C/g%3E%3C/svg%3E"); }
@@ -995,6 +1006,7 @@ sup a { color: var(--zhe-d); }
   .hero-ep { text-align: left; grid-template-columns: 1fr auto; }
   .hero-ep b { font-size: 21px; }
   .hero-cap { right: 6px; top: 42%; }
+  .home-hubs-band { padding-top: 54px; padding-bottom: 58px; }.home-hubs-head { display: block; padding-bottom: 18px; }.home-hubs-head h2 { font-size: 34px; }.home-hubs-head > p { margin-top: 12px; font-size: 14px; }.home-hubs { grid-template-columns: 1fr 1fr; }.home-hubs li:nth-child(2) { border-right: 0; }.home-hubs li:nth-child(-n+2) { border-bottom: 1px solid var(--mi-line); }.home-hubs a { min-height: 208px; padding: 20px 16px; }.home-hubs h2 { margin-top: 17px; font-size: 23px; }.home-hubs p { font-size: 13px; line-height: 1.7; }.home-hubs b { padding-top: 16px; font-size: 12px; }
   .feat { grid-template-columns: 1fr; row-gap: 26px; }
   .feat-b h3 { font-size: 32px; margin: 20px 0 22px; }
   .band.episode-band { padding: 52px 0 72px; }
@@ -1005,6 +1017,7 @@ sup a { color: var(--zhe-d); }
   .episode-feature-lead { font-size: 17px; margin: 16px 0 22px; }
   .episode-feature .go { margin-top: 24px; }
   .yj-cards { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .home-hall-index ol { grid-template-columns: 1fr 1fr; }.home-hall-index li, .home-hall-index li:nth-child(5n) { border-right: 1px solid var(--xuan-line); border-bottom: 1px solid var(--xuan-line); }.home-hall-index li:nth-child(2n) { border-right: 0; }.home-hall-index li:nth-last-child(-n+2) { border-bottom: 0; }
   .yj-card { aspect-ratio: 1 / 1.3; align-items: flex-start; padding-top: 20px; }
   .yj-card::after { inset: 5px; }
   .yj-name, .yj-card:hover .yj-name, .yj-card:focus-visible .yj-name { font-size: 30px; transform: none; }
@@ -1187,6 +1200,7 @@ sup a { color: var(--zhe-d); }
 }
 
 @media (max-width: 560px) {
+  .home-hubs { grid-template-columns: 1fr; }.home-hubs li, .home-hubs li:nth-child(2) { border-right: 0; border-bottom: 1px solid var(--mi-line); }.home-hubs li:last-child { border-bottom: 0; }.home-hubs a { min-height: 0; padding: 20px 14px; }.home-hubs h2 { margin-top: 12px; }.home-hubs p { max-width: 28em; }.home-hubs b { margin-top: 16px; padding-top: 0; }
   .band.yaji-draw-band { padding-top: 46px; padding-bottom: 48px; }
   .yaji-draw { padding: 22px 16px; }.yaji-draw-head { display: block; padding: 4px 4px 22px; }.yaji-draw-head h2 { font-size: 35px; }.yaji-draw-head p:not(.label) { font-size: 14px; }.yaji-draw-count { display: inline-flex; margin-top: 20px; }.yaji-quest { flex-wrap: wrap; gap: 9px 13px; padding: 14px 4px; }.yaji-quest > p:last-child { width: 100%; margin-left: 0; font-size: 12px; }.yaji-quest ol { gap: 10px; }
   .yaji-draw-stage { grid-template-columns: 1fr; gap: 4px; min-height: 0; padding: 22px 0 10px; }.yaji-draw-orbit { left: 9%; top: 18%; width: 80%; }.yaji-draw-cards { min-height: 245px; padding: 6px 12px; }.yaji-draw-card { width: min(31vw, 150px); }.yaji-draw-card-back i { font-size: 43px; }.yaji-draw-card-front b { font-size: 17px; padding-bottom: 13px; }.yaji-draw-result { min-height: 0; padding: 24px 6px 18px; border-top: 1px solid var(--xuan-line); border-left: 0; background: none; }.yaji-draw-result h3 { font-size: 27px; }.yaji-draw-foot { display: block; padding: 18px 4px 4px; }.yaji-draw-refresh { margin-top: 14px; }
