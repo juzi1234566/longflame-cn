@@ -280,7 +280,7 @@
       if (!list.length) { panel.innerHTML = h + '<p class="panel-empty">当前筛选下暂未收录；可切换到“全部风味”继续探索。</p>'; return; }
       var picks = list.slice(0, 3);
       panel.innerHTML = h + '<ul class="map-food-cards">' + picks.map(function (x) {
-        var photo = x.p ? '<img src="' + esc(x.p) + '" alt="' + esc(x.n) + '（AI 演绎）" width="480" height="480" loading="lazy">' : (x.g ? '<img src="' + esc(x.g[0]) + '" alt="' + esc(x.g[1]) + '" width="240" height="180" loading="lazy">' : '<span>暂无配图</span>');
+        var photo = x.p ? '<img src="' + esc(x.p) + '" alt="' + esc(x.n) + '" width="480" height="480" loading="lazy">' : (x.g ? '<img src="' + esc(x.g[0]) + '" alt="' + esc(x.g[1]) + '" width="240" height="180" loading="lazy">' : '<span>暂无配图</span>');
         var isCompared = compared.indexOf(String(x.id)) >= 0;
         return '<li><div class="map-food-img ph r11">' + photo + '</div><div><p class="map-food-type">' + esc(x.f) + '</p><h3>' + esc(x.n) + '</h3><p class="r">' + esc(x.r) + '</p><p class="map-card-actions"><button type="button" class="food-detail" data-food-id="' + esc(x.id) + '">查看详情</button><button type="button" class="food-favorite" data-food-id="' + esc(x.id) + '" aria-pressed="' + (isFavorite(x.id) ? 'true' : 'false') + '">' + (isFavorite(x.id) ? '已收藏' : '收藏') + '</button><button type="button" class="food-compare" data-food-id="' + esc(x.id) + '" aria-pressed="' + (isCompared ? 'true' : 'false') + '">对比</button></p><a class="src" href="' + esc(x.u) + '" target="_blank" rel="noopener">官方资料 ' + ARROW + '</a></div></li>';
       }).join('') + '</ul>' + (list.length > picks.length ? '<p class="panel-more">本省还有 ' + numSpan(list.length - picks.length) + ' 项，可在完整清单中继续浏览。</p>' : '');
@@ -350,7 +350,7 @@
       if (favoritesDialog && favoritesDialog.open) renderFavorites();
     };
     var imageFor = function (x) {
-      if (x.p) return '<figure><div class="ph r11"><img src="' + esc(x.p) + '" alt="' + esc(x.n) + '（AI 演绎）" width="480" height="480"></div><figcaption>AI 演绎</figcaption></figure>';
+      if (x.p) return '<figure><div class="ph r11"><img src="' + esc(x.p) + '" alt="' + esc(x.n) + '" width="480" height="480"></div></figure>';
       if (x.g) return '<figure><div class="ph r43"><img src="' + esc(x.g[0]) + '" alt="' + esc(x.g[1]) + '" width="480" height="360"></div><figcaption>' + esc(x.g[2]) + '</figcaption></figure>';
       return '<div class="food-dialog-no-image">暂无配图</div>';
     };
