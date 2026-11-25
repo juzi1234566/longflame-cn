@@ -690,7 +690,7 @@
       if (!d) return;
       btns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-prov') === prov)); });
       shot.innerHTML = d.photo
-        ? '<img id="home-food-img" src="' + esc(d.photo) + '" alt="' + esc(d.s + ' · ' + d.name) + '（AI 演绎示意）" width="480" height="480"><figcaption>AI 演绎示意</figcaption>'
+        ? '<img id="home-food-img" src="' + esc(d.photo) + '" alt="' + esc(d.s + ' · ' + d.name) + '" width="480" height="480">'
         : '<span class="food-empty">该省暂无示意图片</span><figcaption>暂未收录</figcaption>';
       name.textContent = d.s + ' · ' + d.name;
       num.textContent = '编号 ' + (d.num || '—') + ' · ' + d.n + ' 项子项目';
