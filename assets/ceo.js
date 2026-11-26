@@ -474,38 +474,6 @@
     fromHash();
     if (!current && panel.dataset.default && PROVS[panel.dataset.default]) select(panel.dataset.default, true);
     refresh();
-    /* 中国省级地图：本地 GeoJSON 转为可点击的 SVG，避免依赖第三方脚本。 */
-    var renderChinaMap = function (geo) {
-      if (!geo || !geo.features || !box) return;
-      var minLon = 73.5, maxLon = 135.1, minLat = 18, maxLat = 54.5, w = 720, h = 510, ox = 10, oy = 10;
-      var alias = { '台湾省': '台湾', '香港特别行政区': '香港', '澳门特别行政区': '澳门' };
-      var project = function (p) { return [ox + (p[0] - minLon) / (maxLon - minLon) * w, oy + (maxLat - p[1]) / (maxLat - minLat) * h]; };
-      var ring = function (points) { return points.map(function (p, i) { var q = project(p); return (i ? 'L' : 'M') + q[0].toFixed(1) + ' ' + q[1].toFixed(1); }).join('') + 'Z'; };
-      var shape = function (g) {
-        var parts = g.type === 'Polygon' ? [g.coordinates] : g.coordinates;
-        return parts.map(function (poly) { return poly.map(ring).join(''); }).join('');
-      };
-      var center = function (g) {
-        var points = [], take = function (x) { if (typeof x[0] === 'number') points.push(x); else x.forEach(take); }; take(g.coordinates);
-        var sum = points.reduce(function (a, p) { a[0] += p[0]; a[1] += p[1]; return a; }, [0, 0]); return project([sum[0] / points.length, sum[1] / points.length]);
-      };
-      var markup = '';
-      geo.features.forEach(function (feature) {
-        var prov = alias[feature.properties.name] || feature.properties.name;
-        if (!PROVS[prov]) return;
-        var c = center(feature.geometry), short = PROVS[prov].s || prov;
-        markup += '<path class="tile' + ((PROVS[prov].items || []).length ? '' : ' empty') + '" d="' + shape(feature.geometry) + '" fill-rule="evenodd" data-prov="' + esc(prov) + '" data-short="' + esc(short) + '" data-r="' + c[1].toFixed(1) + '" data-c="' + c[0].toFixed(1) + '" role="button" tabindex="0" aria-pressed="false"><title>' + esc(short) + '</title></path>';
-        markup += '<text class="map-province-label" x="' + c[0].toFixed(1) + '" y="' + c[1].toFixed(1) + '" text-anchor="middle">' + esc(short) + '</text>';
-      });
-      box.innerHTML = markup;
-      tiles = [].slice.call(box.querySelectorAll('.tile')); grid = tiles;
-      tiles.forEach(function (t) { t.addEventListener('click', function () { select(t.dataset.prov); }); });
-      paintTiles();
-      if (current) select(current, true);
-    };
-    if (window.fetch) fetch('assets/china-provinces.geojson').then(function (r) { return r.ok ? r.json() : null; }).then(renderChinaMap).catch(function () {
-      box.innerHTML = '<text x="370" y="270" text-anchor="middle" class="map-loading">地图暂未载入，请刷新后重试。</text>';
-    });
   })();
 
   /* ---------- 门类馆：按地区、关键词、排序浏览项目档案库 ---------- */
