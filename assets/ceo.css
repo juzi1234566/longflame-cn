@@ -28,7 +28,8 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
-body { margin: 0; background: var(--xuan); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.85; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+body { margin: 0; background: var(--mi); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.85; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+main { position: relative; z-index: 1; }
 h1, h2, h3, h4, p, blockquote, figure, dl, dd, ol, ul { margin: 0; }
 h1, h2, h3, h4 { font-weight: 400; }
 ol, ul { list-style: none; padding: 0; }
@@ -960,7 +961,7 @@ sup a { color: var(--zhe-d); }
 .search-res .more-n { font-size: 12px; color: var(--ink-2); margin-top: 10px; }
 
 /* ---------- 页脚 ---------- */
-.foot { position: relative; background: var(--xuan); color: var(--mi); border-top: 1px solid var(--xuan-line); padding: 72px 0 28px; }
+.foot { position: relative; z-index: 1; background: var(--xuan); color: var(--mi); border-top: 1px solid var(--xuan-line); padding: 72px 0 28px; }
 .foot::before { content: ""; position: absolute; inset: 0; pointer-events: none; background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxODAgMTgwJz48ZmlsdGVyIGlkPSduJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nLjknIG51bU9jdGF2ZXM9JzMnIHN0aXRjaFRpbGVzPSdzdGl0Y2gnLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0nMTAwJScgaGVpZ2h0PScxMDAlJyBmaWx0ZXI9J3VybCgjbiknLz48L3N2Zz4="); background-size: 180px 180px; opacity: .025; mix-blend-mode: screen; }
 .foot > .wrap { position: relative; z-index: 1; }
 .foot-cols { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; column-gap: 32px; row-gap: 40px; }
@@ -1321,6 +1322,11 @@ body[data-page="home"] .home-hubs a::before { border-color: #CEC7BA; }
 body[data-page="home"] .home-hubs a::after { background: #B64436; }
 body[data-page="home"] .home-hubs a:hover::before, body[data-page="home"] .home-hubs a:focus-visible::before { border-color: #B64436; }
 body[data-page="home"] .home-hubs a:hover p, body[data-page="home"] .home-hubs a:focus-visible p { color: #59615E; }
+
+.pattern-layer { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.pattern-layer img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; opacity: .32; }
+.band.paper, body[data-page="home"] .home-hubs-band { background: transparent !important; }
+.band.paper > .wrap { position: relative; z-index: 1; background: #F4F1EA; box-shadow: 0 18px 64px rgba(28, 22, 14, .06); }
 
 @media (max-width: 820px) {
   body[data-page="home"] .hero { min-height: min(100svh, 760px); }
